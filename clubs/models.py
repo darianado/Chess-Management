@@ -54,7 +54,6 @@ class User(AbstractUser):
     )
 
 
-
 class Club():
 
     club_name = models.CharField(
@@ -77,6 +76,10 @@ class Club():
     )
 
 
-
-
-
+class Members(models.Model):
+    club = models.ForeignKey(to='Club')
+    user = models.ForeignKey(to='User')
+    is_applicant = models.BooleanField(default=False)
+    is_member = models.BooleanField(default=False)
+    is_officer = models.BooleanField(default=False)
+    is_owner = models.BooleanField(default=False)
