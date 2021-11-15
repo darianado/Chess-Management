@@ -52,3 +52,31 @@ class User(AbstractUser):
         max_length=520,
         blank=True
     )
+
+
+
+class Club():
+
+    club_name = models.CharField(
+        max_length = 50,
+        unique = True,
+        blank = False
+    )
+
+    location = models.CharField(
+        max_length = 100,
+        unique = False,
+        blank = False
+
+    )
+
+    description = models.CharField(
+        unique=False,
+        max_length=260,
+        blank=True
+    )
+
+
+
+
+
