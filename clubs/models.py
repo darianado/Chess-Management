@@ -79,7 +79,14 @@ class Club():
 class Members(models.Model):
     club = models.ForeignKey(to='Club')
     user = models.ForeignKey(to='User')
-    is_applicant = models.BooleanField(default=False)
-    is_member = models.BooleanField(default=False)
-    is_officer = models.BooleanField(default=False)
-    is_owner = models.BooleanField(default=False)
+    class Role(models.IntegerChoices):
+        OWNER = 1
+        OFFICER = 2
+        MEMBER = 3
+        APPLICANT = 4
+    role = models.IntegerField(choices=Role.choices,
+                                default=Role.APPLICANT,
+                                validators=[
+                                    MinValueValidator(1),
+                                    MaxValueValidator(4)
+                                 ])
