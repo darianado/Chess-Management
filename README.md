@@ -7,6 +7,7 @@ The members of the team are:
 - Krishi Wali
 - Meilai Ji
 - Xiangyi Liu
+
 *Add any further information about the team here, such as absent team members.*
 
 ## Project structure
