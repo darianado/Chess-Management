@@ -54,7 +54,7 @@ class User(AbstractUser):
     )
 
 
-class Club(models):
+class Club(models.Model):
 
     club_name = models.CharField(
         max_length = 50,
