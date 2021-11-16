@@ -1,6 +1,7 @@
 from django.test import TestCase
 from clubs.models import Club, Members, User
 from django.core.exceptions import ValidationError
+from django.db.utils import IntegrityError
 
 class MembersModelTest(TestCase):
     def setUp(self):
@@ -54,11 +55,11 @@ class MembersModelTest(TestCase):
         self._assert_member_is_invalid()
 
     def test_user_is_only_a_member_of_a_club_exactly_once(self):
-        member_2 = Members.objects.create(
-            club=self.club,
-            user=self.user
-        )
-        self._assert_member_is_invalid()
+        with self.assertRaises(IntegrityError):
+            Members.objects.create(
+                club=self.club,
+                user=self.user
+            )
 
     def _assert_member_is_valid(self):
         try:
