@@ -54,7 +54,7 @@ class User(AbstractUser):
     )
 
 
-class Club():
+class Club(models.Model):
 
     club_name = models.CharField(
         max_length = 50,
@@ -77,8 +77,8 @@ class Club():
 
 
 class Members(models.Model):
-    club = models.ForeignKey(to='Club')
-    user = models.ForeignKey(to='User')
+    club = models.ForeignKey(Club, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     class Role(models.IntegerChoices):
         OWNER = 1
         OFFICER = 2
