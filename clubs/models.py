@@ -77,6 +77,8 @@ class Club(models.Model):
 
 
 class Members(models.Model):
+    class Meta:
+        constraints=[models.UniqueConstraint( fields=["club",'user'], name='member of a club only once')]
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     class Role(models.IntegerChoices):
