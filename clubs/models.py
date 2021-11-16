@@ -1,7 +1,5 @@
-from typing import BinaryIO
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.db.models.fields import EmailField
 from django.core.validators import RegexValidator
 from django.core.validators import MinValueValidator, MaxValueValidator
 
@@ -50,6 +48,11 @@ class User(AbstractUser):
     personal_statement = models.CharField(
         unique=False,
         max_length=520,
+        blank=True
+    )
+
+    gravatar = models.ImageField(
+        upload_to="gravatar_uploads/",
         blank=True
     )
 
