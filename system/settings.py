@@ -127,3 +127,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # User model for authentication purpose
 AUTH_USER_MODEL = 'clubs.User'
+
+# Location for media
+MEDIA_ROOT = BASE_DIR / 'media'

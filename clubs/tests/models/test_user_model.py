@@ -1,9 +1,22 @@
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from clubs.models import User
 from django.core.exceptions import ValidationError
+from django.core.files.uploadedfile import SimpleUploadedFile
 
+import tempfile
+import shutil
 
+# ImageField testing taken from here https://stackoverflow.com/a/61672120
+
+MEDIA_ROOT = tempfile.mkdtemp()
+
+@override_settings(MEDIA_ROOT=MEDIA_ROOT)
 class UserModelTest(TestCase):
+    @classmethod
+    def tearDownClass(self):
+        shutil.rmtree(MEDIA_ROOT, ignore_errors=True)
+        super().tearDownClass()
+
     def setUp(self):
         self.user = User.objects.create_user(
         '@johndoe',
@@ -13,7 +26,8 @@ class UserModelTest(TestCase):
         password='Password123',
         bio='The quick brown fox jumps over the lazy dog.',
         chess_experience_level= 1,
-        personal_statement= 'nu mi place sa joc sah'
+        personal_statement= 'nu mi place sa joc sah',
+        gravatar=SimpleUploadedFile("profile_pic.png", b"this is the file's contents")
         )
     
     def test_valid_user(self):
@@ -192,7 +206,11 @@ class UserModelTest(TestCase):
         self._assert_user_is_invalid()
 
 
+# gravatar upload tests
 
+    def test_gravatar_can_be_blank(self):
+        self.user.gravatar = None
+        self._assert_user_is_valid()
 
 
 
