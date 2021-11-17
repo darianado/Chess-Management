@@ -1,0 +1,22 @@
+<html>
+<head>
+<title>signup</title>
+<style>
+h1 {text-align: center;}
+form {text-align: center;}
+button {text-align: right;}
+</style>
+
+<head>
+  <body>
+    <h1>Sign up</h1>
+    <div align = center>
+      <form action = "{% url 'sign_up' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        
+      <button type = "button" onclick = "location.href ='#'">Apply for a club</button>
+      <button type = "button" onclick = "location.href ='#'">Create an account</button>
+      </div>
+  </body>
+</html>

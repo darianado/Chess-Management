@@ -1,0 +1,18 @@
+<html>
+<head>
+<title>login</title>
+<style>
+h1 {text-align: center;}
+form {text-align: center;}
+</style>
+
+<head>
+  <body>
+    <h1>Log in</h1>
+    <form action = "{% url 'log_in' %}" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value = "Log in">
+    </form>
+  </body>
+</html>
