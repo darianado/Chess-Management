@@ -1,28 +1,24 @@
-<html>
-<head>
-<title>signup</title>
-<style>
-h1 {text-align: center;}
-form {text-align: center;}
-button {text-align: right;}
-</style>
+{% extends 'base.html' %}
 
-<head>
-  <body>
-    <h1>Sign up</h1>
-    <div align = center>
-    <form>
-      Name: <input type = "text" name = "name"><br>
-      Email: <input type = "text" name = "email"><br>
-      Gravatar: <input type = "text" name = "Gravatar"><br>
-      Bio: <input type = "text" name = "Bio"><br>
-      Chess Experience Level: <input type = "text" name = "Chess Experience Level"><br>
-      Personal Statement: <input type = "text" name = "Personal Statement"><br>
-      Password: <input type = "text" name = "Password"><br>
-      Password Confirmation: <input type = "text" name = "Password Confirmation">
+{% block body %}
+<div class="container vh-100">
+  <div class = "row h-100">
+    <div class="col-12 my-auto" >
+      <h1>Sign up</h1>
+      
+      <form>
+        Name: <input type = "text" name = "name"><br>
+        Email: <input type = "text" name = "email"><br>
+        Gravatar: <input type = "text" name = "Gravatar"><br>
+        Bio: <input type = "text" name = "Bio"><br>
+        Chess Experience Level: <input type = "text" name = "Chess Experience Level"><br>
+        Personal Statement: <input type = "text" name = "Personal Statement"><br>
+        Password: <input type = "text" name = "Password"><br>
+        Password Confirmation: <input type = "text" name = "Password Confirmation">
       </form>
       <button type = "button" onclick = "location.href ='#'">Apply for a club</button>
       <button type = "button" onclick = "location.href ='#'">Create an account</button>
-      </div>
-  </body>
-</html>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,18 +1,22 @@
-<html>
-<head>
-<title>login</title>
-<style>
-h1 {text-align: center;}
-form {text-align: center;}
-</style>
 
-<head>
-  <body>
-    <h1>Log in</h1>
-    <form>
-      Email: <input type = "text" name = "email"><br>
-      Password: <input type = "text" name = Password>
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container vh-100">
+  <div class = "row h-100">
+    <div class="col-12 my-auto" >
+      <h1>Log in</h1>
+      <form>
+        Email: <input type = "text" name = "email"><br>
+        Password: <input type = "text" name = Password>
       </form>
-      <button type = "button" onclick = "location.href ='#'">Log in</button>
-  </body>
-</html>
+        <p>
+              <a href='{% url 'home' %}' class="btn btn-lg btn-secondary">
+              go welcome
+              </a>
+        </p>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

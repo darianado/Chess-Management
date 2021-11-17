@@ -1,42 +1,28 @@
-<html>
-<head>
-  <title>Welcome</title>
-  <style>
-    h1 {text-align: center;}
-    button{widtd: 100px; height: 50px;}
-    </style>
-  </head>
-  <body>
-    <div id = "container">
-      <div id = "header" style = "padding:5px;height:auto">
-        <table cellpadding = "0" cellspacing = "0" style = "margin-buttom: 5px">
-          <tr>
-            <th></th><th></th><th></th><th></th><th></th><th></th>
-            <td>
-              <p> Chess Club</p>
-            </td>
-            <td></td>
-            <td>
-              <p></p>
-            </td>
-            <td>
-              <p>Home</p>
-            </td>
-            <td>
-              <p>Contact us</p>
-            </td>
-            <td>
-              <a href = "#" class = "easyui-linkbutton">About us</a>
-            </td>
-          </tr>
-        </table>
-        </div>
-        <div id = "content" align = center>
-          <h1>Welcome to tde chess club</h1>
-          <button type="button" onclick = "location.href ='sign-up.html'"> Sign up </button>
-          <button type="button" onclick = "location.href ='login.html'"> Log in </button>
+{% extends 'base.html' %}
 
-      </div>
-
-    </body>
-</html>
+ {% block body %}
+ <div class="container vh-100">
+    <div class = "row h-100">
+      <div class="col-12 my-auto" >
+        
+          <div  class="d-flex justify-content-center">
+            <h1>Welcome to the chess club</h1>
+          </div>
+          <div  class="d-flex justify-content-center">
+            <p>
+              <a href="{% url 'log_in' %}" class="btn btn-lg btn-secondary">
+              Log in
+              </a>
+            </p>          
+            
+            <p>
+              <a href="{% url 'sign_up' %}" class="btn btn-lg btn-secondary">
+              Sign Up
+              </a>
+            </p>
+          </div>
+          
+    </div>
+  </div>
+</div>
+{% endblock %}

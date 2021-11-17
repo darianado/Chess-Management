@@ -6,4 +6,6 @@ def welcome(request):
 def login(request):
     return render(request, 'login.html')
 def signup(request):
-    return render(request, 'signup.html')
+    return render(request, 'sign-up.html')
+def home(request):
+    return render(request, 'home.html')
