@@ -9,10 +9,10 @@ form {text-align: center;}
 <head>
   <body>
     <h1>Log in</h1>
-    <form>
-      Email: <input type = "text" name = "email"><br>
-      Password: <input type = "text" name = Password>
-      </form>
-      <button type = "button" onclick = "location.href ='#'">Log in</button>
+    <form action = "{% url 'log_in' %}" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value = "Log in">
+    </form>
   </body>
 </html>
