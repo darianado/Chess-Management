@@ -7,7 +7,7 @@ from django.core.validators import RegexValidator
 class SignUpForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['username', 'first_name', 'last_name', 'email', 'chess_experience_level', 'bio',  'personal_statement']
+        fields = ['username', 'first_name', 'last_name', 'email', 'chess_experience_level', 'bio', 'gravatar', 'personal_statement']
         widgets = {'bio': forms.Textarea(), 'personal_statement': forms.Textarea()}
 
     new_passwords = forms.CharField(
@@ -36,13 +36,14 @@ class SignUpForm(forms.ModelForm):
         last_name=self.cleaned_data.get('last_name'),
         email=self.cleaned_data.get('email'),
         bio=self.cleaned_data.get('bio'),
-        chess_experience_level=self.cleaned_data.get(chess_experience_level),
-        personal_statement=self.cleaned_data.get(personal_statement),
+        chess_experience_level=self.cleaned_data.get('chess_experience_level'),
+        gravatar=self.cleaned_data.get('gravatar'),
+        personal_statement=self.cleaned_data.get('personal_statement'),
         password=self.cleaned_data.get('new_passwords'),
         )
         return user
 
 
 class LogInForm(forms.Form):
-    username = forms.CharField(label="Username")
+    email = forms.CharField(label="Email")
     password = forms.CharField(label="Password", widget=forms.PasswordInput())

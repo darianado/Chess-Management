@@ -17,8 +17,9 @@ class SignUpViewTestCase(TestCase, LogInTester):
             'username':'@Liu',
             'email' : 'xiangyi@gmail.com',
             'bio' : 'My bio is here',
-            'new_passwords':'Hahahaha123',
-            'password_confirmation': 'Hahahaha123'
+            'chess_experience_level': '1',
+            'new_passwords':'Password123',
+            'password_confirmation': 'Password123'
         }
 
     def test_sign_up_url(self):
@@ -50,14 +51,14 @@ class SignUpViewTestCase(TestCase, LogInTester):
         response = self.client.post(self.url, self.form_input, follow = True)
         after_count = User.objects.count()
         self.assertEqual(after_count, before_count + 1)
-        response_url = reverse('feed')
+        response_url = reverse('welcome')
         self.assertRedirects(response, response_url, status_code = 302, target_status_code = 200)
-        self.assertTemplateUsed(response, 'feed.html')
+        self.assertTemplateUsed(response, 'welcome.html')
         user = User.objects.get(username = '@Liu')
         self.assertEqual(user.first_name, 'Xiangyi')
         self.assertEqual(user.last_name, 'Liu')
         self.assertEqual(user.email, 'xiangyi@gmail.com')
         self.assertEqual(user.bio, 'My bio is here')
-        is_password_correct = check_password('Hahahaha123', user.password)
+        is_password_correct = check_password('Password123', user.password)
         self.assertTrue(is_password_correct)
         self.assertTrue(self._is_logged_in())

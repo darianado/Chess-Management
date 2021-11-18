@@ -39,6 +39,8 @@ class User(AbstractUser):
 
     chess_experience_level = models.IntegerField(
         unique=False,
+        blank=True,
+        default=1,
         validators=[
             MinValueValidator(1),
             MaxValueValidator(5)
