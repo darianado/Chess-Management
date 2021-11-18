@@ -12,7 +12,7 @@ def signup(request):
     return render(request, 'signup.html')
 
 #@login_required
-def user_profile(request, user_id):
+def show_user(request, user_id):
     try:
         user = User.objects.get(id=user_id)
     except User.DoesNotExist:
@@ -22,4 +22,4 @@ def user_profile(request, user_id):
 
 #@login_required
 def edit_profile(request, user_id):
-    return redirect("user_profile", user_id)
+    return redirect("show_user", user_id)
