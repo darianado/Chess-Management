@@ -1,0 +1,44 @@
+<div class="row content">
+    <div class="col-auto">
+        <img src="{{ user_profile.gravatar_ }}">
+    </div>
+    <div class="col-auto">
+        <h6>{{ user_profile.first_name }} {{ user_profile.last_name }}</h6>
+        {% if logged_in_user == user_profile %}
+            <p>{{ user_profile.email }}</p>
+        {% endif %}
+    </div>
+</div>
+<br>
+<div class="row content">
+    <div class="col-auto">
+        <h1>Bio</h1>
+        <p>{{ user_profile.bio }}</p>
+    </div>
+</div>
+<br>
+<div class="row content">
+    <div class="col-auto">
+        {% if logged_in_user == user_profile %}
+            <h1>Chess experience level</h1>
+            <p>{{ user_profile.chess_experience_level }} / 5</p>
+        {% endif %}
+    </div>
+</div>
+<br>
+<div class="row content">
+    <div class="col-auto">
+        {% if logged_in_user == user_profile %}
+            <h1>Personal Statement</h1>
+            <p>{{ user_profile.personal_statement }}</p>
+        {% endif %}
+    </div>
+</div>
+<br>
+<div class="row content">
+    <div class="col-auto">
+        {% if logged_in_user == user_profile %}
+            <p><a href='{% url 'edit_profile' user_profile.id %}' class="btn btn-lg btn-secondary">Edit Profile</a></p>
+        {% endif %}
+    </div>
+</div>
