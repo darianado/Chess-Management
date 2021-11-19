@@ -3,6 +3,8 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+from libgravatar import Gravatar
+
 # Create your models here.
 class User(AbstractUser):
     username = models.CharField(
@@ -51,10 +53,15 @@ class User(AbstractUser):
         blank=True
     )
 
-    gravatar = models.ImageField(
-        upload_to="gravatar_uploads/",
-        blank=True
-    )
+    def gravatar(self, size=120):
+        """Return a URL to the user's gravatar."""
+        gravatar_object = Gravatar(self.email)
+        gravatar_url = gravatar_object.get_image(size=size, default='mp')
+        return gravatar_url
+
+    def mini_gravatar(self):
+        """Return a URL to the user's gravatar."""
+        return self.gravatar(60)
 
 
 class Club(models.Model):

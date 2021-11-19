@@ -27,7 +27,6 @@ class UserModelTest(TestCase):
         bio='The quick brown fox jumps over the lazy dog.',
         chess_experience_level= 1,
         personal_statement= 'nu mi place sa joc sah',
-        gravatar=SimpleUploadedFile("profile_pic.png", b"this is the file's contents")
         )
     
     def test_valid_user(self):
