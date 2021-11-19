@@ -1,10 +1,10 @@
 """Tests of the sign up view."""
 from django.contrib.auth.hashers import check_password
 from django.test import TestCase
-from microblogs.forms import SignUpForm
+from clubs.forms import SignUpForm
 from django.urls import reverse
-from microblogs.models import User
-from .helper import LogInTester
+from clubs.models import User
+from clubs.tests.helper import LogInTester
 
 
 class SignUpViewTestCase(TestCase, LogInTester):
