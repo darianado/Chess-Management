@@ -8,7 +8,7 @@ class EditProfileForm(forms.ModelForm):
         model = User
         fields = ["first_name", "last_name", "email", "bio", "personal_statement", "chess_experience_level"]
 
-class changePasswordForm(forms.modelForm):
+class changePasswordForm(forms.Form):
     old_password = forms.CharField(
         label="Password",
         widget=forms.PasswordInput(),

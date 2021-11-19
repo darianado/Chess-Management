@@ -1,5 +1,5 @@
 from django.test import TestCase
 
-class EditUserProfileViewTestCase(TestCase):
+class EditProfileFormTestCase(TestCase):
     def setUp(self):
         pass
