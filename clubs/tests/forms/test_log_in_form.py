@@ -1,10 +1,10 @@
 """Unit tests of the log in form."""
 from django import forms
 from django.test import TestCase
-from microblogs.forms import LogInForm
-from microblogs.models import User
+from clubs.forms import LogInForm
+from clubs.models import User
 from django.urls import reverse
-from .helper import LogInTester
+from clubs.tests.helper import LogInTester
 
 class LogInFormTestCase(TestCase, LogInTester):
     """Unit tests of the log in form."""
@@ -13,12 +13,12 @@ class LogInFormTestCase(TestCase, LogInTester):
         User.objects.create_user(
             username='@xiangyi',
             first_name='Xiangyi',
-            last_name = 'Liu',
-            email = 'xiangyi@gmail.com',
+            last_name='Liu',
+            email='xiangyi@gmail.com',
             password='Password123',
-            bio = 'Hi!! My name is Xiangyi.',
-            chess_experience_level = '1',
-            personal_statement = 'Hello everyone!'
+            bio='Hi!! My name is Xiangyi.',
+            chess_experience_level='1',
+            personal_statement='Hello everyone!'
         )
 
 
@@ -35,7 +35,7 @@ class LogInFormTestCase(TestCase, LogInTester):
         self.assertFalse(form.is_bound)
 
     def test_unsuccessful_log_in(self):
-        form_input = {'username': '@xiangyi', 'password': 'WrongPassword123'}
+        form_input = {'email': 'xiangyi@gmail.com', 'password': 'WrongPassword123'}
         response = self.client.get(self.url, form_input)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'log_in.html')
@@ -45,9 +45,9 @@ class LogInFormTestCase(TestCase, LogInTester):
         self.assertFalse(self._is_logged_in())
 
     def test_successful_log_in(self):
-        form_input = {'username': '@xiangyi', 'password': 'Password123'}
+        form_input = {'email': 'xiangyi@gmail.com', 'password': 'Password123'}
         response = self.client.post(self.url, form_input, follow = True)
         self.assertTrue(self._is_logged_in())
-        response_url = reverse('feed')
+        response_url = reverse('welcome')
         self.assertRedirects(response, response_url, status_code = 302, target_status_code = 200)
-        self.assertTemplateUsed(response, 'feed.html')
+        self.assertTemplateUsed(response, 'welcome.html')

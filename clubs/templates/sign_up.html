@@ -1,22 +1,16 @@
-<html>
-<head>
-<title>signup</title>
-<style>
-h1 {text-align: center;}
-form {text-align: center;}
-button {text-align: right;}
-</style>
+{% extends 'base_content.html' %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-12">
 
-<head>
-  <body>
     <h1>Sign up</h1>
-    <div align = center>
       <form action = "{% url 'sign_up' %}" method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        
-      <button type = "button" onclick = "location.href ='#'">Apply for a club</button>
-      <button type = "button" onclick = "location.href ='#'">Create an account</button>
-      </div>
-  </body>
-</html>
+        {% include 'partials/bootstrap_form.html' with form=form %}
+      <input type="submit" value = "Apply for a club" class="btn btn-primary">
+      <input type="submit" value = "Create an account" class="btn btn-primary">
+    </div>
+  </div>
+</div>
+{% endblock %}
