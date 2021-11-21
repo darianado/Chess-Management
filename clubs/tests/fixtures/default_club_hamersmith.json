@@ -1,0 +1,11 @@
+[
+    {
+        "model": "clubs.club",
+        "pk": 1,
+        "fields": {
+            "club_name": "Hamersmith Chess Club",
+            "location": "SE1 4XA",
+            "description": "We love chess"
+        }
+    }
+]
