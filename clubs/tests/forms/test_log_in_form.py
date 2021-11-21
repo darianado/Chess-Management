@@ -11,7 +11,6 @@ class LogInFormTestCase(TestCase, LogInTester):
     def setUp(self):
         self.url = reverse('log_in')
         User.objects.create_user(
-            username='@xiangyi',
             first_name='Xiangyi',
             last_name='Liu',
             email='xiangyi@gmail.com',
