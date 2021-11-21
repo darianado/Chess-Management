@@ -5,7 +5,6 @@ from clubs.models import User
 class UserProfileViewTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
-            '@johndoe',
             first_name='John',
             last_name='Doe',
             email='johndoe@example.org',
@@ -23,7 +22,7 @@ class UserProfileViewTestCase(TestCase):
 
     def test_get_show_user_with_valid_id_but_not_own_profile(self):
         user = self._create_second_user()
-        self.client.login(username=user.username, password="Password123")
+        self.client.login(email=user.email, password="Password123")
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, 'nu mi place sa joc sah')
@@ -32,7 +31,7 @@ class UserProfileViewTestCase(TestCase):
         self.assertTemplateUsed(response, "show_user.html")
 
     def test_get_show_users_own_profile(self):
-        self.client.login(username=self.user.username, password="Password123")
+        self.client.login(email=self.user.email, password="Password123")
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'nu mi place sa joc sah')
@@ -51,7 +50,6 @@ class UserProfileViewTestCase(TestCase):
 
     def _create_second_user(self):
         user = User.objects.create_user(
-            '@janedoe',
             first_name='Jane',
             last_name='Doe',
             email='janedoe@example.org',
