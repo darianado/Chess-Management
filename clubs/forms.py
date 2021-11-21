@@ -51,14 +51,3 @@ class changePasswordForm(forms.Form):
             self.add_error("new_password", "New password cannot match old password")
         elif new_password != password_confirmation:
             self.add_error("password_confirmation", "Confirmation does not match password")
-
-    def save(self):
-        super().save(commit=False)
-        return User.objects.create_user(
-            username=self.cleaned_data.get("username"),
-            first_name=self.cleaned_data.get("first_name"),
-            last_name=self.cleaned_data.get("last_name"),
-            email=self.cleaned_data.get("email"),
-            bio=self.cleaned_data.get("bio"),
-            password=self.cleaned_data.get("new_password")
-        )
