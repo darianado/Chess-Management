@@ -20,6 +20,9 @@ class Command(BaseCommand):
             except (django.db.utils.IntegrityError):
                 continue
             user_count += 1
+        self._create_jed()
+        self._create_val()
+        self._create_billie()
         print('User seeding complete')
 
     def _create_user(self):
@@ -30,6 +33,55 @@ class Command(BaseCommand):
             chess_experience_level = random.randint(1,5)
             personal_statement = self.faker.text(max_nb_chars=520)
             User.objects.create_user(
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                password=Command.PASSWORD,
+                bio=bio,
+                chess_experience_level=chess_experience_level,
+                personal_statement=personal_statement,
+            )
+
+    def _create_jed(self):
+        first_name = 'Jebediah' 
+        last_name ='Kerman' 
+        email = 'jeb@example.org'
+        bio = self.faker.text(max_nb_chars=260)
+        chess_experience_level = random.randint(1,5)
+        personal_statement = self.faker.text(max_nb_chars=520)
+        User.objects.create_user(
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                password=Command.PASSWORD,
+                bio=bio,
+                chess_experience_level=chess_experience_level,
+                personal_statement=personal_statement,
+            )
+    def _create_val(self):
+        first_name = 'Valentina' 
+        last_name ='Kerman' 
+        email = 'val@example.org'
+        bio = self.faker.text(max_nb_chars=260)
+        chess_experience_level = random.randint(1,5)
+        personal_statement = self.faker.text(max_nb_chars=520)
+        User.objects.create_user(
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                password=Command.PASSWORD,
+                bio=bio,
+                chess_experience_level=chess_experience_level,
+                personal_statement=personal_statement,
+        )
+    def _create_billie(self):
+        first_name = 'Billie' 
+        last_name ='Kerman' 
+        email = 'billie@example.org'
+        bio = self.faker.text(max_nb_chars=260)
+        chess_experience_level = random.randint(1,5)
+        personal_statement = self.faker.text(max_nb_chars=520)
+        User.objects.create_user(
                 first_name=first_name,
                 last_name=last_name,
                 email=email,
