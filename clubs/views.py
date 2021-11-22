@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from clubs.forms import LogInForm, SignUpForm
-from clubs.models import User, EditProfileForm
+from clubs.forms import LogInForm, SignUpForm, EditProfileForm
+from clubs.models import User
 from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
@@ -42,13 +42,13 @@ def show_user(request, user_id):
         return render(request, "show_user.html", {"logged_in_user": request.user, "user_profile": user})
 
 #@login_required
-def edit_profile(request):
+def profile(request):
     user = request.user
     if request.method == "POST":
         form = EditProfileForm(instance=user, data=request.POST)
         if form.is_valid():
             form.save()
-            return redirect("user/" + user.id)
+            return redirect("show_user", user.id)
     else:
         form = EditProfileForm(instance=user)
     return render(request, "profile.html", {"form": form})

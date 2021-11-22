@@ -38,7 +38,7 @@
 <div class="row content">
     <div class="col-auto">
         {% if logged_in_user == user_profile %}
-            <p><a href='{% url 'edit_profile' user_profile.id %}' class="btn btn-lg btn-secondary">Edit Profile</a></p>
+            <p><a href="{% url 'profile' %}" class="btn btn-lg btn-secondary">Edit Profile</a></p>
         {% endif %}
     </div>
 </div>
