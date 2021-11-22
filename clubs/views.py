@@ -20,7 +20,7 @@ def log_in(request):
             user = authenticate(email=email, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('welcome')
+                return redirect('home')
     form = LogInForm()
     return render(request, 'log_in.html', {'form': form})
 
