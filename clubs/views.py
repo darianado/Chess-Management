@@ -8,6 +8,9 @@ from django.contrib.auth import authenticate, login, logout
 def welcome(request):
     return render(request, 'welcome.html')
 
+def home(request):
+    return render(request, 'home.html')
+
 def log_in(request):
     if request.method == 'POST':
         form = LogInForm(request.POST)
