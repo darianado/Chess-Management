@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block body %}
+{% include 'partials/main-nav-bar.html' %}
+
+<main class="page">
+
+
+
+
+<div class="container-fluid nav-row" >
+    <div class = "row justify-content-center "  >
+        <div class="col-lg-8 col-md-10 col-sm-12 "  >
+            <h2> <br></h2>
+            <nav class="nav align-items-end">
+                <a class="nav-link active mt-1" aria-current="page" href="#">
+                    <h3 class="title">My Dashboard</h3>
+                </a>
+                <a class="nav-link " href="#">
+                    <h3 class="title ">Clubs</h3>
+                </a>
+            </nav>
+            
+        </div>
+    </div> 
+
+    <div class = "row justify-content-center " >
+        <div class="col-lg-8 col-md-10 col-sm-12"  >
+            <div class="card" >
+
+
+               <div class="card-body">
+                    <h3 class="card-title"> Hi My Name,</h3>
+                    <p>uhjxdhcnjdksnvjksdncfjkshdckhskdhkzshcdjkshjkzcjc</p>
+                    <p>uhjxdhcnjdksnvjksdncfjkshdckhskdhkzshcdjkshjkzcjc</p>
+                    <p>uhjxdhcnjdksnvjksdncfjkshdckhskdhkzshcdjkshjkzcjc</p>
+                    <p>uhjxdhcnjdksnvjksdncfjkshdckhskdhkzshcdjkshjkzcjc</p>
+
+                    <h2> <br></h2>
+                    <h2> <br></h2>
+
+                    <div class="input-group mb-3 ">
+                        <select class="custom-select w-50" id="inputGroupSelect02">
+                          <option value="1">Club X</option>
+                          <option value="2">Club Y</option>
+                          <option value="3">Club Z</option>
+                        </select>
+                        <span class="badge rounded-pill bg-success">Member</span>
+                        <span class="badge rounded-pill bg-danger">Denied</span>
+                        <span class="badge rounded-pill bg-warning text-dark">Pending</span>  
+                    </div>
+
+                    
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <h3 class="me-auto">You have not applied to any club</h3>
+                        <button class="btn btn-dark me-md-2" type="button">Apply now</button>
+                    </div>
+
+                   
+                    
+                
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <div class = "row justify-content-center "  >
+        <div class="col-lg-8 col-md-10 col-sm-12 "  >
+            <h2> <br><br></h2>
+        </div>
+    </div> 
+</div>
+
+
+</main>
+{% endblock %}

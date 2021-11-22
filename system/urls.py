@@ -20,8 +20,9 @@ from clubs import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.welcome, name = 'welcome'),
-    path('signup/', views.signup, name = 'sign up'),
-    path('login/', views.login, name = 'log in'),
+    path('sign_up/', views.sign_up, name = 'sign_up'),
+    path('log_in/', views.log_in, name = 'log_in'),
     path('user/<int:user_id>', views.show_user, name="show_user"),
-    path('profile/', views.edit_profile, name="profile"),
+    path('home/', views.home, name = 'home'),
+    path('profile/', views.profile, name="profile"),
 ]
