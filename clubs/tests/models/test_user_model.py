@@ -1,63 +1,35 @@
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from clubs.models import User
 from django.core.exceptions import ValidationError
+from django.core.files.uploadedfile import SimpleUploadedFile
 
+import tempfile
+import shutil
 
+# ImageField testing taken from here https://stackoverflow.com/a/61672120
+
+MEDIA_ROOT = tempfile.mkdtemp()
+
+@override_settings(MEDIA_ROOT=MEDIA_ROOT)
 class UserModelTest(TestCase):
+    @classmethod
+    def tearDownClass(self):
+        shutil.rmtree(MEDIA_ROOT, ignore_errors=True)
+        super().tearDownClass()
+
     def setUp(self):
         self.user = User.objects.create_user(
-        '@johndoe',
         first_name='John',
         last_name='Doe',
         email='johndoe@example.org',
         password='Password123',
         bio='The quick brown fox jumps over the lazy dog.',
         chess_experience_level= 1,
-        personal_statement= 'nu mi place sa joc sah'
+        personal_statement= 'nu mi place sa joc sah',
         )
     
     def test_valid_user(self):
         self._assert_user_is_valid()
-
-
-# username tests
-
-    def test_username_cannot_be_blank(self):
-        self.user.username = ''
-        self._assert_user_is_invalid()
-
-    def test_username_can_be_30_characters_long(self):
-        self.user.username = '@'  +  'x' * 29
-        self._assert_user_is_valid()
-
-    def test_username_cannot_be_over_30_characters_long(self):
-        self.user.username = '@'  +  'x' * 30
-        self._assert_user_is_invalid()
-
-    def test_username_must_be_unique(self):
-        second_user = self._create_second_user()
-        self.user.username = second_user.username
-        self._assert_user_is_invalid()
-
-    def test_username_must_start_with_at_symbol(self):
-        self.user.username = 'johndoe'
-        self._assert_user_is_invalid()
-
-    def test_username_must_contain_only_alphanumericals_after_at(self):
-        self.user.username = '@john!doe'
-        self._assert_user_is_invalid()
-
-    def test_username_must_contain_at_least_3_alphanumericals_after_at(self):
-        self.user.username = '@jo'
-        self._assert_user_is_invalid()
-
-    def test_username_may_contain_numbers(self):
-        self.user.username = '@j0hndoe2'
-        self._assert_user_is_valid()
-
-    def test_username_must_contain_only_one_at(self):
-        self.user.username = '@@johndoe'
-        self._assert_user_is_invalid()
 
 
 # first name tests
@@ -192,7 +164,11 @@ class UserModelTest(TestCase):
         self._assert_user_is_invalid()
 
 
+# gravatar upload tests
 
+    def test_gravatar_can_be_blank(self):
+        self.user.gravatar = None
+        self._assert_user_is_valid()
 
 
 
@@ -209,7 +185,6 @@ class UserModelTest(TestCase):
 
     def _create_second_user(self):
         user = User.objects.create_user(
-        '@janedoe',
         first_name='Jane',
         last_name='Doe',
         email='janedoe@example.org',

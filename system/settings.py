@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 import os
 from pathlib import Path
+from django.contrib.messages import constants as message_constants
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'widget_tweaks',
     'clubs',
 ]
 
@@ -131,3 +134,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # User model for authentication purpose
 AUTH_USER_MODEL = 'clubs.User'
+
+# Location for media
+MEDIA_ROOT = BASE_DIR / 'media'
+
+
+# Messages
+MESSAGE_TAGS = {
+message_constants.DEBUG: 'dark',
+message_constants.ERROR: 'danger',
+}
