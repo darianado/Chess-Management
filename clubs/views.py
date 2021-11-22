@@ -28,6 +28,7 @@ def edit_profile(request):
     if request.method == "POST":
         form = EditProfileForm(instance=user, data=request.POST)
         if form.is_valid():
+            # TODO add messages here
             form.save()
             return redirect("user/" + user.id)
     else:
