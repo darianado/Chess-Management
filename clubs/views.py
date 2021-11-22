@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from clubs.forms import LogInForm, SignUpForm, EditProfileForm
 from clubs.models import User
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
@@ -50,7 +51,8 @@ def profile(request):
     if request.method == "POST":
         form = EditProfileForm(instance=user, data=request.POST)
         if form.is_valid():
-            # TODO add messages here
+            # TODO add messages herehome
+            messages.add_message(request, messages.SUCCESS, "Profile updated!")
             form.save()
             return redirect("show_user", user.id)
     else:
