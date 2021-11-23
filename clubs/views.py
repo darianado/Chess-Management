@@ -32,3 +32,16 @@ def sign_up(request):
     else:
         form = SignUpForm()
     return render(request, 'sign_up.html', {'form': form})
+
+def club_list(request):
+    clubs = Club.objects.all()
+    return render(request,'club_list.html', {'clubs': clubs})
+
+def show_club(request, club_id):
+    try: 
+        club = Club.objects.get(id=club_id)
+    except ObjectDoesNotExist:
+            return redirect('club_list')
+    else:
+        return render(request,'show_club.html', 
+                {'club': club })
