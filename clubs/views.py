@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from .forms import LogInForm, SignUpForm
 from django.contrib.auth import authenticate, login, logout
+from .models import Club
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 def welcome(request):
