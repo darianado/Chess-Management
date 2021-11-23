@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from .forms import LogInForm, SignUpForm
 from django.contrib.auth import authenticate, login, logout
+from .models import Club, Members
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 def welcome(request):
@@ -32,3 +34,35 @@ def sign_up(request):
     else:
         form = SignUpForm()
     return render(request, 'sign_up.html', {'form': form})
+
+def club_list(request):
+    clubs = Club.objects.all()
+    return render(request,'club_list.html', {'clubs': clubs})
+
+def show_club(request, club_id):
+    try: 
+        club = Club.objects.get(id=club_id)
+    except ObjectDoesNotExist:
+            return redirect('club_list')
+    else:
+        return render(request,'show_club.html', 
+                 {'club': club})
+        # members = Members.objects.filter(club=thisClub, role=3)
+        # owner = Members.objects.filter(club=thisClub, role=1)
+        # officers = Members.objects.filter(club=thisClub,role=2)
+        # applicants = Members.objects.filter(club=thisClub, role=4)
+
+        # return render(request,'show_club.html', 
+        #         {'club': thisClub, 'members': members,
+        #          'owner':owner, 'officers':officers, 
+        #          'applicants':applicants})
+
+def show_applicants(request, club_id):
+    try: 
+        thisClub = Club.objects.get(id=club_id)
+    except ObjectDoesNotExist:
+            return redirect('club_list')
+    else:
+        applicants = Members.objects.filter(club=thisClub, role=4)
+        return render(request,'show_club.html', 
+                 {'club': thisClub, 'applicants':applicants})
