@@ -1,10 +1,10 @@
 <div class="row content">
     <div class="col-auto">
-        <img src="{{ user_profile.gravatar_ }}">
+        <img src="{{ user_profile.gravatar }}">
     </div>
     <div class="col-auto">
         <h6>{{ user_profile.first_name }} {{ user_profile.last_name }}</h6>
-        {% if logged_in_user == user_profile %}
+        {% if show_personal_info %}
             <p>{{ user_profile.email }}</p>
         {% endif %}
     </div>
@@ -19,7 +19,7 @@
 <br>
 <div class="row content">
     <div class="col-auto">
-        {% if logged_in_user == user_profile %}
+        {% if show_personal_info %}
             <h1>Chess experience level</h1>
             <p>{{ user_profile.chess_experience_level }} / 5</p>
         {% endif %}
@@ -28,7 +28,7 @@
 <br>
 <div class="row content">
     <div class="col-auto">
-        {% if logged_in_user == user_profile %}
+        {% if show_personal_info %}
             <h1>Personal Statement</h1>
             <p>{{ user_profile.personal_statement }}</p>
         {% endif %}
@@ -37,7 +37,7 @@
 <br>
 <div class="row content">
     <div class="col-auto">
-        {% if logged_in_user == user_profile %}
+        {% if own_profile %}
             <p><a href="{% url 'profile' %}" class="btn btn-lg btn-secondary">Edit Profile</a></p>
         {% endif %}
     </div>
