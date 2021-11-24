@@ -6,11 +6,11 @@
         <li><strong></strong> {{ club.club_name}}</li>
         <li><strong> Location </strong> {{ club.location}}</li>
         <li><strong> Bio </strong> {{ club.description}}</li>
-        
+        {% if applicants %}
         <div>
           {% include 'partials/applicants_as_table.html' with applicants=applicants %} 
         </div>       
-        
+        {% endif %}
       </div>
   </div>
 </div>

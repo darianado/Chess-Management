@@ -24,9 +24,3 @@ class Command(BaseCommand):
             models.Members.objects.create(club = clubs.get(id=101),
                                         user = tuser )
         
-        members= models.Members.objects.all()
-        for m in members.iterator():
-            print(m.id)
-            print(m.club.id)
-            print(m.user.id)
-            print(" ")

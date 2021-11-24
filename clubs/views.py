@@ -39,14 +39,14 @@ def club_list(request):
     clubs = Club.objects.all()
     return render(request,'club_list.html', {'clubs': clubs})
 
-# def show_club(request, club_id):
-#     try: 
-#         club = Club.objects.get(id=club_id)
-#     except ObjectDoesNotExist:
-#             return redirect('club_list')
-#     else:
-#         return render(request,'show_club.html', 
-#                  {'club': club})
+def show_club(request, club_id):
+    try: 
+        club = Club.objects.get(id=club_id)
+    except ObjectDoesNotExist:
+            return redirect('club_list')
+    else:
+        return render(request,'show_club.html', 
+                 {'club': club})
 
 def show_applicants(request, club_id):
     try: 
@@ -66,6 +66,4 @@ def deny_applicant(request, membership_id):
 def accept_applicant(request, membership_id):
     c_id=Members.objects.get(id=membership_id).club.id
     Members.objects.get(id=membership_id).acceptApplicant()
-    print(membership_id)
-    print(Members.objects.get(id=membership_id).role)
     return redirect('show_club', club_id= c_id)
