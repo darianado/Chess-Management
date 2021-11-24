@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import LogInForm, SignUpForm
 from django.contrib.auth import authenticate, login, logout
-from .models import Club, Members
+from .models import Club, Members, User
 from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
@@ -17,7 +17,7 @@ def log_in(request):
             user = authenticate(email=email, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('welcome')
+                return redirect('home')
     form = LogInForm()
     return render(request, 'log_in.html', {'form': form})
 
@@ -47,15 +47,6 @@ def show_club(request, club_id):
     else:
         return render(request,'show_club.html', 
                  {'club': club})
-        # members = Members.objects.filter(club=thisClub, role=3)
-        # owner = Members.objects.filter(club=thisClub, role=1)
-        # officers = Members.objects.filter(club=thisClub,role=2)
-        # applicants = Members.objects.filter(club=thisClub, role=4)
-
-        # return render(request,'show_club.html', 
-        #         {'club': thisClub, 'members': members,
-        #          'owner':owner, 'officers':officers, 
-        #          'applicants':applicants})
 
 def show_applicants(request, club_id):
     try: 
@@ -66,3 +57,11 @@ def show_applicants(request, club_id):
         applicants = Members.objects.filter(club=thisClub, role=4)
         return render(request,'show_club.html', 
                  {'club': thisClub, 'applicants':applicants})
+
+def deny_applicant(request, membership_id):
+    Members.objects.get(id=membership_id).denyApplicant()
+    return redirect('show_applicants', {'club': membership_id.club})
+
+def accept_applicant(request, membership_id):
+    Members.objects.get(id=membership_id).acceptApplicant()
+    return redirect('show_applicants', {'club': membership_id.club.id})

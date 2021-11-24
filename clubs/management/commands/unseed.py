@@ -1,7 +1,11 @@
 from django.core.management.base import BaseCommand, CommandError
+from clubs import models
 
 class Command(BaseCommand):
-        """The database unseeder."""
+    def __init__(self):
+        super().__init__()
 
-        def handle(self, *args, **options):
-            print("TODO: The database unseeder will be added here...")
+    def handle(self,*arg,**options):
+        models.Club.objects.all().delete()
+        models.User.objects.all().delete()
+        models.Members.objects.all().delete()

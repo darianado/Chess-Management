@@ -1,0 +1,44 @@
+{% load humanize %}
+<tr>
+    <td>
+        <p >
+            <span >
+                {{ applicant.user.first_name }}
+            </span>
+            <span >
+                {{ applicant.user.last_name }}
+            </span>
+        </p>
+    </td>
+    <td >
+        <p>
+            {{ applicant.user.bio }}
+        </p>
+    </td>
+    <td >
+        <p>
+            {{ applicant.user.email }}
+        </p>
+    </td>
+    <td >
+        <p>
+            {{ applicant.user.chess_experience_level }}
+        </p>
+    </td>
+    <td>
+        <p >
+            {{ applicant.user.personal_statement }}
+        </p>
+    </td>
+    <td>
+        <form action="{% url 'deny_applicant %}">
+            <button type="button" class="btn btn-secondary">Deny</button>
+        </form>
+    </td>
+    <td>
+        <form action="{% url 'accept_applicant' %}">
+            <button type="button" class="btn btn-secondary">Accept</button>
+        </form>
+    </td>
+    
+</tr>

@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from clubs import views
+from clubs import models
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,5 +27,7 @@ urlpatterns = [
     path('home/', views.home, name = 'home'),
     path('clubs/', views.club_list, name = 'club_list'),
     path('club/<int:club_id>', views.show_club, name = 'show_club'),
+    path('deny_applicant/<int:membership_id>', views.deny_applicant),
+    path('accept_applicant/<int:membership_id', views.accept_applicant)
 ]
 

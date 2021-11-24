@@ -1,0 +1,9 @@
+
+
+
+
+<table class="table">
+    {% for applicant in applicants %}
+        {% include 'partials/applicant_as_table_row.html' with applicant=applicant %}
+    {% endfor %}
+</table>

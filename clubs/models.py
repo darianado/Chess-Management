@@ -137,3 +137,8 @@ class Members(models.Model):
                                     MinValueValidator(1),
                                     MaxValueValidator(4)
                                  ])
+    def acceptApplicant(self):
+        role=3
+    def denyApplicant(self):
+        self.delete()
+        
