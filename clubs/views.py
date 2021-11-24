@@ -27,9 +27,6 @@ def log_in(request):
     form = LogInForm()
     return render(request, 'log_in.html', {'form': form})
 
-def log_out(request):
-    logout(request)
-    return redirect('welcome')
 
 def sign_up(request):
     if request.method == 'POST':
@@ -92,7 +89,7 @@ def password(request):
     if request.method == 'POST':
         form = changePasswordForm(data=request.POST)
         if form.is_valid():
-            password = form.cleaned_data.get('password')
+            password = form.cleaned_data.get('old_password')
             if check_password(password, current_user.password):
                 new_password = form.cleaned_data.get('new_password')
                 current_user.set_password(new_password)
@@ -100,5 +97,6 @@ def password(request):
                 login(request, current_user)
                 messages.add_message(request, messages.SUCCESS, "Password updated!")
                 return redirect("show_user", current_user.id)
-    form = changePasswordForm()
+    else:
+        form = changePasswordForm()
     return render(request, 'password.html', {'form': form})

@@ -40,13 +40,15 @@ class UserProfileViewTestCase(TestCase):
         self.assertTemplateUsed(response, "show_user.html")
 
     def test_correct_user_is_returned(self):
-        response = self.client.get(self.url)
+## comment oncew prohibited is implemented
+        self.client.login(email=self.user.email, password="Password123")
+        response = self.client.get(self.url, follow=True)
         self.assertEqual(response.context["user_profile"], self.user)
 
-    # def test_case_when_id_is_incorrect(self):
-    #     response = self.client.get(self.url2, follow=True)
-    #     redirect_url = reverse("user_list")
-    #     self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
+    #  def test_case_when_id_is_incorrect(self):
+       #  response = self.client.get(self.url2, follow=True)
+       #  redirect_url = reverse("user_list")
+       #  self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
     def _create_second_user(self):
         user = User.objects.create_user(

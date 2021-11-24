@@ -47,7 +47,7 @@ class PasswordViewTest(TestCase):
 
     def test_password_change_unsuccesful_without_correct_old_password(self):
         self.client.login(email=self.user.email, password='Password123')
-        self.form_input['password'] = 'WrongPassword123'
+        self.form_input['old_password'] = 'WrongPassword123'
         response = self.client.post(self.url, self.form_input, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'password.html')
@@ -69,6 +69,7 @@ class PasswordViewTest(TestCase):
         is_password_correct = check_password('Password123', self.user.password)
         self.assertTrue(is_password_correct)
 
+## uncomment oncew prohibited is implemented
     #  def test_post_profile_redirects_when_not_logged_in(self):
         #  redirect_url = reverse_with_next('log_in', self.url)
         #  response = self.client.post(self.url, self.form_input)
