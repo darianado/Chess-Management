@@ -6,6 +6,6 @@ class Command(BaseCommand):
         super().__init__()
 
     def handle(self,*arg,**options):
-        models.Club.objects.all().delete()
+        models.Club.objects.all().exclude(id=101).delete()
         models.User.objects.all().delete()
         models.Members.objects.all().delete()

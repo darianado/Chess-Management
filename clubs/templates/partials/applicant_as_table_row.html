@@ -31,13 +31,13 @@
         </p>
     </td>
     <td>
-        <form action="{% url 'deny_applicant %}">
-            <button type="button" class="btn btn-secondary">Deny</button>
+        <form action="{% url 'deny_applicant' applicant.id  %}">
+            <button  class="btn btn-secondary">Deny</button>
         </form>
     </td>
     <td>
-        <form action="{% url 'accept_applicant' %}">
-            <button type="button" class="btn btn-secondary">Accept</button>
+        <form action="{% url 'accept_applicant' applicant.id %}">
+            <button class="btn btn-secondary">Accept</button>
         </form>
     </td>
     

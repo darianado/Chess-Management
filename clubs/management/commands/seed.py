@@ -21,7 +21,7 @@ class Command(BaseCommand):
         users =models.User.objects.all() 
         clubs= models.Club.objects.all()
         for tuser in users.iterator():
-            models.Members.objects.create(club = clubs.get(id=92),
+            models.Members.objects.create(club = clubs.get(id=101),
                                         user = tuser )
         
         members= models.Members.objects.all()
