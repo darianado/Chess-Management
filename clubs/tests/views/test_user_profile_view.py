@@ -25,6 +25,7 @@ class UserProfileViewTestCase(TestCase):
         self.client.login(email=user.email, password="Password123")
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["user_profile"], self.user)
         self.assertNotContains(response, 'nu mi place sa joc sah')
         self.assertNotContains(response, 'johndoe@example.org')
         self.assertNotContains(response, 'Chess experience level')
@@ -34,14 +35,11 @@ class UserProfileViewTestCase(TestCase):
         self.client.login(email=self.user.email, password="Password123")
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["user_profile"], self.user)
         self.assertContains(response, 'nu mi place sa joc sah')
         self.assertContains(response, 'johndoe@example.org')
         self.assertContains(response, 'Chess experience level')
         self.assertTemplateUsed(response, "show_user.html")
-
-    def test_correct_user_is_returned(self):
-        response = self.client.get(self.url)
-        self.assertEqual(response.context["user_profile"], self.user)
 
     # def test_case_when_id_is_incorrect(self):
     #     response = self.client.get(self.url2, follow=True)
