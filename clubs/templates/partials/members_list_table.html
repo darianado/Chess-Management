@@ -1,0 +1,13 @@
+<table>
+    <thead>
+        <tr>
+            <th>Profile Picture</th>
+            <th>Full Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in members %}
+            {% include "partials/member_as_table_row.html" with user=user %}
+        {% endfor %}
+    </tbody>
+</table>

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import LogInForm, SignUpForm
 from django.contrib.auth import authenticate, login, logout
-from .models import Club
+from .models import Club, Members
 from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
@@ -47,3 +47,12 @@ def show_club(request, club_id):
     else:
         return render(request,'show_club.html', 
                 {'club': club })
+
+def members(request, club_id):
+    try: 
+        club = Club.objects.get(id=club_id)
+    except ObjectDoesNotExist:
+            return redirect('club_list')
+    else:
+        members = [member.user for member in Members.objects.filter(club=club)]
+        return render(request, "partials/members_list_table.html", {"members": members})
