@@ -42,8 +42,10 @@ def club_list(request):
 def show_club(request, club_id):
     try: 
         club = Club.objects.get(id=club_id)
+        user = request.user
+        member_in_club = get_member_role(user,club)
     except ObjectDoesNotExist:
             return redirect('club_list')
     else:
         return render(request,'show_club.html', 
-                {'club': club })
+                {'club': club, 'member_in_club': member_in_club})

@@ -137,3 +137,13 @@ class Members(models.Model):
                                     MinValueValidator(1),
                                     MaxValueValidator(4)
                                  ])
+    def get_member_role(other_user,other_club):
+        try:
+            member = Members.objects.filter(club_name=club.club_name).get(email=other_user.email)
+        except DoesNotExist:
+            return None
+        else:
+            return member.role
+
+        
+
