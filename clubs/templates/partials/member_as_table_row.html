@@ -1,5 +1,11 @@
 <tr>
-    {% include "partials/member_as_table_columns.html" with user=user %}
+    <td>
+        <img src="{{ user.mini_gravatar }}">
+    </td>
+    <td>
+        <p>{{ user.get_full_name }}</p>
+    </td>
+
     {% block columns %}
     {% endblock columns %}
 </tr>
