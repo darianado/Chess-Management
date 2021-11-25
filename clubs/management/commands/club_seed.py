@@ -31,6 +31,12 @@ class Command(BaseCommand):
                 location = 'SW1 3XA',
                 description=description3,
                 )
+        description4 = self.faker.text(max_nb_chars=260)
+        Club.objects.create(
+                club_name = 'Wild Horses Chess Club',
+                location = 'SW1 3XA',
+                description=description4,
+                )
 
 
 

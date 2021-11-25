@@ -1,4 +1,5 @@
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
+from django.db.utils import IntegrityError
 from faker import Faker
 from clubs.models import User
 import random
@@ -17,7 +18,7 @@ class Command(BaseCommand):
             print(f'Seeding user {user_count}',  end='\r')
             try:
                 self._create_user()
-            except (django.db.utils.IntegrityError):
+            except (IntegrityError):
                 continue
             user_count += 1
         self._create_jed()
@@ -28,7 +29,7 @@ class Command(BaseCommand):
     def _create_user(self):
             first_name = self.faker.first_name()
             last_name = self.faker.last_name()
-            email = self._email(first_name, last_name)
+            email = self.faker.unique.email()
             bio = self.faker.text(max_nb_chars=260)
             chess_experience_level = random.randint(1,5)
             personal_statement = self.faker.text(max_nb_chars=520)
@@ -90,9 +91,3 @@ class Command(BaseCommand):
                 chess_experience_level=chess_experience_level,
                 personal_statement=personal_statement,
             )
-
-
-    def _email(self, first_name, last_name):
-        email = f'{first_name}.{last_name}@example.org'
-        return email
-
