@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import LogInForm, SignUpForm
 from django.contrib.auth import authenticate, login, logout
-from .models import Club
+from .models import Club, Members, User
 from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
@@ -22,7 +22,7 @@ def log_in(request):
     return render(request, 'log_in.html', {'form': form})
 
 def home(request):
-    return render(request, 'home.html')   
+    return render(request, 'home.html')
 
 def sign_up(request):
     if request.method == 'POST':
@@ -40,10 +40,59 @@ def club_list(request):
     return render(request,'club_list.html', {'clubs': clubs})
 
 def show_club(request, club_id):
-    try: 
+    try:
         club = Club.objects.get(id=club_id)
     except ObjectDoesNotExist:
             return redirect('club_list')
     else:
-        return render(request,'show_club.html', 
+        return render(request,'show_club.html',
                 {'club': club })
+
+def role(request,club_id):
+    try:
+        club = Club.objects.get(id=club_id)
+    except ObjectDoesNotExist:
+            return redirect('home')
+    else:
+        users = Members.objects.all().filter(club=club)
+        members = [member.user for member in users.filter(role = 3)]
+        officers = [member.user for member in users.filter(role = 2)]
+        return render(request, "partials/role_list.html", {"members": members}, {"officers": officers})
+def show_user(request, user_id):
+    try:
+        user = User.objects.get(id=user_id)
+    except ObjectDoesNotExist:
+        return redirect('role')
+    else:
+        return render(request, 'show_user.html', {'user': user})
+def officer_promote(request,user_id):
+    try:
+        member = Member.objects.get(user.id=user_id)
+    except ObjectDoesNotExist:
+        return redirect('role')
+    else:
+        member.role = 1
+        member.save()
+def officer_demote(request,user_id):
+    try:
+        member = Member.objects.get(user.id=user_id)
+    except ObjectDoesNotExist:
+        return redirect('role')
+    else:
+        member.role = 3
+        member.save()
+def member_promote(request,user_id):
+    try:
+        member = Member.objects.get(user.id=user_id)
+    except ObjectDoesNotExist:
+        return redirect('role')
+    else:
+        member.role = 2
+        member.save()
+def member_kick(request,member_id):
+    try:
+        member = Member.objects.get(user.id=user_id)
+    except ObjectDoesNotExist:
+        return redirect('role')
+    else:
+        member.delete()

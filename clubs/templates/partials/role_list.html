@@ -1,0 +1,61 @@
+<table>
+    <thead>
+        <tr>
+            <th>Profile Picture</th>
+            <th>Full Name</th>
+            <th>Role</th>
+            <th>Detail</th>
+            <th>Promote/Demote</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for officer in officers %}
+        <tr>
+          <td>
+            <img src="{{ officer.mini_gravatar }}">
+          </td>
+          <td>
+            <p>{{ officer.get_full_name }}</p>
+          </td>
+          <td>
+            <p>officer</p>
+          </td>
+          <td>
+            <a href="{% url 'show_member' user.id %}">More detail</a>
+          </td>
+          <td>
+            <a href="{% url 'officer_promote' user.id %}">
+            <button type="button" id="promote"> promote </button>
+            </a>
+            <a href="{% url 'officer_demote' user.id %}">
+            <button type="button" id="demote"> demote </button>
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+        {% for member in members %}
+        <tr>
+          <td>
+            <img src="{{ member.mini_gravatar }}">
+          </td>
+          <td>
+            <p>{{ member.get_full_name }}</p>
+          </td>
+          <td>
+            <p>member</p>
+          </td>
+          <td>
+            <a href="{% url 'show_member' user.id %}">More detail</a>
+          </td>
+          <td>
+            <a href="{% url 'member_promote' user.id %}">
+            <button type="button" id="promote"> promote </button>
+            </a>
+            <a href="{% url 'member_kick' user.id %}">
+            <button type="button" id="demote"> demote </button>
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

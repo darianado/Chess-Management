@@ -97,6 +97,8 @@ class User(AbstractUser):
     def mini_gravatar(self):
         """Return a URL to the user's gravatar."""
         return self.gravatar(60)
+    def get_full_name(self):
+        return f'{self.first_name} {self.last_name}'
 
 
 class Club(models.Model):
@@ -137,3 +139,12 @@ class Members(models.Model):
                                     MinValueValidator(1),
                                     MaxValueValidator(4)
                                  ])
+    class get_role(self):
+        if(self.role == 1):
+            return("OWNER")
+        elif(self.role == 2):
+            return("OFFICER")
+        elif(self.role == 3):
+            return("MEMBER")
+        elif(self.role == 4):
+            return("APPLICANT")

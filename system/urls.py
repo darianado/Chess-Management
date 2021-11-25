@@ -25,5 +25,10 @@ urlpatterns = [
     path('home/', views.home, name = 'home'),
     path('clubs/', views.club_list, name = 'club_list'),
     path('club/<int:club_id>', views.show_club, name = 'show_club'),
+    path('club/<int:club_id>/roles/', views.role, name = 'role'),
+    path('role/<int:user_id>', views.show_user, name='show_user'),
+    path('role/<int:member_id>/officer_promote', views.officer_promote, name = 'officer_promote'),
+    path('role/<int:member_id>/officer_demote', views.officer_demote, name = 'officer_demote'),
+    path('role/<int:member_id>/member_promote', views.member_promote, name = 'member_promote'),
+    path('role/<int:member_id>/member_kick', views.member_kick, name = 'member_kick'),
 ]
-
