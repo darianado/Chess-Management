@@ -25,4 +25,5 @@ urlpatterns = [
     path('user/<int:user_id>', views.show_user, name="show_user"),
     path('home/', views.home, name = 'home'),
     path('profile/', views.profile, name="profile"),
+    path('password/', views.password, name="password"),
 ]

@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from clubs.forms import LogInForm, SignUpForm, EditProfileForm
-from clubs.models import Members, User
+from clubs.forms import LogInForm, SignUpForm, EditProfileForm, changePasswordForm
 from django.contrib.auth import authenticate, login, logout
 from django.db.models import Q
+from clubs.models import Members, User
+from django.contrib import messages
+from django.contrib.auth.hashers import check_password
 
 # Create your views here.
 def welcome(request):
@@ -24,6 +26,7 @@ def log_in(request):
                 return redirect('home')
     form = LogInForm()
     return render(request, 'log_in.html', {'form': form})
+
 
 def sign_up(request):
     if request.method == 'POST':
@@ -74,8 +77,26 @@ def profile(request):
     if request.method == "POST":
         form = EditProfileForm(instance=user, data=request.POST)
         if form.is_valid():
+            messages.add_message(request, messages.SUCCESS, "Profile updated!")
             form.save()
             return redirect("show_user", user.id)
     else:
         form = EditProfileForm(instance=user)
     return render(request, "profile.html", {"form": form})
+
+def password(request):
+    current_user = request.user
+    if request.method == 'POST':
+        form = changePasswordForm(data=request.POST)
+        if form.is_valid():
+            password = form.cleaned_data.get('old_password')
+            if check_password(password, current_user.password):
+                new_password = form.cleaned_data.get('new_password')
+                current_user.set_password(new_password)
+                current_user.save()
+                login(request, current_user)
+                messages.add_message(request, messages.SUCCESS, "Password updated!")
+                return redirect("show_user", current_user.id)
+    else:
+        form = changePasswordForm()
+    return render(request, 'password.html', {'form': form})
