@@ -52,7 +52,10 @@ def show_club(request, club_id):
                 {'club': club })
 
 #@login_required
-def show_user(request, user_id):
+def show_user(request, user_id=None):
+    if user_id is None:
+        user_id = request.user.id
+
     try:
         user = User.objects.get(id=user_id)
     except User.DoesNotExist:
