@@ -4,6 +4,7 @@ from django.contrib.auth.hashers import make_password
 from django.apps import apps
 from django.core.validators import RegexValidator
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.exceptions import ObjectDoesNotExist
 
 from libgravatar import Gravatar
 
@@ -98,6 +99,8 @@ class User(AbstractUser):
         """Return a URL to the user's gravatar."""
         return self.gravatar(60)
 
+    def __eq__(self, other_user):
+        return (self.email  == other_user.email)
 
 class Club(models.Model):
 
@@ -120,6 +123,9 @@ class Club(models.Model):
         blank=True
     )
 
+    def __eq__(self, other_club):
+        return (self.club_name  == other_club.club_name)
+
 
 class Members(models.Model):
     class Meta:
@@ -139,11 +145,9 @@ class Members(models.Model):
                                  ])
     def get_member_role(other_user,other_club):
         try:
-            member = Members.objects.filter(club_name=club.club_name).get(email=other_user.email)
-        except DoesNotExist:
+            member = Members.objects.filter(club=other_club).get(user=other_user)
+        except ObjectDoesNotExist:
             return None
         else:
             return member.role
-
-        
 

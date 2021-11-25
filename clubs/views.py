@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import LogInForm, SignUpForm
 from django.contrib.auth import authenticate, login, logout
-from .models import Club
+from .models import Club, Members
 from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
@@ -43,7 +43,7 @@ def show_club(request, club_id):
     try: 
         club = Club.objects.get(id=club_id)
         user = request.user
-        member_in_club = get_member_role(user,club)
+        member_in_club = Members.get_member_role(user,club)
     except ObjectDoesNotExist:
             return redirect('club_list')
     else:
