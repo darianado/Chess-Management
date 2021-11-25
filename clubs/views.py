@@ -1,18 +1,15 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
 from clubs.forms import LogInForm, SignUpForm, EditProfileForm, changePasswordForm
 from django.contrib.auth import authenticate, login, logout
-from django.db.models import Q
-from clubs.models import Members, User
+from clubs.models import Club, User, Members
 from django.contrib import messages
+from django.db.models import Q
 from django.contrib.auth.hashers import check_password
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 def welcome(request):
     return render(request, 'welcome.html')
-
-def home(request):
-    return render(request, 'home.html')
 
 def log_in(request):
     if request.method == 'POST':
@@ -27,6 +24,8 @@ def log_in(request):
     form = LogInForm()
     return render(request, 'log_in.html', {'form': form})
 
+def home(request):
+    return render(request, 'home.html')   
 
 def sign_up(request):
     if request.method == 'POST':
@@ -38,6 +37,19 @@ def sign_up(request):
     else:
         form = SignUpForm()
     return render(request, 'sign_up.html', {'form': form})
+
+def club_list(request):
+    clubs = Club.objects.all()
+    return render(request,'club_list.html', {'clubs': clubs})
+
+def show_club(request, club_id):
+    try: 
+        club = Club.objects.get(id=club_id)
+    except ObjectDoesNotExist:
+            return redirect('club_list')
+    else:
+        return render(request,'show_club.html', 
+                {'club': club })
 
 #@login_required
 def show_user(request, user_id):
