@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 from clubs.models import Club
 
-class ShowUserTest(TestCase):
+class ShowClubTest(TestCase):
     def setUp(self):
         self.club = Club.objects.create(
             club_name='London Chess Club',

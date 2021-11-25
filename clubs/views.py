@@ -52,7 +52,7 @@ def members(request, club_id):
     try: 
         club = Club.objects.get(id=club_id)
     except ObjectDoesNotExist:
-            return redirect('club_list')
+        return redirect('club_list')
     else:
         members = [member.user for member in Members.objects.filter(club=club)]
         return render(request, "partials/members_list_table.html", {"members": members})
