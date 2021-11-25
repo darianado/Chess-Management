@@ -1,0 +1,16 @@
+[
+    {
+        "model": "clubs.user",
+        "pk": 2,
+        "fields": {
+            "first_name": "Jane",
+            "last_name": "Doe",
+            "email": "janedoe@example.org",
+            "password": "pbkdf2_sha256$260000$c7uwmk5vANpU8D994bhZKR$k27nPwiOrrUkk1qPNANL36zcIq6cUCsRq6Wo3EAN3KA=",
+            "bio": "Hi I'm Jane",
+            "chess_experience_level": 3,
+            "personal_statement": "mie imi place sa joc sah!",
+            "is_active": true
+        }
+    }
+]
