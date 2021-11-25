@@ -10,7 +10,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         self._create_club()
-        print('User seeding complete')
+        print('Club seeding complete')
 
     def _create_club(self):
         description1 = self.faker.text(max_nb_chars=260)

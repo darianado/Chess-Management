@@ -1,6 +1,7 @@
 from clubs.models import Members, Club, User
 from django.core.management.base import BaseCommand
 from django.db.utils import IntegrityError
+from django.db.models import Q
 import random
 
 class Command(BaseCommand):
@@ -12,7 +13,7 @@ class Command(BaseCommand):
         self.val = User.objects.get(email="val@example.org")
         self.billie = User.objects.get(email="billie@example.org")
 
-        self.users = User.objects.all()
+        self.users = User.objects.filter(~(Q(email=self.jed.email) | Q(email=self.val.email) | Q(email=self.billie.email)))
         self.kerbal = Club.objects.get(club_name="Kerbal Chess Club")
         self.borough = Club.objects.get(club_name="Borough Chess Club")
         self.leon = Club.objects.get(club_name="Leon Paul Chess Club")
@@ -26,14 +27,9 @@ class Command(BaseCommand):
         self._create_required_members()
 
         # Creating owners for the other 3 clubs
-        while True:
-            try:
-                self._create_member(random.choice(self.users), self.kerbal, 1)
-                self._create_member(random.choice(self.users), self.borough, 1)
-                self._create_member(random.choice(self.users), self.wild, 1)
-            except IntegrityError:
-                continue
-            break
+        self._create_member(random.choice(self.users), self.kerbal, 1)
+        self._create_member(random.choice(self.users), self.borough, 1)
+        self._create_member(random.choice(self.users), self.wild, 1)
 
         # Creating random members
         member_count = 0
