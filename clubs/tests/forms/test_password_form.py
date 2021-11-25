@@ -61,7 +61,7 @@ class PasswordFormTestCase(TestCase):
         self.assertFalse(form.is_valid())
 
     def test_form_rejects_old_password_equal_to_new_password(self):
-        self.form_input["old_password"] = "Password1234"
+        self.form_input["old_password"] = self.form_input["new_password"]
         form = changePasswordForm(data=self.form_input)
         self.assertFalse(form.is_valid())
 
