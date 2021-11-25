@@ -139,12 +139,14 @@ class Members(models.Model):
                                     MinValueValidator(1),
                                     MaxValueValidator(4)
                                  ])
-    class get_role(self):
-        if(self.role == 1):
-            return("OWNER")
-        elif(self.role == 2):
-            return("OFFICER")
-        elif(self.role == 3):
-            return("MEMBER")
-        elif(self.role == 4):
-            return("APPLICANT")
+    def officer_promote(self):
+        self.role=1
+        self.save()
+    def officer_demote(self):
+        self.role=3
+        self.save()
+    def member_promote(self):
+        self.role=2
+        self.save()
+    def member_kick(self):
+        self.delete()

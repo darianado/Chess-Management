@@ -55,44 +55,34 @@ def role(request,club_id):
             return redirect('home')
     else:
         users = Members.objects.all().filter(club=club)
-        members = [member.user for member in users.filter(role = 3)]
-        officers = [member.user for member in users.filter(role = 2)]
-        return render(request, "partials/role_list.html", {"members": members}, {"officers": officers})
+        members = users.filter(role = 3)
+        officers = users.filter(role = 2)
+        return render(request, "role.html", {"members": members,"officers": officers})
+        
 def show_user(request, user_id):
     try:
         user = User.objects.get(id=user_id)
     except ObjectDoesNotExist:
         return redirect('role')
     else:
-        return render(request, 'show_user.html', {'user': user})
-def officer_promote(request,user_id):
-    try:
-        member = Member.objects.get(user.id=user_id)
-    except ObjectDoesNotExist:
-        return redirect('role')
-    else:
-        member.role = 1
-        member.save()
-def officer_demote(request,user_id):
-    try:
-        member = Member.objects.get(user.id=user_id)
-    except ObjectDoesNotExist:
-        return redirect('role')
-    else:
-        member.role = 3
-        member.save()
-def member_promote(request,user_id):
-    try:
-        member = Member.objects.get(user.id=user_id)
-    except ObjectDoesNotExist:
-        return redirect('role')
-    else:
-        member.role = 2
-        member.save()
+        return render(request, 'show_member.html', {'user': user})
+
+def officer_promote(request,member_id):
+    c_id=Members.objects.get(id=member_id).club.id
+    Members.objects.get(id=member_id).officer_promote()
+    return redirect('role', club_id = c_id)
+
+def officer_demote(request,member_id):
+    c_id=Members.objects.get(id=member_id).club.id
+    Members.objects.get(id=member_id).officer_demote()
+    return redirect('role', club_id = c_id)
+
+def member_promote(request,member_id):
+    c_id=Members.objects.get(id=member_id).club.id
+    Members.objects.get(id=member_id).member_promote()
+    return redirect('role', club_id = c_id)
+
 def member_kick(request,member_id):
-    try:
-        member = Member.objects.get(user.id=user_id)
-    except ObjectDoesNotExist:
-        return redirect('role')
-    else:
-        member.delete()
+    c_id=Members.objects.get(id=member_id).club.id
+    Members.objects.get(id=member_id).member_kick()
+    return redirect('role', club_id = c_id)
