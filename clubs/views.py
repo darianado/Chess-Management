@@ -67,3 +67,12 @@ def accept_applicant(request, membership_id):
     c_id=Members.objects.get(id=membership_id).club.id
     Members.objects.get(id=membership_id).acceptApplicant()
     return redirect('show_club', club_id= c_id)
+
+def members(request, club_id):
+    try: 
+        club = Club.objects.get(id=club_id)
+    except ObjectDoesNotExist:
+        return redirect('club_list')
+    else:
+        members = [member.user for member in Members.objects.filter(club=club)]
+        return render(request, "partials/members_list_table.html", {"members": members})
