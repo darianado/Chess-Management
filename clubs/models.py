@@ -97,6 +97,8 @@ class User(AbstractUser):
     def mini_gravatar(self):
         """Return a URL to the user's gravatar."""
         return self.gravatar(60)
+    def get_full_name(self):
+        return f'{self.first_name} {self.last_name}'
 
 
 class Club(models.Model):
@@ -143,3 +145,14 @@ class Members(models.Model):
     def denyApplicant(self):
         self.delete()
         
+    def officer_promote(self):
+        self.role=1
+        self.save()
+    def officer_demote(self):
+        self.role=3
+        self.save()
+    def member_promote(self):
+        self.role=2
+        self.save()
+    def member_kick(self):
+        self.delete()

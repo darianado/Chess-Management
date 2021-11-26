@@ -25,6 +25,7 @@ urlpatterns = [
     path('sign_up/', views.sign_up, name = 'sign_up'),
     path('log_in/', views.log_in, name = 'log_in'),
     path('home/', views.home, name = 'home'),
+
     path('clubs/', views.club_list, name = 'club_list'),
     path('club/<int:club_id>', views.show_club, name = 'show_club'),
     path('deny_applicant/<int:membership_id>', views.deny_applicant, name = 'deny_applicant'),
@@ -33,3 +34,10 @@ urlpatterns = [
     path('club/<int:club_id>/members/', views.members, name = 'show_members'),
 ]
 
+    path('roles/<int:club_id>', views.role, name = 'role'),
+    path('role/<int:user_id>', views.show_user, name='show_user'),
+    path('officer_promote/<int:member_id>', views.officer_promote, name = 'officer_promote'),
+    path('officer_demote/<int:member_id>', views.officer_demote, name = 'officer_demote'),
+    path('member_promote/<int:member_id>', views.member_promote, name = 'member_promote'),
+    path('member_kick/<int:member_id>', views.member_kick, name = 'member_kick'),
+]
