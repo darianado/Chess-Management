@@ -98,6 +98,9 @@ class User(AbstractUser):
         """Return a URL to the user's gravatar."""
         return self.gravatar(60)
 
+    def get_full_name(self):
+        return f'{self.first_name} {self.last_name}'
+
 
 class Club(models.Model):
 
@@ -137,3 +140,39 @@ class Members(models.Model):
                                     MinValueValidator(1),
                                     MaxValueValidator(4)
                                  ])
+
+class Events(models.Model):
+    date_created = models.DateTimeField(
+        auto_now=False,
+        auto_now_add=True
+    )
+    class Meta:
+        ordering = ["-date_created"]
+    club = models.ForeignKey(Club, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    class Action(models.IntegerChoices):
+        Accepted = 1
+        Applied = 2
+        Rejected = 3
+        Promoted = 4
+        Demoted = 5
+    action  = models.IntegerField(choices=Action.choices,
+                                default=Action.APPLICANT,
+                                validators=[
+                                    MinValueValidator(1),
+                                    MaxValueValidator(5)
+                                 ])
+    def getAction():
+        if(action == 1):
+            return "Accepted"
+        elif(action == 2):
+            return "Applied"
+        elif(action == 3):
+            return "Rejected"
+        elif(action == 4):
+            return "Promoted"
+        elif(action == 5):
+            return "Demoted"
+        elif(action == 6):
+            return "Pending"
