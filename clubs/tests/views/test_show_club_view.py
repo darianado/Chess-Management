@@ -25,4 +25,10 @@ class ShowUserTest(TestCase):
         response = self.client.get(url, follow=True)
         response_url = reverse('club_list')
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response, 'club_list.html')
+        self.assertTemplateUsed(response, 'user_list.html')
+        
+
+        # tests for apply button and leave button
+
+        #test for resend button
+

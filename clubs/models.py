@@ -99,8 +99,6 @@ class User(AbstractUser):
         """Return a URL to the user's gravatar."""
         return self.gravatar(60)
 
-    def __eq__(self, other_user):
-        return (self.email  == other_user.email)
 
 class Club(models.Model):
 
@@ -123,8 +121,6 @@ class Club(models.Model):
         blank=True
     )
 
-    def __eq__(self, other_club):
-        return (self.club_name  == other_club.club_name)
 
 
 class Members(models.Model):
@@ -151,3 +147,4 @@ class Members(models.Model):
         else:
             return member.role
 
+        

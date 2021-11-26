@@ -49,3 +49,37 @@ def show_club(request, club_id):
     else:
         return render(request,'show_club.html', 
                 {'club': club, 'member_in_club': member_in_club})
+
+def apply_to_club(request, club_id ):
+    club = Club.objects.get(id=club_id)
+    user = request.user
+    member_in_club = Members.get_member_role(user,club)
+    if request.method == 'GET':
+        print(" baby one more time")
+        Members.objects.create(
+                user = user,
+                club = club,
+                role = 4,
+        )
+
+    return redirect('show_club', club.id)
+
+def resend_application(request, club_id):
+    club = Club.objects.get(id=club_id)
+    user = request.user
+    member_in_club = Members.get_member_role(user,club)
+    if request.method == 'GET':
+        return render(request, 'resend_application.html', 
+                {'club': club, 'user':user})
+    return redirect('show_club', club.id)
+
+#should be tested after them being a member
+def leave_a_club(request, club_id ):
+    club = Club.objects.get(id=club_id)
+    user = request.user
+    member_in_club = Members.get_member_role(user,club)
+    if request.method == 'GET':
+        print(" baby one more time and i am out of here")
+        Members.objects.filter(club_id=club_id).get(user_id=user.id).delete()
+
+    return redirect('show_club', club.id)

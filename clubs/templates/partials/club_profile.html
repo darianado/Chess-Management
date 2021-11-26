@@ -14,11 +14,17 @@
       </p>
       <span class = "float-end">
         {%if member_in_club == None %}
-          <button class="btn btn-primary"> Apply </button>
-          {% elif member == 3 %}
-            <button class="btn btn-primary"> Leave </button>
-          {% elif member == 4 %}
-            <button class="btn btn-primary"> Resend </button>
+            <form action= "{% url 'apply_to_club' club.id %}">
+              <input type='submit' value= 'Apply'/>
+            </form>
+          {% elif member_in_club == 3 %}
+            <form action= "{% url 'leave_a_club' club.id %}">
+              <input type='submit' value= 'Leave'/>
+            </form>
+          {% elif member_in_club == 4 %}
+            <form action= "{% url 'resend_application' club.id %}">
+              <input type='submit' value= 'Resend'/>
+            </form>
         {% endif %}
       </span>
   </div>

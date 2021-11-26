@@ -13,6 +13,7 @@ class Command(BaseCommand):
         print('User seeding complete')
 
     def _create_club(self):
+        print("i was here more than once")
         description1 = self.faker.text(max_nb_chars=260)
         Club.objects.create(
                 club_name = 'Kerbal Chess Club',

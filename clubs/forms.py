@@ -45,3 +45,4 @@ class SignUpForm(forms.ModelForm):
 class LogInForm(forms.Form):
     email = forms.CharField(label="Email")
     password = forms.CharField(label="Password", widget=forms.PasswordInput())
+

@@ -25,5 +25,8 @@ urlpatterns = [
     path('home/', views.home, name = 'home'),
     path('clubs/', views.club_list, name = 'club_list'),
     path('club/<int:club_id>', views.show_club, name = 'show_club'),
+    path('apply/<int:club_id>', views.apply_to_club, name = 'apply_to_club'),
+    path('leave_a_club/<int:club_id>', views.leave_a_club, name = 'leave_a_club'),
+    path('resend_application/<int:club_id>', views.resend_application, name = 'resend_application'),
 ]
 
