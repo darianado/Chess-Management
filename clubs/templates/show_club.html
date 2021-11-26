@@ -6,11 +6,31 @@
         <li><strong></strong> {{ club.club_name}}</li>
         <li><strong> Location </strong> {{ club.location}}</li>
         <li><strong> Bio </strong> {{ club.description}}</li>
-        {% if applicants %}
+        <!-- {% if applicants %}
         <div>
           {% include 'partials/applicants_as_table.html' with applicants=applicants %} 
         </div>       
-        {% endif %}
-      </div>
+        {% endif %} -->
+        <!-- {% for applicant in applicants %}
+          {% include 'partials/applicant_as_table_row.html' with applicant=applicant %}
+        {% endfor %}  -->
+        <script>
+          function showMembers(){
+            const Http = new XMLHttpRequest();
+            const url="{% url 'show_members' club.id %}";
+            Http.open("GET", url);
+            Http.send();
+
+            Http.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                  document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>";
+                }
+            }
+            Http.send();
+          }
+        </script>
+        <button type = "button" class="btn btn-dark" onclick="showMembers()">Members</button>
+        <div id="membersList"></div>  
+    </div>
   </div>
 </div>

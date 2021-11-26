@@ -55,7 +55,7 @@ def show_applicants(request, club_id):
             return redirect('club_list')
     else:
         applicants = Members.objects.filter(club=thisClub, role=4)
-        return render(request,'show_club.html', 
+        return render(request,"partials/applicants_as_table.html", 
                  {'club': thisClub, 'applicants':applicants})
 
 def deny_applicant(request, membership_id):
