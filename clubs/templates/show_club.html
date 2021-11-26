@@ -26,6 +26,18 @@
     }
     Http.send();
   }
+
+  function showRoles(){
+    const Http = new XMLHttpRequest();
+    const url="{% url 'show_roles' club.id %}";
+    Http.open("GET", url);
+    Http.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>";
+        }
+    }
+    Http.send();
+  }
   
 </script>
 
@@ -40,10 +52,11 @@
         <div class="d-flex flex-column">
           <button type = "button" class="btn btn-dark" onclick="showMembers()">Members</button>
           <button type = "button" class="btn btn-dark" onclick="showApplicants()">Applicants</button>
+          <button type = "button" class="btn btn-dark" onclick="showRoles()">Roles</button>
+
         </div>
       </div>
       <div class="col-xs-12 col-lg-6 ">
-        <!-- <button type = "button" class="btn btn-dark" onclick="showRoles()">Roles</button> -->
         <div id="membersList"></div>  
       </div>
   </div>

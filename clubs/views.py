@@ -82,7 +82,7 @@ def members(request, club_id):
         return render(request, "partials/members_list_table.html", {"members": members})
         
 
-def role(request,club_id):
+def show_roles(request,club_id):
     try:
         club = Club.objects.get(id=club_id)
     except ObjectDoesNotExist:
@@ -91,7 +91,7 @@ def role(request,club_id):
         users = Members.objects.all().filter(club=club)
         members = users.filter(role = 3)
         officers = users.filter(role = 2)
-        return render(request, "role.html", {"members": members,"officers": officers})
+        return render(request, "partials/roles_list_table.html", {"members": members,"officers": officers})
         
 def show_user(request, user_id):
     try:
@@ -104,19 +104,19 @@ def show_user(request, user_id):
 def officer_promote(request,member_id):
     c_id=Members.objects.get(id=member_id).club.id
     Members.objects.get(id=member_id).officer_promote()
-    return redirect('role', club_id = c_id)
+    return redirect('show_club', club_id = c_id)
 
 def officer_demote(request,member_id):
     c_id=Members.objects.get(id=member_id).club.id
     Members.objects.get(id=member_id).officer_demote()
-    return redirect('role', club_id = c_id)
+    return redirect('show_club', club_id = c_id)
 
 def member_promote(request,member_id):
     c_id=Members.objects.get(id=member_id).club.id
     Members.objects.get(id=member_id).member_promote()
-    return redirect('role', club_id = c_id)
+    return redirect('show_club', club_id = c_id)
 
 def member_kick(request,member_id):
     c_id=Members.objects.get(id=member_id).club.id
     Members.objects.get(id=member_id).member_kick()
-    return redirect('role', club_id = c_id)
+    return redirect('show_club', club_id = c_id)

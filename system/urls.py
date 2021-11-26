@@ -32,9 +32,8 @@ urlpatterns = [
     path('accept_applicant/<int:membership_id>', views.accept_applicant,name = 'accept_applicant'),
     path('club/<int:club_id>/applicants', views.show_applicants, name = 'show_applicants'),
     path('club/<int:club_id>/members/', views.members, name = 'show_members'),
-]
 
-    path('roles/<int:club_id>', views.role, name = 'role'),
+    path('roles/<int:club_id>', views.show_roles, name = 'show_roles'),
     path('role/<int:user_id>', views.show_user, name='show_user'),
     path('officer_promote/<int:member_id>', views.officer_promote, name = 'officer_promote'),
     path('officer_demote/<int:member_id>', views.officer_demote, name = 'officer_demote'),
