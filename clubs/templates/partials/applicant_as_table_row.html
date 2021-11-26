@@ -1,7 +1,12 @@
+
+{% extends 'partials/member_as_table_row.html' %}
 {% load humanize %}
 
 
-<tr>
+
+{% block columns %}
+
+<!-- <tr> -->
     <td>
         <p >
             <span >
@@ -43,4 +48,5 @@
         </form>
     </td>
     
-</tr>
+<!-- </tr> -->
+{% endblock %}

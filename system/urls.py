@@ -29,7 +29,7 @@ urlpatterns = [
     path('club/<int:club_id>', views.show_club, name = 'show_club'),
     path('deny_applicant/<int:membership_id>', views.deny_applicant, name = 'deny_applicant'),
     path('accept_applicant/<int:membership_id>', views.accept_applicant,name = 'accept_applicant'),
-    path('club/<int:club_id>/applicants', views.show_applicants, name = 'show_club'),
+    path('club/<int:club_id>/applicants', views.show_applicants, name = 'show_applicants'),
     path('club/<int:club_id>/members/', views.members, name = 'show_members'),
 ]
 

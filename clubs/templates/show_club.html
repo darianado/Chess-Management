@@ -19,7 +19,6 @@
             const Http = new XMLHttpRequest();
             const url="{% url 'show_members' club.id %}";
             Http.open("GET", url);
-            Http.send();
 
             Http.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
@@ -28,8 +27,22 @@
             }
             Http.send();
           }
+          function showApplicants(){
+            const Http = new XMLHttpRequest();
+            const url="{% url 'show_applicants' club.id %}";
+            Http.open("GET", url);
+            Http.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                  document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>";
+                }
+            }
+            Http.send();
+          }
+          
         </script>
         <button type = "button" class="btn btn-dark" onclick="showMembers()">Members</button>
+        <button type = "button" class="btn btn-dark" onclick="showApplicants()">Applicants</button>
+        <!-- <button type = "button" class="btn btn-dark" onclick="showRoles()">Roles</button> -->
         <div id="membersList"></div>  
     </div>
   </div>

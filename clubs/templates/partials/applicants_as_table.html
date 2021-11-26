@@ -1,9 +1,15 @@
 
 
-
-
-<table class="table">
-    {% for applicant in applicants %}
-        {% include 'partials/applicant_as_table_row.html' with applicant=applicant %}
-    {% endfor %}
+<table>
+    <thead>
+        <tr>
+            <th>Profile Picture</th>
+            <th>Full Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for applicant in applicants %}
+            {% include 'partials/applicant_as_table_row.html' with applicant=applicant %}
+        {% endfor %}
+    </tbody>
 </table>
