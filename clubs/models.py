@@ -174,15 +174,15 @@ class Events(models.Model):
                                     MaxValueValidator(6)
                                  ])
     def getAction():
-        if(action == 1):
+        if action == 1:
             return "accepted by"
-        elif(action == 2):
+        elif action == 2:
             return "appling for"
-        elif(action == 3):
+        elif action == 3:
             return "rejected by"
-        elif(action == 4):
+        elif action == 4:
             return "promoted by"
-        elif(action == 5):
+        elif action == 5:
             return "demoted by"
-        elif(action == 6):
+        elif action == 6:
             return "kicked by"
