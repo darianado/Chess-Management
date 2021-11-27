@@ -22,7 +22,7 @@ def log_in(request):
     return render(request, 'log_in.html', {'form': form})
 
 def home(request):
-    return render(request, 'home.html')   
+    return render(request, 'home.html')
 
 def sign_up(request):
     if request.method == 'POST':
@@ -40,10 +40,10 @@ def club_list(request):
     return render(request,'club_list.html', {'clubs': clubs})
 
 def show_club(request, club_id):
-    try: 
+    try:
         club = Club.objects.get(id=club_id)
     except ObjectDoesNotExist:
             return redirect('club_list')
     else:
-        return render(request,'show_club.html', 
+        return render(request,'show_club.html',
                 {'club': club })

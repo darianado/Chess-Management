@@ -45,3 +45,8 @@ class SignUpForm(forms.ModelForm):
 class LogInForm(forms.Form):
     email = forms.CharField(label="Email")
     password = forms.CharField(label="Password", widget=forms.PasswordInput())
+
+class CreateClubForm(forms.Form):
+    model = Club
+    fields = ['club_name', 'location', 'description']
+    widgets = {'description': forms.Textarea()}
