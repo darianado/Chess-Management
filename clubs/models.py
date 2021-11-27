@@ -150,3 +150,39 @@ class Members(models.Model):
         self.save()
     def member_kick(self):
         self.delete()
+
+class Events(models.Model):
+    date_created = models.DateTimeField(
+        auto_now=False,
+        auto_now_add=True
+    )
+    class Meta:
+        ordering = ["-date_created"]
+    club = models.ForeignKey(Club, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    class Action(models.IntegerChoices):
+        Accepted = 1
+        Appling = 2
+        Rejected = 3
+        Promoted = 4
+        Demoted = 5
+        Kicked = 6
+    action  = models.IntegerField(choices=Action.choices,
+                                validators=[
+                                    MinValueValidator(1),
+                                    MaxValueValidator(6)
+                                 ])
+    def getAction():
+        if(action == 1):
+            return "accepted by"
+        elif(action == 2):
+            return "appling for"
+        elif(action == 3):
+            return "rejected by"
+        elif(action == 4):
+            return "promoted by"
+        elif(action == 5):
+            return "demoted by"
+        elif(action == 6):
+            return "kicked by"
