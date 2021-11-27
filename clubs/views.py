@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
-from .forms import LogInForm, SignUpForm
+from .forms import LogInForm, SignUpForm, CreateClubForm
 from django.contrib.auth import authenticate, login, logout
-from .models import Club
+from .models import Club, Members
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponseForbidden
 
 # Create your views here.
 def welcome(request):
@@ -47,3 +48,25 @@ def show_club(request, club_id):
     else:
         return render(request,'show_club.html',
                 {'club': club })
+
+def create_club(request):
+    if request.method =='GET':
+        form = CreateClubForm()
+        return render(request, 'create_club.html', {'form': form})
+    elif request.method == 'POST':
+        if request.user.is_authenticated:
+            current_user=request.user
+            form = CreateClubForm(request.POST)
+            if form.is_valid():
+                club_name = form.cleaned_data.get('club_name')
+                location = form.cleaned_data.get('location')
+                description = form.cleaned_data.get('description')
+                club = Club.objects.create(club_name=club_name, location=location, description=description)
+                member = Members.objects.create(club=club, user=current_user, role=1)
+                return redirect('home')
+            else:
+                return render(request, 'create_club.html', {'form': form})
+        else:
+            return redirect('log_in')
+    else:
+        return HttpResponseForbidden()
