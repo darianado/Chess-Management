@@ -21,6 +21,8 @@
                   <a class="nav-link pb-0" id="nav-clubs-tab" data-bs-toggle="tab" data-bs-target="#nav-clubs" type="button" role="tab" aria-controls="nav-clubs" aria-selected="false">
                       <h3 class="title">Clubs</h3>
                   </a>
+                  <a class="nav-link pb-0" id="nav-one-club-tab" data-bs-toggle="tab" data-bs-target="#nav-one-club" type="button" role="tab" aria-controls="nav-one-club" aria-selected="false">
+                  </a>
                 </div>
             </nav>
             <!-- <h2> <br></h2>
@@ -61,6 +63,11 @@
                             }
                             Http.send();
                         </script>
+                        
+                    </div>
+                    <div class="tab-pane fade show active" id="nav-one-club" role="tabpanel" aria-labelledby="nav-one-club-tab">
+                        {% block tab_content %}
+                        {% endblock %}
                     </div>
                 </div>
                 <!-- 

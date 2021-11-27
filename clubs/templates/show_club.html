@@ -1,10 +1,10 @@
 
-{% extends 'base_content.html' %}
+{% extends 'home.html' %}
 
 
 
-{% block body %}
-{% include 'partials/main-nav-bar.html' %}
+{% block tab_content %}
+<!-- {% include 'partials/main-nav-bar.html' %} -->
 <script>
   function showMembers(){
     const Http = new XMLHttpRequest();
@@ -44,6 +44,20 @@
   
 </script>
 
+
+<script>
+  document.getElementById('nav-dashboard-tab').ariaSelected=false;
+  document.getElementById('nav-dashboard-tab').classList.remove('active');
+
+  document.getElementById('nav-one-club-tab').ariaSelected=true;
+  document.getElementById('nav-one-club-tab').classList.add('active');
+
+  document.getElementById('nav-dashboard').classList.remove('active');
+  
+  
+</script>
+
+<div id="clubcard" hidden>
 <div class="container">
   <div class="row content">
         <li><strong></strong> {{ club.club_name}}</li>
@@ -64,5 +78,13 @@
       </div>
   </div>
 </div>
+<script type="text/javascript">
+  k= document.getElementById('clubcard').innerHTML;
+  document.getElementById('nav-one-club').innerHTML =  k;   
+</script>
+</div>
+
+
+
 
 {% endblock %}
