@@ -2,6 +2,10 @@
 
 {% block body %}
 {% include 'partials/main-nav-bar.html' %}
+{% comment %} {% extends 'base_content.html' %} {% endcomment %}
+{% comment %}  {% endcomment %}
+{% comment %} {% block body %} {% endcomment %}
+{% comment %} {% include 'partials/main-nav-bar.html' %} {% endcomment %}
 
 <main class="page">
 
@@ -20,9 +24,9 @@
                     <h3 class="title ">Clubs</h3>
                 </a>
             </nav>
-            
+
         </div>
-    </div> 
+    </div>
 
     <div class = "row justify-content-center " >
         <div class="col-lg-8 col-md-10 col-sm-12"  >
@@ -47,19 +51,19 @@
                         </select>
                         <span class="badge rounded-pill bg-success">Member</span>
                         <span class="badge rounded-pill bg-danger">Denied</span>
-                        <span class="badge rounded-pill bg-warning text-dark">Pending</span>  
+                        <span class="badge rounded-pill bg-warning text-dark">Pending</span>
                     </div>
 
-                    
+
 
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                         <h3 class="me-auto">You have not applied to any club</h3>
                         <button class="btn btn-dark me-md-2" type="button">Apply now</button>
                     </div>
 
-                   
-                    
-                
+
+
+
             </div>
             </div>
         </div>
@@ -69,9 +73,92 @@
         <div class="col-lg-8 col-md-10 col-sm-12 "  >
             <h2> <br><br></h2>
         </div>
-    </div> 
+    </div>
 </div>
 
 
 </main>
 {% endblock %}
+{% comment %}  {% endcomment %}
+
+
+
+
+
+{% comment %} <main class="page" > {% endcomment %}
+{% comment %}  {% endcomment %}
+{% comment %} <div class="container-fluid nav-row" > {% endcomment %}
+{% comment %}  {% endcomment %}
+    {% comment %} <div class = "row justify-content-center "  > {% endcomment %}
+        {% comment %} <div class="col-lg-8 col-md-10 col-sm-12 "  > {% endcomment %}
+            {% comment %} <nav class="nav align-items-end"> {% endcomment %}
+                {% comment %} <div class="nav" id="nav-tab" role="tablist"> {% endcomment %}
+                  {% comment %} <a class="nav-link active pb-0" id="nav-dashboard-tab" data-bs-toggle="tab" data-bs-target="#nav-dashboard" type="button" role="tab" aria-controls="nav-dashboard" aria-selected="true"> {% endcomment %}
+                      {% comment %} <h3 class="title">DashBoard</h3> {% endcomment %}
+                  {% comment %} </a> {% endcomment %}
+                  {% comment %} <a class="nav-link pb-0" id="nav-clubs-tab" data-bs-toggle="tab" data-bs-target="#nav-clubs" type="button" role="tab" aria-controls="nav-clubs" aria-selected="false"> {% endcomment %}
+                      {% comment %} <h3 class="title">Clubs</h3> {% endcomment %}
+                  {% comment %} </a> {% endcomment %}
+                {% comment %} </div> {% endcomment %}
+            {% comment %} </nav> {% endcomment %}
+        {% comment %} </div> {% endcomment %}
+    {% comment %} </div>  {% endcomment %}
+{% comment %}  {% endcomment %}
+{% comment %}  {% endcomment %}
+{% comment %}  {% endcomment %}
+{% comment %}  {% endcomment %}
+    {% comment %} <div class = "row justify-content-center " > {% endcomment %}
+        {% comment %} <div class="col-lg-8 col-md-10 col-sm-12"  > {% endcomment %}
+            {% comment %} <div class="card"  > {% endcomment %}
+{% comment %}  {% endcomment %}
+                {% comment %} <div class="tab-content" id="nav-tabContent"> {% endcomment %}
+                    {% comment %} <div class="tab-pane fade show active" id="nav-dashboard" role="tabpanel" aria-labelledby="nav-dashboard-tab"> {% endcomment %}
+{% comment %}                          {% endcomment %}
+                        {% comment %} {% include 'partials/dashboard.html' %} {% endcomment %}
+                    {% comment %} </div> {% endcomment %}
+{% comment %}  {% endcomment %}
+                    {% comment %} <div class="tab-pane fade" id="nav-clubs" role="tabpanel" aria-labelledby="nav-clubs-tab" > {% endcomment %}
+                        {% comment %} <script type="text/javascript"> {% endcomment %}
+                            {% comment %} const Http = new XMLHttpRequest(); {% endcomment %}
+                            {% comment %} const url="{% url 'club_list' %}"; {% endcomment %}
+                            {% comment %} Http.open("GET", url); {% endcomment %}
+                            {% comment %} Http.onreadystatechange = function () { {% endcomment %}
+                                {% comment %} if (this.readyState == 4 && this.status == 200) { {% endcomment %}
+                                {% comment %} document.getElementById('nav-clubs').innerHTML ="<div>"+Http.responseText+"</div>"; {% endcomment %}
+                                {% comment %} } {% endcomment %}
+                            {% comment %} } {% endcomment %}
+                            {% comment %} Http.send(); {% endcomment %}
+                        {% comment %} </script> {% endcomment %}
+                    {% comment %} </div> {% endcomment %}
+{% comment %}  {% endcomment %}
+                    {% comment %} <div class="tab-pane fade" id="nav-clubs" role="tabpanel" aria-labelledby="nav-clubs-tab" > {% endcomment %}
+                        {% comment %} <script type="text/javascript"> {% endcomment %}
+                            {% comment %} const Http = new XMLHttpRequest(); {% endcomment %}
+                            {% comment %} const url="{% url 'show_club' club.id %}"; {% endcomment %}
+                            {% comment %} Http.open("GET", url); {% endcomment %}
+                            {% comment %} Http.onreadystatechange = function () { {% endcomment %}
+                                {% comment %} if (this.readyState == 4 && this.status == 200) { {% endcomment %}
+                                {% comment %} document.getElementById('nav-clubs').innerHTML ="<div>"+Http.responseText+"</div>"; {% endcomment %}
+                                {% comment %} } {% endcomment %}
+                            {% comment %} } {% endcomment %}
+                            {% comment %} Http.send(); {% endcomment %}
+                        {% comment %} </script> {% endcomment %}
+                    {% comment %} </div> {% endcomment %}
+                {% comment %} </div> {% endcomment %}
+                {% comment %} <!--  {% endcomment %}
+               {% comment %} {% block card %} {% endcomment %}
+               {% comment %} {% endblock %} --> {% endcomment %}
+{% comment %}  {% endcomment %}
+            {% comment %} </div> {% endcomment %}
+{% comment %}  {% endcomment %}
+        {% comment %} </div> {% endcomment %}
+    {% comment %} </div> {% endcomment %}
+{% comment %}  {% endcomment %}
+{% comment %}  {% endcomment %}
+{% comment %} </div> {% endcomment %}
+{% comment %}  {% endcomment %}
+{% comment %} </div> {% endcomment %}
+{% comment %}  {% endcomment %}
+{% comment %}  {% endcomment %}
+{% comment %} </main> {% endcomment %}
+{% comment %} {% endblock %} {% endcomment %}
