@@ -157,22 +157,22 @@ class Events(models.Model):
         Rejected = 3
         Promoted = 4
         Demoted = 5
-    action  = models.IntegerField(choices=Action.choices,
-                                default=Action.APPLICANT,
+        Kicked = 6
+    action = models.IntegerField(choices=Action.choices,
                                 validators=[
                                     MinValueValidator(1),
-                                    MaxValueValidator(5)
-                                 ])
+                                    MaxValueValidator(6)
+                                ])
     def getAction():
         if(action == 1):
-            return "Accepted"
+            return "Accepted by"
         elif(action == 2):
-            return "Applied"
+            return "Applied by"
         elif(action == 3):
-            return "Rejected"
+            return "Rejected by"
         elif(action == 4):
-            return "Promoted"
+            return "Promoted by"
         elif(action == 5):
-            return "Demoted"
+            return "Demoted by"
         elif(action == 6):
-            return "Pending"
+            return "Kicked by"

@@ -21,63 +21,50 @@ class EventsModelTest(TestCase):
             description="Club for Kings students"
         )
 
-        self.action = Events.objects.create(
+
+        self.event = Events.objects.create(
             club=self.club,
-            user=self.user
+            user=self.user,
+            action=2
         )
 
-    def test_valid_action(self):
-        self._assert_action_is_valid()
+    def test_valid_event(self):
+        self._assert_event_is_valid()
 
     def test_club_cannot_be_empty(self):
-        self.action.club = None
-        self._assert_member_is_invalid()
+        self.event.club = None
+        self._assert_event_is_invalid()
 
     def test_user_cannot_be_empty(self):
-        self.action.user = None
-        self._assert_member_is_invalid()
+        self.event.user = None
+        self._assert_event_is_invalid()
 
+    def test_action_cannot_be_empty(self):
+        self.event.action = None
+        self._assert_event_is_invalid()
 
-    def test_valid_member(self):
-        self._assert_member_is_valid()
+    def test_action_can_be_1(self):
+        self.event.action = 1
+        self._assert_event_is_valid()
 
-    def test_club_cannot_be_empty(self):
-        self.member.club = None
-        self._assert_member_is_invalid()
+    def test_action_cannot_be_0(self):
+        self.event.action = 0
+        self._assert_event_is_invalid()
 
-    def test_user_cannot_be_empty(self):
-        self.member.user = None
-        self._assert_member_is_invalid()
+    def test_action_cannot_be_7(self):
+        self.event.action = 0
+        self._assert_event_is_invalid()
 
-    def test_role_cannot_be_empty(self):
-        self.member.role = None
-        self._assert_member_is_invalid()
+    def test_action_cannot_be_blank(self):
+        self.event.action = ""
+        self._assert_event_is_invalid()
 
-    def test_role_can_be_1(self):
-        self.member.role = 1
-        self._assert_member_is_valid()
-
-    def test_role_cannot_be_0(self):
-        self.member.role = 0
-        self._assert_member_is_invalid()
-
-    def test_role_cannot_be_5(self):
-        self.member.role = 0
-        self._assert_member_is_invalid()
-
-    def test_user_is_only_a_member_of_a_club_exactly_once(self):
-        with self.assertRaises(IntegrityError):
-            Members.objects.create(
-                club=self.club,
-                user=self.user
-            )
-
-    def _assert_member_is_valid(self):
+    def _assert_event_is_valid(self):
         try:
-            self.member.full_clean()
+            self.event.full_clean()
         except (ValidationError):
-            self.fail('Test member should be valid')
+            self.fail('Test event should be valid')
 
-    def _assert_member_is_invalid(self):
+    def _assert_event_is_invalid(self):
         with self.assertRaises(ValidationError):
-            self.member.full_clean()
+            self.event.full_clean()
