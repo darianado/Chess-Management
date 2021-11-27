@@ -6,6 +6,7 @@ from django.core.validators import RegexValidator
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 from libgravatar import Gravatar
+from clubs.helper import Role
 
 # Using a custom user manager because the default requires the username parameter.
 # This custom user manager is almost identical with the exception of the username requirement being removed.
@@ -124,16 +125,15 @@ class Club(models.Model):
 class Members(models.Model):
     class Meta:
         constraints=[models.UniqueConstraint( fields=["club",'user'], name='member of a club only once')]
+
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    class Role(models.IntegerChoices):
-        OWNER = 1
-        OFFICER = 2
-        MEMBER = 3
-        APPLICANT = 4
-    role = models.IntegerField(choices=Role.choices,
-                                default=Role.APPLICANT,
-                                validators=[
-                                    MinValueValidator(1),
-                                    MaxValueValidator(4)
-                                 ])
+
+    role = models.IntegerField(
+        choices=Role.choices,
+        default=Role.APPLICANT,
+        validators=[
+            MinValueValidator(1),
+            MaxValueValidator(4)
+        ]
+    )
