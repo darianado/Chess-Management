@@ -150,6 +150,9 @@ class Members(models.Model):
         self.save()
     def member_kick(self):
         self.delete()
+    def owner_demote(self):
+        self.role=2
+        self.save()
 
 class Events(models.Model):
     date_created = models.DateTimeField(
