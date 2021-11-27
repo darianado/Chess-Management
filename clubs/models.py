@@ -4,6 +4,7 @@ from django.contrib.auth.hashers import make_password
 from django.apps import apps
 from django.core.validators import RegexValidator
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.db.models import Q
 
 from libgravatar import Gravatar
 from clubs.helper import Role
@@ -124,7 +125,10 @@ class Club(models.Model):
 
 class Members(models.Model):
     class Meta:
-        constraints=[models.UniqueConstraint( fields=["club",'user'], name='member of a club only once')]
+        constraints=[
+            models.UniqueConstraint(fields=["club", "user"], name="Member of a club only once"),
+            models.UniqueConstraint(fields=["club"], condition=Q(role=Role.OWNER), name="Every club has at most 1 owner")
+        ]
 
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

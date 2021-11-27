@@ -3,12 +3,24 @@ from clubs.models import Club, Members, User
 from django.core.exceptions import ValidationError
 from django.db.utils import IntegrityError
 
+from clubs.helper import Role
+
 class MembersModelTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
             first_name='John',
             last_name='Doe',
             email='johndoe@example.org',
+            password='Password123',
+            bio='The quick brown fox jumps over the lazy dog.',
+            chess_experience_level=1,
+            personal_statement='nu mi place sa joc sah'
+        )
+
+        self.user2 = User.objects.create_user(
+            first_name='Jane',
+            last_name='Doe',
+            email='janedoe@example.org',
             password='Password123',
             bio='The quick brown fox jumps over the lazy dog.',
             chess_experience_level=1,
@@ -23,7 +35,8 @@ class MembersModelTest(TestCase):
 
         self.member = Members.objects.create(
             club=self.club,
-            user=self.user
+            user=self.user,
+            role=Role.OWNER
         )
     
     def test_valid_member(self):
@@ -58,6 +71,14 @@ class MembersModelTest(TestCase):
             Members.objects.create(
                 club=self.club,
                 user=self.user
+            )
+
+    def test_a_club_cannot_have_more_than_1_owner(self):
+        with self.assertRaises(IntegrityError):
+            Members.objects.create(
+                club=self.club,
+                user=self.user2,
+                role=Role.OWNER
             )
 
     def _assert_member_is_valid(self):
