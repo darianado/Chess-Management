@@ -9,13 +9,18 @@ from clubs.tests.helper import LogInTester
 
 class SignUpViewTestCase(TestCase, LogInTester):
     """"Tests of the sign up view."""
-
-    fixtures = ["clubs/tests/fixtures/default_user_john.json"]
-
     def setUp(self):
-        self.url = reverse("sign_up")
-        self.user = User.objects.get(email="johndoe@example.org")
-
+        self.url = reverse('sign_up')
+        self.form_input = {
+            'first_name':'Xiangyi',
+            'last_name' : 'Liu',
+            'email' : 'xiangyi@gmail.com',
+            'bio' : 'My bio is here',
+            'chess_experience_level': '2',
+            'personal_statement': 'Hi! My name is Xiangyi Liu, you can just call me Jerry',
+            'new_passwords':'Password123',
+            'password_confirmation': 'Password123',
+        }
 
     def test_sign_up_url(self):
         self.assertEqual(self.url, '/sign_up/' )
