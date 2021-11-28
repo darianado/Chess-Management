@@ -1,7 +1,7 @@
 [
     {
         "model": "clubs.members",
-        "pk": 1,
+        "pk": 2,
         "fields": {
             "club": 1,
             "user": 1,
