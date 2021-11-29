@@ -54,7 +54,7 @@ def show_club(request, club_id):
 def members(request, club_id):
     try: 
         club = Club.objects.get(id=club_id)
-    except ObjectDoesNotExist:m
+    except ObjectDoesNotExist:
         return redirect('club_list')
     else:
         members = [member.user for member in Members.objects.filter(club=club)]
