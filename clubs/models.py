@@ -142,6 +142,21 @@ class Members(models.Model):
         ]
     )
     
+    def officer_promote(self):
+        self.role=1
+        self.save()
+    def officer_demote(self):
+        self.role=3
+        self.save()
+    def member_promote(self):
+        self.role=2
+        self.save()
+    def member_kick(self):
+        self.delete()
+    def owner_demote(self):
+        self.role=2
+        self.save()
+    
 class Events(models.Model):
     date_created = models.DateTimeField(
         auto_now=False,

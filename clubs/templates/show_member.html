@@ -1,0 +1,16 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <img src="{{ user.gravatar }}">
+      <h1>{{ user.get_full_name }}</h1>
+      <h3>Email:</h3>
+      <p>{{ user.email }}</p>
+      <h3>Bio:</h3>
+      <p>{{ user.bio }}</p>
+      <h3>Chess experience level:</h3>
+      <p>{{ user.chess_experience_level }}</p>
+      <h3>personal statement:</h3>
+      <p>{{ user.personal_statement }}</p>
+    </div>
+  </div>
+</div>

@@ -31,4 +31,9 @@ urlpatterns = [
     path('profile/', views.profile, name="profile"),
     path('password/', views.password, name="password"),
     path('create_club/', views.create_club, name = 'create_club'),
+    path('roles/<int:club_id>', views.role, name = 'role'),
+    path('officer_promote/<int:member_id>', views.officer_promote, name = 'officer_promote'),
+    path('officer_demote/<int:member_id>', views.officer_demote, name = 'officer_demote'),
+    path('member_promote/<int:member_id>', views.member_promote, name = 'member_promote'),
+    path('member_kick/<int:member_id>', views.member_kick, name = 'member_kick'),
 ]

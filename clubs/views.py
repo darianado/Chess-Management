@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from clubs.forms import LogInForm, SignUpForm, EditProfileForm, changePasswordForm, CreateClubForm
 from django.contrib.auth import authenticate, login, logout
-from clubs.models import Club, User, Members
+from clubs.models import Club, User, Members, Events
 from django.contrib import messages
 from django.db.models import Q
 from django.contrib.auth.hashers import check_password
@@ -52,14 +52,16 @@ def show_club(request, club_id):
         return render(request,'show_club.html',
                 {'club': club })
 
-def events_list(request, club_id):
+def role(request,club_id):
     try:
         club = Club.objects.get(id=club_id)
     except ObjectDoesNotExist:
-            return redirect('home')
+        return redirect('home')
     else:
         users = Members.objects.all().filter(club=club)
-        return render(request, "events-table.html", {"users": users})
+        members = users.filter(role = 3)
+        officers = users.filter(role = 2)
+        return render(request, "role.html", {"members": members,"officers": officers})
 
 def members(request, club_id):
     try: 
@@ -156,3 +158,51 @@ def create_club(request):
             return redirect('log_in')
     else:
         return HttpResponseForbidden()
+      
+def officer_promote(request,member_id):
+    c_id=Members.objects.get(id=member_id).club.id
+    Members.objects.get(id=member_id).officer_promote()
+    action = Events.objects.create(club=Members.objects.get(id=member_id).club, user=Members.objects.get(id=member_id).user, action = 4)
+    return redirect('role', club_id = c_id)
+
+def officer_demote(request,member_id):
+    c_id=Members.objects.get(id=member_id).club.id
+    Members.objects.get(id=member_id).officer_demote()
+    action = Events.objects.create(club=Members.objects.get(id=member_id).club, user=Members.objects.get(id=member_id).user, action = 5)
+    return redirect('role', club_id = c_id)
+
+def member_promote(request,member_id):
+    c_id=Members.objects.get(id=member_id).club.id
+    Members.objects.get(id=member_id).member_promote()
+    action = Events.objects.create(club=Members.objects.get(id=member_id).club, user=Members.objects.get(id=member_id).user, action = 4)
+    return redirect('role', club_id = c_id)
+
+def member_kick(request,member_id):
+    c_id=Members.objects.get(id=member_id).club.id
+    Members.objects.get(id=member_id).member_kick()
+    action = Events.objects.create(club=Members.objects.get(id=member_id).club, user=Members.objects.get(id=member_id).user, action = 6)
+    return redirect('role', club_id = c_id)
+
+def deny_applicant(request, membership_id):
+    c_id=Members.objects.get(id=membership_id).club.id
+    Members.objects.get(id=membership_id).denyApplicant()
+    action = Events.objects.create(club=Members.objects.get(id=member_id).club, user=Members.objects.get(id=member_id).user, action = 3)
+    return redirect('show_club', club_id = c_id)
+
+def accept_applicant(request, membership_id):
+    c_id=Members.objects.get(id=membership_id).club.id
+    Members.objects.get(id=membership_id).acceptApplicant()
+    action = Events.objects.create(club=Members.objects.get(id=member_id).club, user=Members.objects.get(id=member_id).user, action = 1)
+    return redirect('show_club', club_id= c_id)
+
+def events_list(request):
+    if request.user.is_authenticated:
+        current_user = request.user
+        try:
+            events = Events.objects.get(user=current_user)
+        except ObjectDoesNotExist:
+            return redirect('home')
+        else:
+            return render(request, 'events_list.html', {'events': events})
+    else:
+        return redirect('log_in')
