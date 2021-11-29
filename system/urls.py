@@ -16,8 +16,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from clubs import views
-from clubs import models
-
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,22 +23,28 @@ urlpatterns = [
     path('sign_up/', views.sign_up, name = 'sign_up'),
     path('log_in/', views.log_in, name = 'log_in'),
     path('home/', views.home, name = 'home'),
-
+  
     path('clubs/', views.club_list, name = 'club_list'),
     path('club/<int:club_id>', views.show_club, name = 'show_club'),
-    path('deny_applicant/<int:membership_id>', views.deny_applicant, name = 'deny_applicant'),
-    path('accept_applicant/<int:membership_id>', views.accept_applicant,name = 'accept_applicant'),
-    path('club/<int:club_id>/applicants', views.show_applicants, name = 'show_applicants'),
     path('club/<int:club_id>/members/', views.members, name = 'show_members'),
-
+    path('user/<int:user_id>', views.show_user, name="show_user"),
+    path('user/', views.show_user, name="show_user"),
+    path('profile/', views.profile, name="profile"),
+    path('password/', views.password, name="password"),
+    path('create_club/', views.create_club, name = 'create_club'),
+  
     path('roles/<int:club_id>', views.show_roles, name = 'show_roles'),
-    path('role/<int:user_id>', views.show_user, name='show_user'),
     path('officer_promote/<int:member_id>', views.officer_promote, name = 'officer_promote'),
     path('officer_demote/<int:member_id>', views.officer_demote, name = 'officer_demote'),
     path('member_promote/<int:member_id>', views.member_promote, name = 'member_promote'),
     path('member_kick/<int:member_id>', views.member_kick, name = 'member_kick'),
-    
+  
     path('apply/<int:club_id>', views.apply_to_club, name = 'apply_to_club'),
     path('leave_a_club/<int:club_id>', views.leave_a_club, name = 'leave_a_club'),
     path('resend_application/<int:club_id>', views.resend_application, name = 'resend_application'),
+  
+    path('deny_applicant/<int:membership_id>', views.deny_applicant, name = 'deny_applicant'),
+    path('accept_applicant/<int:membership_id>', views.accept_applicant,name = 'accept_applicant'),
+    path('club/<int:club_id>/applicants', views.show_applicants, name = 'show_applicants'),
+    
 ]
