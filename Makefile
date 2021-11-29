@@ -6,8 +6,6 @@ freeze:
 env:
 	virtualenv venv
 		 
-activate:
-		source venv/bim/activate.fish
 
 deactivate:
 		deactivate
