@@ -1,8 +1,12 @@
 from django.shortcuts import render, redirect
-from .forms import LogInForm, SignUpForm
+from clubs.forms import LogInForm, SignUpForm, EditProfileForm, changePasswordForm, CreateClubForm
 from django.contrib.auth import authenticate, login, logout
-from .models import Club, Members, User, Events
+from clubs.models import Club, User, Members, Events
+from django.contrib import messages
+from django.db.models import Q
+from django.contrib.auth.hashers import check_password
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponseForbidden
 
 # Create your views here.
 def welcome(request):
@@ -22,7 +26,7 @@ def log_in(request):
     return render(request, 'log_in.html', {'form': form})
 
 def home(request):
-    return render(request, 'home.html')
+    return render(request, 'home.html')   
 
 def sign_up(request):
     if request.method == 'POST':
@@ -52,21 +56,109 @@ def role(request,club_id):
     try:
         club = Club.objects.get(id=club_id)
     except ObjectDoesNotExist:
-            return redirect('home')
+        return redirect('home')
     else:
         users = Members.objects.all().filter(club=club)
         members = users.filter(role = 3)
         officers = users.filter(role = 2)
         return render(request, "role.html", {"members": members,"officers": officers})
 
-def show_user(request, user_id):
+def members(request, club_id):
+    try: 
+        club = Club.objects.get(id=club_id)
+    except ObjectDoesNotExist:
+        return redirect('club_list')
+    else:
+        members = [member.user for member in Members.objects.filter(club=club)]
+        return render(request, "partials/members_list_table.html", {"members": members})      
+      
+#@login_required
+def show_user(request, user_id=None):
+    if user_id is None:
+        user_id = request.user.id
+
     try:
         user = User.objects.get(id=user_id)
-    except ObjectDoesNotExist:
-        return redirect('role')
+    except User.DoesNotExist:
+        return redirect()
     else:
-        return render(request, 'show_member.html', {'user': user})
+        show_personal_information = False
+        if request.user == user:
+            show_personal_information = True
+            own_profile = True
+        else:
+            own_profile = False
+            # Get the clubs of the logged in user where they are an officer or owner
+            logged_in_user_clubs = [member.club for member in Members.objects.filter(Q(user=request.user) & (Q(role=2) | Q(role=1)))]
 
+            # Check if the user who's profile is being viewed has any clubs in common with the logged in user
+            # where the logged in user is an officer or owner
+            if Members.objects.filter(user=user, club__in=logged_in_user_clubs).exists():
+                show_personal_information = True
+
+
+        return render(
+            request,
+            "show_user.html",
+            {
+                "show_personal_info": show_personal_information,
+                "own_profile": own_profile,
+                "user_profile": user
+            }
+        )
+
+#@login_required
+def profile(request):
+    user = request.user
+    if request.method == "POST":
+        form = EditProfileForm(instance=user, data=request.POST)
+        if form.is_valid():
+            messages.add_message(request, messages.SUCCESS, "Profile updated!")
+            form.save()
+            return redirect("show_user", user.id)
+    else:
+        form = EditProfileForm(instance=user)
+    return render(request, "profile.html", {"form": form})
+
+def password(request):
+    current_user = request.user
+    if request.method == 'POST':
+        form = changePasswordForm(data=request.POST)
+        if form.is_valid():
+            password = form.cleaned_data.get('old_password')
+            if check_password(password, current_user.password):
+                new_password = form.cleaned_data.get('new_password')
+                current_user.set_password(new_password)
+                current_user.save()
+                login(request, current_user)
+                messages.add_message(request, messages.SUCCESS, "Password updated!")
+                return redirect("show_user", current_user.id)
+    else:
+        form = changePasswordForm()
+    return render(request, 'password.html', {'form': form})
+
+def create_club(request):
+    if request.method =='GET':
+        form = CreateClubForm()
+        return render(request, 'create_club.html', {'form': form})
+    elif request.method == 'POST':
+        if request.user.is_authenticated:
+            current_user=request.user
+            form = CreateClubForm(request.POST)
+            if form.is_valid():
+                club_name = form.cleaned_data.get('club_name')
+                location = form.cleaned_data.get('location')
+                description = form.cleaned_data.get('description')
+                club = Club.objects.create(club_name=club_name, location=location, description=description)
+                member = Members.objects.create(club=club, user=current_user, role=1)
+                return redirect('home')
+            else:
+                return render(request, 'create_club.html', {'form': form})
+        else:
+            return redirect('log_in')
+    else:
+        return HttpResponseForbidden()
+      
 def officer_promote(request,member_id):
     c_id=Members.objects.get(id=member_id).club.id
     Members.objects.get(id=member_id).officer_promote()
