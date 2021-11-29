@@ -43,13 +43,22 @@ def club_list(request):
     return render(request,'club_list.html', {'clubs': clubs})
 
 def show_club(request, club_id):
-    try: 
+    try:
         club = Club.objects.get(id=club_id)
     except ObjectDoesNotExist:
             return redirect('club_list')
     else:
-        return render(request,'show_club.html', 
+        return render(request,'show_club.html',
                 {'club': club })
+
+def events_list(request, club_id):
+    try:
+        club = Club.objects.get(id=club_id)
+    except ObjectDoesNotExist:
+            return redirect('home')
+    else:
+        users = Members.objects.all().filter(club=club)
+        return render(request, "events-table.html", {"users": users})
 
 def members(request, club_id):
     try: 

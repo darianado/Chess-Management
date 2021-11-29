@@ -141,3 +141,39 @@ class Members(models.Model):
             MaxValueValidator(4)
         ]
     )
+    
+class Events(models.Model):
+    date_created = models.DateTimeField(
+        auto_now=False,
+        auto_now_add=True
+    )
+    class Meta:
+        ordering = ["-date_created"]
+    club = models.ForeignKey(Club, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    class Action(models.IntegerChoices):
+        Accepted = 1
+        Applied = 2
+        Rejected = 3
+        Promoted = 4
+        Demoted = 5
+        Kicked = 6
+    action = models.IntegerField(choices=Action.choices,
+                                validators=[
+                                    MinValueValidator(1),
+                                    MaxValueValidator(6)
+                                ])
+    def getAction():
+        if action == 1:
+            return "Accepted by"
+        elif action == 2:
+            return "Applied by"
+        elif action == 3:
+            return "Rejected by"
+        elif action == 4:
+            return "Promoted by"
+        elif action == 5:
+            return "Demoted by"
+        elif action == 6:
+            return "Kicked by"
