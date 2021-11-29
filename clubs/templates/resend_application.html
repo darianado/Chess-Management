@@ -1,0 +1,12 @@
+<header class="py-5 bg-image-full" style="background-image: url('https://images.indianexpress.com/2020/05/chess-fb.jpg')">
+  <div class="text-center my-5">
+    <h1 class="text-white fs-3 fw-bolder">Hi, {{ user.first_name}} {{user.last_name}}</h1>
+  </div>
+</header>
+
+<div class="row content">
+  <div class="col-12">
+      <p class="profile-bio">{{ club.club_name}} is considering your application</p>
+          <td><a href="{% url 'home' %}">Back</a></td>
+      </div>
+  </div>

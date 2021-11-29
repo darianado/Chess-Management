@@ -4,6 +4,7 @@ from django.contrib.auth.hashers import make_password
 from django.apps import apps
 from django.core.validators import RegexValidator
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.exceptions import ObjectDoesNotExist
 
 from libgravatar import Gravatar
 
@@ -123,6 +124,7 @@ class Club(models.Model):
     )
 
 
+
 class Members(models.Model):
     class Meta:
         constraints=[models.UniqueConstraint( fields=["club",'user'], name='member of a club only once')]
@@ -156,3 +158,13 @@ class Members(models.Model):
         self.save()
     def member_kick(self):
         self.delete()
+        
+    def get_member_role(other_user,other_club):
+        try:
+            member = Members.objects.filter(club=other_club).get(user=other_user)
+        except ObjectDoesNotExist:
+            return None
+        else:
+            return member.role
+
+        

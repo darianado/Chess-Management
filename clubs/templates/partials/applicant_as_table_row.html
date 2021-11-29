@@ -1,13 +1,13 @@
 
-{% extends 'partials/member_as_table_row.html' %}
+<!-- {% extends 'partials/member_as_table_row.html' %}
 {% load humanize %}
 
 
 
-{% block columns %}
+{% block columns %} -->
 
-<!-- <tr> -->
-    <td>
+<tr>
+    <!-- <td>
         <p >
             <span >
                 {{ applicant.user.first_name }}
@@ -36,17 +36,39 @@
         <p >
             {{ applicant.user.personal_statement }}
         </p>
+    </td> -->
+
+
+    <td>
+        <img src="{{ applicant.user.mini_gravatar }}">
     </td>
+    <td>
+        <p>{{ applicant.user.get_full_name }}</p>
+    </td>
+    <td >
+        <p>
+            {{ applicant.user.bio }}
+        </p>
+    </td>
+    <td>
+        <a href="{% url 'show_user' applicant.user.id %}">More detail</a>
+    </td>
+
+
+
+
+
+
     <td>
         <form action="{% url 'deny_applicant' applicant.id  %}">
             <button  class="btn btn-secondary">Deny</button>
         </form>
-    </td>
-    <td>
+    <!-- </td>
+    <td> -->
         <form action="{% url 'accept_applicant' applicant.id %}">
             <button class="btn btn-secondary">Accept</button>
         </form>
     </td>
     
-<!-- </tr> -->
-{% endblock %}
+</tr>
+<!-- {% endblock %} -->
