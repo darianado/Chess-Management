@@ -6,6 +6,8 @@ freeze:
 env:
 	virtualenv venv
 		 
+activate:
+		source venv/bim/activate
 
 deactivate:
 		deactivate
