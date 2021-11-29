@@ -50,11 +50,13 @@
 
 <div id="clubcard" hidden>
 <div class="container">
-    <div class="col-sm-12 col-md-6 offset-md-3">
-    {% include 'partials/side-bar.html' %}
-    </div>
   <div class="row content">
-       {% include 'partials/club_profile.html'  %}
+      <div class="col-xs-12 col-lg-6">
+      {% include 'partials/side-bar.html' %}
+      </div>
+    <div class="col-xs-12 col-lg-6">
+         {% include 'partials/club_profile.html'  %}
+    </div>
   </div>
 </div>
 <script type="text/javascript">
