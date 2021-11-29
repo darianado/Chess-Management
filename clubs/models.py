@@ -7,7 +7,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db.models import Q
 
 from libgravatar import Gravatar
-from clubs.helper import Role
+from clubs.helpers import Role
 
 # Using a custom user manager because the default requires the username parameter.
 # This custom user manager is almost identical with the exception of the username requirement being removed.
