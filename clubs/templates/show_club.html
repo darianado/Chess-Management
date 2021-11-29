@@ -1,14 +1,66 @@
-{% extends 'base_content.html' %}
-{% block content %}
+{% extends 'home.html' %}
+
+{% block tab_content %}
+{% comment %} {% extends 'base_content.html' %} {% endcomment %}
+{% comment %} {% block content %} {% endcomment %}
+{% comment %} {% include 'partials/side-bar.html' %} {% endcomment %}
+{% comment %} <div class="container"> {% endcomment %}
+  {% comment %} <div class="row content"> {% endcomment %}
+    {% comment %} <div class="col-sm-12 col-md-6 offset-md-3"> {% endcomment %}
+       {% comment %} {% include 'partials/club_profile.html'  %} {% endcomment %}
+    {% comment %} </div> {% endcomment %}
+  {% comment %} </div> {% endcomment %}
+{% comment %} </div> {% endcomment %}
 
 
-{% include 'partials/side-bar.html' %}
+
+<script>
+  document.getElementById('nav-dashboard-tab').ariaSelected=false;
+  document.getElementById('nav-dashboard-tab').classList.remove('active');
+
+  document.getElementById('nav-one-club-tab').ariaSelected=true;
+  document.getElementById('nav-one-club-tab').classList.add('active');
+
+  document.getElementById('nav-dashboard').classList.remove('active');
+
+
+</script>
+
+{% comment %}  {% endcomment %}
+{% comment %}  {% endcomment %}
+{% comment %} <div id="clubcard" hidden> {% endcomment %}
+{% comment %} <div class="container"> {% endcomment %}
+{% comment %} {% include 'partials/side-bar.html' %} {% endcomment %}
+  {% comment %} <div class="row content"> {% endcomment %}
+       {% comment %} {% include 'partials/club_profile.html'  %} {% endcomment %}
+  {% comment %} </div> {% endcomment %}
+{% comment %} </div> {% endcomment %}
+{% comment %} <script type="text/javascript"> {% endcomment %}
+  {% comment %} k= document.getElementById('clubcard').innerHTML; {% endcomment %}
+  {% comment %} document.getElementById('nav-one-club').innerHTML =  k; {% endcomment %}
+{% comment %} </script> {% endcomment %}
+{% comment %} </div> {% endcomment %}
+
+
+{% comment %}  {% endcomment %}
+{% comment %}  {% endcomment %}
+{% comment %}  {% endcomment %}
+{% comment %}  {% endcomment %}
+{% comment %}  {% endcomment %}
+
+<div id="clubcard" hidden>
 <div class="container">
-  <div class="row content">
-    <!-- <div class="col-xs-12 col-lg-6 col-xl-4"> -->
     <div class="col-sm-12 col-md-6 offset-md-3">
-       {% include 'partials/club_profile.html'  %}
+    {% include 'partials/side-bar.html' %}
     </div>
+  <div class="row content">
+       {% include 'partials/club_profile.html'  %}
   </div>
 </div>
+<script type="text/javascript">
+  k= document.getElementById('clubcard').innerHTML;
+  document.getElementById('nav-one-club').innerHTML =  k;
+</script>
+</div>
+
 {% endblock %}

@@ -1,164 +1,157 @@
-{% extends 'base.html' %}
+{% extends 'base_content.html' %}
+
+{% comment %} {% block body %} {% endcomment %}
+{% comment %} {% include 'partials/main-nav-bar.html' %} {% endcomment %}
+{% comment %} {% extends 'base_content.html' %} {% endcomment %}
 
 {% block body %}
 {% include 'partials/main-nav-bar.html' %}
-{% comment %} {% extends 'base_content.html' %} {% endcomment %}
-{% comment %}  {% endcomment %}
-{% comment %} {% block body %} {% endcomment %}
-{% comment %} {% include 'partials/main-nav-bar.html' %} {% endcomment %}
 
 <main class="page">
 
 
 
 
-<div class="container-fluid nav-row" >
-    <div class = "row justify-content-center "  >
-        <div class="col-lg-8 col-md-10 col-sm-12 "  >
-            <h2> <br></h2>
-            <nav class="nav align-items-end">
-                <a class="nav-link active mt-1" aria-current="page" href="#">
-                    <h3 class="title">My Dashboard</h3>
-                </a>
-                <a class="nav-link " href="#">
-                    <h3 class="title ">Clubs</h3>
-                </a>
-            </nav>
-
-        </div>
-    </div>
-
-    <div class = "row justify-content-center " >
-        <div class="col-lg-8 col-md-10 col-sm-12"  >
-            <div class="card" >
-
-
-               <div class="card-body">
-                    <h3 class="card-title"> Hi My Name,</h3>
-                    <p>uhjxdhcnjdksnvjksdncfjkshdckhskdhkzshcdjkshjkzcjc</p>
-                    <p>uhjxdhcnjdksnvjksdncfjkshdckhskdhkzshcdjkshjkzcjc</p>
-                    <p>uhjxdhcnjdksnvjksdncfjkshdckhskdhkzshcdjkshjkzcjc</p>
-                    <p>uhjxdhcnjdksnvjksdncfjkshdckhskdhkzshcdjkshjkzcjc</p>
-
-                    <h2> <br></h2>
-                    <h2> <br></h2>
-
-                    <div class="input-group mb-3 ">
-                        <select class="custom-select w-50" id="inputGroupSelect02">
-                          <option value="1">Club X</option>
-                          <option value="2">Club Y</option>
-                          <option value="3">Club Z</option>
-                        </select>
-                        <span class="badge rounded-pill bg-success">Member</span>
-                        <span class="badge rounded-pill bg-danger">Denied</span>
-                        <span class="badge rounded-pill bg-warning text-dark">Pending</span>
-                    </div>
-
-
-
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <h3 class="me-auto">You have not applied to any club</h3>
-                        <button class="btn btn-dark me-md-2" type="button">Apply now</button>
-                    </div>
-
-
-
-
-            </div>
-            </div>
-        </div>
-    </div>
-
-    <div class = "row justify-content-center "  >
-        <div class="col-lg-8 col-md-10 col-sm-12 "  >
-            <h2> <br><br></h2>
-        </div>
-    </div>
-</div>
-
-
-</main>
-{% endblock %}
-{% comment %}  {% endcomment %}
-
-
-
-
-
-{% comment %} <main class="page" > {% endcomment %}
-{% comment %}  {% endcomment %}
 {% comment %} <div class="container-fluid nav-row" > {% endcomment %}
-{% comment %}  {% endcomment %}
     {% comment %} <div class = "row justify-content-center "  > {% endcomment %}
         {% comment %} <div class="col-lg-8 col-md-10 col-sm-12 "  > {% endcomment %}
+            {% comment %} <h2> <br></h2> {% endcomment %}
             {% comment %} <nav class="nav align-items-end"> {% endcomment %}
-                {% comment %} <div class="nav" id="nav-tab" role="tablist"> {% endcomment %}
-                  {% comment %} <a class="nav-link active pb-0" id="nav-dashboard-tab" data-bs-toggle="tab" data-bs-target="#nav-dashboard" type="button" role="tab" aria-controls="nav-dashboard" aria-selected="true"> {% endcomment %}
-                      {% comment %} <h3 class="title">DashBoard</h3> {% endcomment %}
-                  {% comment %} </a> {% endcomment %}
-                  {% comment %} <a class="nav-link pb-0" id="nav-clubs-tab" data-bs-toggle="tab" data-bs-target="#nav-clubs" type="button" role="tab" aria-controls="nav-clubs" aria-selected="false"> {% endcomment %}
-                      {% comment %} <h3 class="title">Clubs</h3> {% endcomment %}
-                  {% comment %} </a> {% endcomment %}
-                {% comment %} </div> {% endcomment %}
+                {% comment %} <a class="nav-link active mt-1" aria-current="page" href="#"> {% endcomment %}
+                    {% comment %} <h3 class="title">My Dashboard</h3> {% endcomment %}
+                {% comment %} </a> {% endcomment %}
+                {% comment %} <a class="nav-link " href="#"> {% endcomment %}
+                    {% comment %} <h3 class="title ">Clubs</h3> {% endcomment %}
+                {% comment %} </a> {% endcomment %}
             {% comment %} </nav> {% endcomment %}
-        {% comment %} </div> {% endcomment %}
-    {% comment %} </div>  {% endcomment %}
-{% comment %}  {% endcomment %}
-{% comment %}  {% endcomment %}
-{% comment %}  {% endcomment %}
-{% comment %}  {% endcomment %}
-    {% comment %} <div class = "row justify-content-center " > {% endcomment %}
-        {% comment %} <div class="col-lg-8 col-md-10 col-sm-12"  > {% endcomment %}
-            {% comment %} <div class="card"  > {% endcomment %}
-{% comment %}  {% endcomment %}
-                {% comment %} <div class="tab-content" id="nav-tabContent"> {% endcomment %}
-                    {% comment %} <div class="tab-pane fade show active" id="nav-dashboard" role="tabpanel" aria-labelledby="nav-dashboard-tab"> {% endcomment %}
-{% comment %}                          {% endcomment %}
-                        {% comment %} {% include 'partials/dashboard.html' %} {% endcomment %}
-                    {% comment %} </div> {% endcomment %}
-{% comment %}  {% endcomment %}
-                    {% comment %} <div class="tab-pane fade" id="nav-clubs" role="tabpanel" aria-labelledby="nav-clubs-tab" > {% endcomment %}
-                        {% comment %} <script type="text/javascript"> {% endcomment %}
-                            {% comment %} const Http = new XMLHttpRequest(); {% endcomment %}
-                            {% comment %} const url="{% url 'club_list' %}"; {% endcomment %}
-                            {% comment %} Http.open("GET", url); {% endcomment %}
-                            {% comment %} Http.onreadystatechange = function () { {% endcomment %}
-                                {% comment %} if (this.readyState == 4 && this.status == 200) { {% endcomment %}
-                                {% comment %} document.getElementById('nav-clubs').innerHTML ="<div>"+Http.responseText+"</div>"; {% endcomment %}
-                                {% comment %} } {% endcomment %}
-                            {% comment %} } {% endcomment %}
-                            {% comment %} Http.send(); {% endcomment %}
-                        {% comment %} </script> {% endcomment %}
-                    {% comment %} </div> {% endcomment %}
-{% comment %}  {% endcomment %}
-                    {% comment %} <div class="tab-pane fade" id="nav-clubs" role="tabpanel" aria-labelledby="nav-clubs-tab" > {% endcomment %}
-                        {% comment %} <script type="text/javascript"> {% endcomment %}
-                            {% comment %} const Http = new XMLHttpRequest(); {% endcomment %}
-                            {% comment %} const url="{% url 'show_club' club.id %}"; {% endcomment %}
-                            {% comment %} Http.open("GET", url); {% endcomment %}
-                            {% comment %} Http.onreadystatechange = function () { {% endcomment %}
-                                {% comment %} if (this.readyState == 4 && this.status == 200) { {% endcomment %}
-                                {% comment %} document.getElementById('nav-clubs').innerHTML ="<div>"+Http.responseText+"</div>"; {% endcomment %}
-                                {% comment %} } {% endcomment %}
-                            {% comment %} } {% endcomment %}
-                            {% comment %} Http.send(); {% endcomment %}
-                        {% comment %} </script> {% endcomment %}
-                    {% comment %} </div> {% endcomment %}
-                {% comment %} </div> {% endcomment %}
-                {% comment %} <!--  {% endcomment %}
-               {% comment %} {% block card %} {% endcomment %}
-               {% comment %} {% endblock %} --> {% endcomment %}
-{% comment %}  {% endcomment %}
-            {% comment %} </div> {% endcomment %}
 {% comment %}  {% endcomment %}
         {% comment %} </div> {% endcomment %}
     {% comment %} </div> {% endcomment %}
 {% comment %}  {% endcomment %}
+    {% comment %} <div class = "row justify-content-center " > {% endcomment %}
+        {% comment %} <div class="col-lg-8 col-md-10 col-sm-12"  > {% endcomment %}
+            {% comment %} <div class="card" > {% endcomment %}
 {% comment %}  {% endcomment %}
-{% comment %} </div> {% endcomment %}
 {% comment %}  {% endcomment %}
+               {% comment %} <div class="card-body"> {% endcomment %}
+                    {% comment %} <h3 class="card-title"> Hi My Name,</h3> {% endcomment %}
+                    {% comment %} <p>uhjxdhcnjdksnvjksdncfjkshdckhskdhkzshcdjkshjkzcjc</p> {% endcomment %}
+                    {% comment %} <p>uhjxdhcnjdksnvjksdncfjkshdckhskdhkzshcdjkshjkzcjc</p> {% endcomment %}
+                    {% comment %} <p>uhjxdhcnjdksnvjksdncfjkshdckhskdhkzshcdjkshjkzcjc</p> {% endcomment %}
+                    {% comment %} <p>uhjxdhcnjdksnvjksdncfjkshdckhskdhkzshcdjkshjkzcjc</p> {% endcomment %}
+{% comment %}  {% endcomment %}
+                    {% comment %} <h2> <br></h2> {% endcomment %}
+                    {% comment %} <h2> <br></h2> {% endcomment %}
+{% comment %}  {% endcomment %}
+                    {% comment %} <div class="input-group mb-3 "> {% endcomment %}
+                        {% comment %} <select class="custom-select w-50" id="inputGroupSelect02"> {% endcomment %}
+                          {% comment %} <option value="1">Club X</option> {% endcomment %}
+                          {% comment %} <option value="2">Club Y</option> {% endcomment %}
+                          {% comment %} <option value="3">Club Z</option> {% endcomment %}
+                        {% comment %} </select> {% endcomment %}
+                        {% comment %} <span class="badge rounded-pill bg-success">Member</span> {% endcomment %}
+                        {% comment %} <span class="badge rounded-pill bg-danger">Denied</span> {% endcomment %}
+                        {% comment %} <span class="badge rounded-pill bg-warning text-dark">Pending</span> {% endcomment %}
+                    {% comment %} </div> {% endcomment %}
+{% comment %}  {% endcomment %}
+{% comment %}  {% endcomment %}
+{% comment %}  {% endcomment %}
+                    {% comment %} <div class="d-grid gap-2 d-md-flex justify-content-md-end"> {% endcomment %}
+                        {% comment %} <h3 class="me-auto">You have not applied to any club</h3> {% endcomment %}
+                        {% comment %} <button class="btn btn-dark me-md-2" type="button">Apply now</button> {% endcomment %}
+                    {% comment %} </div> {% endcomment %}
+{% comment %}  {% endcomment %}
+{% comment %}  {% endcomment %}
+{% comment %}  {% endcomment %}
+{% comment %}  {% endcomment %}
+            {% comment %} </div> {% endcomment %}
+            {% comment %} </div> {% endcomment %}
+        {% comment %} </div> {% endcomment %}
+    {% comment %} </div> {% endcomment %}
+
+    {% comment %} <div class = "row justify-content-center "  > {% endcomment %}
+        {% comment %} <div class="col-lg-8 col-md-10 col-sm-12 "  > {% endcomment %}
+            {% comment %} <h2> <br><br></h2> {% endcomment %}
+        {% comment %} </div> {% endcomment %}
+    {% comment %} </div> {% endcomment %}
 {% comment %} </div> {% endcomment %}
 {% comment %}  {% endcomment %}
 {% comment %}  {% endcomment %}
 {% comment %} </main> {% endcomment %}
 {% comment %} {% endblock %} {% endcomment %}
+{% comment %}  {% endcomment %}
+
+{% comment %}  {% endcomment %}
+
+
+
+
+
+<main class="page" >
+
+<div class="container-fluid nav-row" >
+
+    <div class = "row justify-content-center "  >
+        <div class="col-lg-8 col-md-10 col-sm-12 "  >
+            <nav class="nav align-items-end">
+                <div class="nav" id="nav-tab" role="tablist">
+                  <a class="nav-link active pb-0" id="nav-dashboard-tab" data-bs-toggle="tab" data-bs-target="#nav-dashboard" type="button" role="tab" aria-controls="nav-dashboard" aria-selected="true">
+                      <h3 class="title">DashBoard</h3>
+                  </a>
+                  <a class="nav-link pb-0" id="nav-clubs-tab" data-bs-toggle="tab" data-bs-target="#nav-clubs" type="button" role="tab" aria-controls="nav-clubs" aria-selected="false">
+                      <h3 class="title">Clubs</h3>
+                  </a>
+                  <a class="nav-link pb-0" id="nav-one-club-tab" data-bs-toggle="tab" data-bs-target="#nav-one-club" type="button" role="tab" aria-controls="nav-one-club" aria-selected="false">
+                  </a>
+                </div>
+            </nav>
+
+        </div>
+    </div>
+
+
+
+
+    <div class = "row justify-content-center " >
+        <div class="col-lg-8 col-md-10 col-sm-12"  >
+            <div class="card"  >
+
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-dashboard" role="tabpanel" aria-labelledby="nav-dashboard-tab">
+
+                        {% include 'partials/dashboard.html' %}
+                    </div>
+
+                    <div class="tab-pane fade" id="nav-clubs" role="tabpanel" aria-labelledby="nav-clubs-tab" >
+                        <script type="text/javascript">
+                            const Http = new XMLHttpRequest();
+                            const url="{% url 'club_list' %}";
+                            Http.open("GET", url);
+                            Http.onreadystatechange = function () {
+                                if (this.readyState == 4 && this.status == 200) {
+                                document.getElementById('nav-clubs').innerHTML ="<div>"+Http.responseText+"</div>";
+                                }
+                            }
+                            Http.send();
+                        </script>
+
+                    </div>
+                    <div class="tab-pane fade show active" id="nav-one-club" role="tabpanel" aria-labelledby="nav-one-club-tab">
+                        {% block tab_content %}
+                        {% endblock %}
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+
+</div>
+
+
+</main>
+{% endblock %}
