@@ -7,7 +7,7 @@ env:
 	virtualenv venv
 		 
 activate:
-		source venv/bim/activate
+		source venv/bin/activate
 
 deactivate:
 		deactivate
@@ -22,31 +22,31 @@ run:
 	python3 manage.py runserver
 
 show:
-	python manage.py showmigrations
+	python3 manage.py showmigrations
 
 migration:
-	python manage.py makemigrations
+	python3 manage.py makemigrations
 
 migrate:
-	python manage.py migrate
+	python3 manage.py migrate
 
 superuser:
-	python manage.py createsuperuser
+	python3 manage.py createsuperuser
 
 seed:
-	python manage.py seed
+	python3 manage.py seed
 
 unseed:
-	python manage.py unseed
+	python3 manage.py unseed
 
 clubs_seed:
-	python manage.py club_seed
+	python3 manage.py club_seed
 
 clubs_unseed:
-	python manage.py club_unseed
+	python3 manage.py club_unseed
 
 member_seed:
-	python manage.py member_seed
+	python3 manage.py member_seed
 
 member_unseed:
-	python manage.py member_unseed
+	python3 manage.py member_unseed
