@@ -4,8 +4,10 @@ from django.contrib.auth.hashers import make_password
 from django.apps import apps
 from django.core.validators import RegexValidator
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.db.models import Q
 
 from libgravatar import Gravatar
+from clubs.helpers import Role
 
 # Using a custom user manager because the default requires the username parameter.
 # This custom user manager is almost identical with the exception of the username requirement being removed.
@@ -97,8 +99,6 @@ class User(AbstractUser):
     def mini_gravatar(self):
         """Return a URL to the user's gravatar."""
         return self.gravatar(60)
-    def get_full_name(self):
-        return f'{self.first_name} {self.last_name}'
 
 
 class Club(models.Model):
@@ -125,20 +125,23 @@ class Club(models.Model):
 
 class Members(models.Model):
     class Meta:
-        constraints=[models.UniqueConstraint( fields=["club",'user'], name='member of a club only once')]
+        constraints=[
+            models.UniqueConstraint(fields=["club", "user"], name="Member of a club only once"),
+            models.UniqueConstraint(fields=["club"], condition=Q(role=Role.OWNER), name="Every club has at most 1 owner")
+        ]
+
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    class Role(models.IntegerChoices):
-        OWNER = 1
-        OFFICER = 2
-        MEMBER = 3
-        APPLICANT = 4
-    role = models.IntegerField(choices=Role.choices,
-                                default=Role.APPLICANT,
-                                validators=[
-                                    MinValueValidator(1),
-                                    MaxValueValidator(4)
-                                 ])
+
+    role = models.IntegerField(
+        choices=Role.choices,
+        default=Role.APPLICANT,
+        validators=[
+            MinValueValidator(1),
+            MaxValueValidator(4)
+        ]
+    )
+    
     def officer_promote(self):
         self.role=1
         self.save()
@@ -153,7 +156,7 @@ class Members(models.Model):
     def owner_demote(self):
         self.role=2
         self.save()
-
+    
 class Events(models.Model):
     date_created = models.DateTimeField(
         auto_now=False,
@@ -166,26 +169,26 @@ class Events(models.Model):
 
     class Action(models.IntegerChoices):
         Accepted = 1
-        Appling = 2
+        Applied = 2
         Rejected = 3
         Promoted = 4
         Demoted = 5
         Kicked = 6
-    action  = models.IntegerField(choices=Action.choices,
+    action = models.IntegerField(choices=Action.choices,
                                 validators=[
                                     MinValueValidator(1),
                                     MaxValueValidator(6)
-                                 ])
+                                ])
     def getAction():
         if action == 1:
-            return "accepted by"
+            return "Accepted by"
         elif action == 2:
-            return "appling for"
+            return "Applied by"
         elif action == 3:
-            return "rejected by"
+            return "Rejected by"
         elif action == 4:
-            return "promoted by"
+            return "Promoted by"
         elif action == 5:
-            return "demoted by"
+            return "Demoted by"
         elif action == 6:
-            return "kicked by"
+            return "Kicked by"

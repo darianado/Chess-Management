@@ -26,6 +26,7 @@ class MemberAdmin(admin.ModelAdmin):
 @admin.register(Events)
 class EventAdmin(admin.ModelAdmin):
     """Configuration of the admin interface for events"""
+
     list_display = [
         'club', 'user', 'action'
     ]
