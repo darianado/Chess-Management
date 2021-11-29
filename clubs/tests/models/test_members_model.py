@@ -3,7 +3,7 @@ from clubs.models import Club, Members, User
 from django.core.exceptions import ValidationError
 from django.db.utils import IntegrityError
 
-from clubs.helper import Role
+from clubs.helpers import Role
 
 class MembersModelTest(TestCase):
     def setUp(self):
