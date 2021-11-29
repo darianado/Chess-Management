@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
-from clubs.forms import LogInForm, SignUpForm, EditProfileForm, changePasswordForm
+from clubs.forms import LogInForm, SignUpForm, EditProfileForm, changePasswordForm, CreateClubForm
 from django.contrib.auth import authenticate, login, logout
 from clubs.models import Club, User, Members
 from django.contrib import messages
 from django.db.models import Q
 from django.contrib.auth.hashers import check_password
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponseForbidden
 
 # Create your views here.
 def welcome(request):
@@ -133,3 +134,25 @@ def password(request):
     else:
         form = changePasswordForm()
     return render(request, 'password.html', {'form': form})
+
+def create_club(request):
+    if request.method =='GET':
+        form = CreateClubForm()
+        return render(request, 'create_club.html', {'form': form})
+    elif request.method == 'POST':
+        if request.user.is_authenticated:
+            current_user=request.user
+            form = CreateClubForm(request.POST)
+            if form.is_valid():
+                club_name = form.cleaned_data.get('club_name')
+                location = form.cleaned_data.get('location')
+                description = form.cleaned_data.get('description')
+                club = Club.objects.create(club_name=club_name, location=location, description=description)
+                member = Members.objects.create(club=club, user=current_user, role=1)
+                return redirect('home')
+            else:
+                return render(request, 'create_club.html', {'form': form})
+        else:
+            return redirect('log_in')
+    else:
+        return HttpResponseForbidden()

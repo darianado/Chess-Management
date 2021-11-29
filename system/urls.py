@@ -30,4 +30,5 @@ urlpatterns = [
     path('user/', views.show_user, name="show_user"),
     path('profile/', views.profile, name="profile"),
     path('password/', views.password, name="password"),
+    path('create_club/', views.create_club, name = 'create_club'),
 ]
