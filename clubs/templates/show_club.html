@@ -1,11 +1,101 @@
+
+{% extends 'home.html' %}
+
+
+
+{% block tab_content %}
+
+
+
+
+
+<script>
+
+  function showMembers(){
+    const Http = new XMLHttpRequest();
+    const url="{% url 'show_members' club.id %}";
+    Http.open("GET", url);
+
+    Http.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>";
+        }
+    }
+    Http.send();
+  }
+
+  function showApplicants(){
+    const Http = new XMLHttpRequest();
+    const url="{% url 'show_applicants' club.id %}";
+    Http.open("GET", url);
+    Http.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>";
+        }
+    }
+    Http.send();
+  }
+
+  function showRoles(){
+    const Http = new XMLHttpRequest();
+    const url="{% url 'show_roles' club.id %}";
+    Http.open("GET", url);
+    Http.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>";
+        }
+    }
+    Http.send();
+  }
+  
+</script>
+
+
+
+
+<script>
+  document.getElementById('nav-dashboard-tab').ariaSelected=false;
+  document.getElementById('nav-dashboard-tab').classList.remove('active');
+
+  document.getElementById('nav-one-club-tab').ariaSelected=true;
+  document.getElementById('nav-one-club-tab').classList.add('active');
+
+  document.getElementById('nav-dashboard').classList.remove('active');
+
+
+</script>
+
+
+<div id="clubcard" hidden>
+
 <div class="container">
-  <div class="row content">
-    <div class="col-xs-12 col-lg-6 col-xl-4">
+  <div class="row">
+
+
+      <div class="col-xs-12 col-lg-6">
+      {% include 'partials/side-bar.html' %}
+      </div>
+
+
+
+    <div class="col-xs-12 col-lg-6">
+      <div id="membersList">
+         {% include 'partials/club_profile.html' %}
+      </div>
     </div>
-    <div class="col-xs-12 col-lg-6 col-xl-8">
-        <li><strong></strong> {{ club.club_name}}</li>
-        <li><strong> Location </strong> {{ club.location}}</li>
-        <li><strong> Bio </strong> {{ club.description}}</li>
-    </div>
+
+
+
+
   </div>
 </div>
+
+
+
+<script type="text/javascript">
+  k= document.getElementById('clubcard').innerHTML;
+  document.getElementById('nav-one-club').innerHTML =  k;
+</script>
+</div>
+
+{% endblock %}

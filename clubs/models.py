@@ -142,6 +142,12 @@ class Members(models.Model):
         ]
     )
     
+    def acceptApplicant(self):
+        self.role=3
+        self.save()
+    def denyApplicant(self):
+        self.delete()
+    
     def officer_promote(self):
         self.role=1
         self.save()
@@ -156,6 +162,14 @@ class Members(models.Model):
     def owner_demote(self):
         self.role=2
         self.save()
+        
+    def get_member_role(other_user,other_club):
+        try:
+            member = Members.objects.filter(club=other_club).get(user=other_user)
+        except ObjectDoesNotExist:
+            return None
+        else:
+            return member.role
     
 class Events(models.Model):
     date_created = models.DateTimeField(

@@ -1,75 +1,76 @@
-{% extends 'base.html' %}
+{% extends 'base_content.html' %}
 
 {% block body %}
 {% include 'partials/main-nav-bar.html' %}
 
-<main class="page">
 
 
 
+
+<main class="page" >
 
 <div class="container-fluid nav-row" >
+
     <div class = "row justify-content-center "  >
         <div class="col-lg-8 col-md-10 col-sm-12 "  >
-            <h2> <br></h2>
             <nav class="nav align-items-end">
-                <a class="nav-link active mt-1" aria-current="page" href="#">
-                    <h3 class="title">My Dashboard</h3>
-                </a>
-                <a class="nav-link " href="#">
-                    <h3 class="title ">Clubs</h3>
-                </a>
+                <div class="nav" id="nav-tab" role="tablist">
+                  <a class="nav-link active pb-0" id="nav-dashboard-tab" data-bs-toggle="tab" data-bs-target="#nav-dashboard" type="button" role="tab" aria-controls="nav-dashboard" aria-selected="true">
+                      <h3 class="title">DashBoard</h3>
+                  </a>
+                  <a class="nav-link pb-0" id="nav-clubs-tab" data-bs-toggle="tab" data-bs-target="#nav-clubs" type="button" role="tab" aria-controls="nav-clubs" aria-selected="false">
+                      <h3 class="title">Clubs</h3>
+                  </a>
+                  <a class="nav-link pb-0" id="nav-one-club-tab" data-bs-toggle="tab" data-bs-target="#nav-one-club" type="button" role="tab" aria-controls="nav-one-club" aria-selected="false">
+                  </a>
+                </div>
             </nav>
 
         </div>
     </div>
 
+
+
+
+
+
+
     <div class = "row justify-content-center " >
         <div class="col-lg-8 col-md-10 col-sm-12"  >
-            <div class="card" >
+            <div class="card p-0"  >
 
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-dashboard" role="tabpanel" aria-labelledby="nav-dashboard-tab">
 
-               <div class="card-body">
-                    <h3 class="card-title"> Hi My Name,</h3>
-                    <p>uhjxdhcnjdksnvjksdncfjkshdckhskdhkzshcdjkshjkzcjc</p>
-                    <p>uhjxdhcnjdksnvjksdncfjkshdckhskdhkzshcdjkshjkzcjc</p>
-                    <p>uhjxdhcnjdksnvjksdncfjkshdckhskdhkzshcdjkshjkzcjc</p>
-                    <p>uhjxdhcnjdksnvjksdncfjkshdckhskdhkzshcdjkshjkzcjc</p>
-
-                    <h2> <br></h2>
-                    <h2> <br></h2>
-
-                    <div class="input-group mb-3 ">
-                        <select class="custom-select w-50" id="inputGroupSelect02">
-                          <option value="1">Club X</option>
-                          <option value="2">Club Y</option>
-                          <option value="3">Club Z</option>
-                        </select>
-                        <span class="badge rounded-pill bg-success">Member</span>
-                        <span class="badge rounded-pill bg-danger">Denied</span>
-                        <span class="badge rounded-pill bg-warning text-dark">Pending</span>
+                        {% include 'partials/dashboard.html' %}
                     </div>
 
+                    <div class="tab-pane fade" id="nav-clubs" role="tabpanel" aria-labelledby="nav-clubs-tab" >
+                        <script type="text/javascript">
+                            const Http = new XMLHttpRequest();
+                            const url="{% url 'club_list' %}";
+                            Http.open("GET", url);
+                            Http.onreadystatechange = function () {
+                                if (this.readyState == 4 && this.status == 200) {
+                                document.getElementById('nav-clubs').innerHTML ="<div>"+Http.responseText+"</div>";
+                                }
+                            }
+                            Http.send();
+                        </script>
 
 
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <h3 class="me-auto">You have not applied to any club</h3>
-                        <button class="btn btn-dark me-md-2" type="button">Apply now</button>
                     </div>
+                    <div class="tab-pane fade show active" id="nav-one-club" role="tabpanel" aria-labelledby="nav-one-club-tab">
+                        {% block tab_content %}
+                        {% endblock %}
+                    </div>
+                </div>
 
-
-
-
-            </div>
             </div>
         </div>
     </div>
 
-    <div class = "row justify-content-center "  >
-        <div class="col-lg-8 col-md-10 col-sm-12 "  >
-            <h2> <br><br></h2>
-        </div>
-    </div>
+
 </div>
 
 

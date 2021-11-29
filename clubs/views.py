@@ -44,15 +44,27 @@ def club_list(request):
     return render(request,'club_list.html', {'clubs': clubs})
 
 def show_club(request, club_id):
-    try:
+    try: 
         club = Club.objects.get(id=club_id)
+        user = request.user
+        member_in_club = Members.get_member_role(user,club)
     except ObjectDoesNotExist:
             return redirect('club_list')
     else:
-        return render(request,'show_club.html',
-                {'club': club })
+        return render(request,'show_club.html', 
+                {'club': club, 'member_in_club': member_in_club})
 
-def role(request,club_id):
+def show_applicants(request, club_id):
+    try: 
+        thisClub = Club.objects.get(id=club_id)
+    except ObjectDoesNotExist:
+            return redirect('club_list')
+    else:
+        applicants = Members.objects.filter(club=thisClub, role=4)
+        return render(request,"partials/applicants_as_table.html", 
+                 {'club': thisClub, 'applicants':applicants})
+
+def show_roles(request,club_id):
     try:
         club = Club.objects.get(id=club_id)
     except ObjectDoesNotExist:
@@ -61,7 +73,7 @@ def role(request,club_id):
         users = Members.objects.all().filter(club=club)
         members = users.filter(role = 3)
         officers = users.filter(role = 2)
-        return render(request, "role.html", {"members": members,"officers": officers})
+        return render(request, "partials/roles_list_table.html", {"members": members,"officers": officers})
 
 def members(request, club_id):
     try: 
@@ -206,3 +218,37 @@ def events_list(request):
             return render(request, 'events_list.html', {'events': events})
     else:
         return redirect('log_in')
+      
+def apply_to_club(request, club_id ):
+    club = Club.objects.get(id=club_id)
+    user = request.user
+    member_in_club = Members.get_member_role(user,club)
+    if request.method == 'GET':
+        print(" baby one more time")
+        Members.objects.create(
+                user = user,
+                club = club,
+                role = 4,
+        )
+
+    return redirect('show_club', club.id)
+
+def resend_application(request, club_id):
+    club = Club.objects.get(id=club_id)
+    user = request.user
+    member_in_club = Members.get_member_role(user,club)
+    if request.method == 'GET':
+        return render(request, 'resend_application.html', 
+                {'club': club, 'user':user})
+    return redirect('show_club', club.id)
+
+#should be tested after them being a member
+def leave_a_club(request, club_id ):
+    club = Club.objects.get(id=club_id)
+    user = request.user
+    member_in_club = Members.get_member_role(user,club)
+    if request.method == 'GET':
+        print(" baby one more time and i am out of here")
+        Members.objects.filter(club_id=club_id).get(user_id=user.id).delete()
+
+    return redirect('show_club', club.id)
