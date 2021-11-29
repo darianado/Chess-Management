@@ -51,6 +51,15 @@ def show_club(request, club_id):
         return render(request,'show_club.html', 
                 {'club': club })
 
+def members(request, club_id):
+    try: 
+        club = Club.objects.get(id=club_id)
+    except ObjectDoesNotExist:
+        return redirect('club_list')
+    else:
+        members = [member.user for member in Members.objects.filter(club=club)]
+        return render(request, "partials/members_list_table.html", {"members": members})      
+      
 #@login_required
 def show_user(request, user_id=None):
     if user_id is None:
