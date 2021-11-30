@@ -11,23 +11,31 @@ class ShowMemberListTest(TestCase):
         "clubs/tests/fixtures/default_club_hame.json",
         "clubs/tests/fixtures/default_club_hamersmith.json",
         "clubs/tests/fixtures/default_member_john_hame.json",
-        "clubs/tests/fixtures/default_member_john_hamersmith.json",
     ]
 
     def setUp(self):
         self.userJohn = User.objects.get(email="johndoe@example.org")
         self.userJane = User.objects.get(email="janedoe@example.org")
         self.clubHame = Club.objects.get(club_name="Hame Chess Club")
-        self.clubHamersmith = Club.objects.get(club_name="Hamersmith Chess Club")
 
         self.urlHame = reverse('show_members', kwargs={'club_id': self.clubHame.id})
-        self.urlHamersmith = reverse('show_members', kwargs={'club_id': self.clubHamersmith.id})
 
     def test_show_club_members_url(self):
         self.assertEqual(self.urlHame, f'/club/{self.clubHame.id}/members/')
-        self.assertEqual(self.urlHamersmith, f'/club/{self.clubHamersmith.id}/members/')
+
+    def test_get_show_club_members_when_not_logged_in(self):
+        response = self.client.get(self.urlHame)
+        redirect_url = reverse("log_in")
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
+
+    def test_get_show_club_members_when_not_a_member_of_the_club(self):
+        self.client.login(email=self.userJane.email, password="Password123")
+        response = self.client.get(self.urlHame)
+        redirect_url = reverse("home")
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
     def test_get_club_Hame_members(self):
+        self.client.login(email=self.userJohn.email, password="Password123")
         response = self.client.get(self.urlHame)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "partials/members_list_table.html")

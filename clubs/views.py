@@ -9,7 +9,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 
-from clubs.decorators import login_prohibited
+from clubs.helpers import Role
+from clubs.decorators import login_prohibited, minimum_role_required
 
 @login_prohibited(redirect_location="home")
 def welcome(request):
@@ -86,6 +87,8 @@ def show_roles(request,club_id):
         officers = users.filter(role = 2)
         return render(request, "partials/roles_list_table.html", {"members": members,"officers": officers})
 
+@login_required(redirect_field_name="")
+@minimum_role_required(role_required=Role.MEMBER, redirect_location="home")
 def members(request, club_id):
     try: 
         club = Club.objects.get(id=club_id)
