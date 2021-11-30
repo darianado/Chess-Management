@@ -8,10 +8,13 @@ from django.contrib.auth.hashers import check_password
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseForbidden
 
+from clubs.decorators import login_prohibited
+
 # Create your views here.
 def welcome(request):
     return render(request, 'welcome.html')
 
+@login_prohibited(redirect_location="home")
 def log_in(request):
     if request.method == 'POST':
         form = LogInForm(request.POST)

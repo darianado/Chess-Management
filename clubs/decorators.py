@@ -3,11 +3,11 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from clubs.models import Club, Members
 
-def login_prohibited(destination):
+def login_prohibited(redirect_location):
     def login_prohibited_redirector(view_function):
         def wrapper(request):
             if request.user.is_authenticated:
-                return redirect(destination)
+                return redirect(redirect_location)
             else:
                 return view_function(request)
         return wrapper
