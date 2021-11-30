@@ -11,7 +11,6 @@ from django.contrib.auth.decorators import login_required
 
 from clubs.decorators import login_prohibited
 
-# Create your views here.
 @login_prohibited(redirect_location="home")
 def welcome(request):
     return render(request, 'welcome.html')
@@ -130,7 +129,7 @@ def show_user(request, user_id=None):
             }
         )
 
-#@login_required
+@login_required
 def profile(request):
     user = request.user
     if request.method == "POST":
@@ -143,6 +142,7 @@ def profile(request):
         form = EditProfileForm(instance=user)
     return render(request, "profile.html", {"form": form})
 
+@login_required
 def password(request):
     current_user = request.user
     if request.method == 'POST':

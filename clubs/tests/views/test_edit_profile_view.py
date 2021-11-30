@@ -1,16 +1,18 @@
 from django.test import TestCase
 from clubs.models import User
 from django.urls import reverse
-from django.shortcuts import render, redirect
 from clubs.forms import EditProfileForm
 from django.contrib import messages
+
+from clubs.tests.helper import reverse_with_next
 
 class EditUserProfileViewTestCase(TestCase):
     """Test suite for the profile view."""
 
     fixtures = [
-            'clubs/tests/fixtures/default_user_john.json',
-            'clubs/tests/fixtures/default_user_jane.json',]
+        'clubs/tests/fixtures/default_user_john.json',
+        'clubs/tests/fixtures/default_user_jane.json',
+    ]
 
     def setUp(self):
         self.user = User.objects.get(email='johndoe@example.org')
@@ -26,6 +28,11 @@ class EditUserProfileViewTestCase(TestCase):
 
     def test_profile_url(self):
         self.assertEqual(self.url, '/profile/')
+
+    def test_get_edit_profile_when_not_logged_in(self):
+        response = self.client.get(self.url)
+        redirect_url = reverse_with_next("log_in", self.url)
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
     def test_get_profile(self):
         self.client.login(email=self.user.email, password='Password123')
