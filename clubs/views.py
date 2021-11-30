@@ -252,3 +252,28 @@ def leave_a_club(request, club_id ):
         Members.objects.filter(club_id=club_id).get(user_id=user.id).delete()
 
     return redirect('show_club', club.id)
+
+
+
+
+def table(request):
+    user = request.user
+    user_id = user.id 
+    filtered_clubs = []
+    #  for memberships in Members.objects.filter(user.id=user_id):
+        #  filtered_clubs.append(memberships.club)
+
+    filtered_clubs = [member.club for member in Members.objects.filter(Q(user=request.user) )]
+    list_data = []
+    for club in filtered_clubs:
+        data_row = (club.club_name, Members.objects.filter(id = club.id).count(), Members.get_member_role_name(Members.get_member_role(user, club)))
+        list_data.append(data_row)
+    return render(
+            request,
+            "table.html",
+            {
+                "list_data": list_data
+            }
+        )
+
+

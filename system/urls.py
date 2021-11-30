@@ -47,4 +47,5 @@ urlpatterns = [
     path('accept_applicant/<int:membership_id>', views.accept_applicant,name = 'accept_applicant'),
     path('club/<int:club_id>/applicants', views.show_applicants, name = 'show_applicants'),
     
+    path('table/', views.table, name="table"),
 ]
