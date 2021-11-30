@@ -9,7 +9,6 @@ class ShowMemberListTest(TestCase):
         "clubs/tests/fixtures/default_user_john.json",
         "clubs/tests/fixtures/default_user_jane.json",
         "clubs/tests/fixtures/default_club_hame.json",
-        "clubs/tests/fixtures/default_club_hamersmith.json",
         "clubs/tests/fixtures/default_member_john_hame.json",
     ]
 
