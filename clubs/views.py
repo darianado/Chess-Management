@@ -49,10 +49,12 @@ def sign_up(request):
         form = SignUpForm()
     return render(request, 'sign_up.html', {'form': form})
 
+@login_required(redirect_field_name="")
 def club_list(request):
     clubs = Club.objects.all()
     return render(request,'club_list.html', {'clubs': clubs})
 
+@login_required(redirect_field_name="")
 def show_club(request, club_id):
     try: 
         club = Club.objects.get(id=club_id)
