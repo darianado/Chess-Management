@@ -7,10 +7,12 @@ from django.db.models import Q
 from django.contrib.auth.hashers import check_password
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseForbidden
+from django.contrib.auth.decorators import login_required
 
 from clubs.decorators import login_prohibited
 
 # Create your views here.
+@login_prohibited(redirect_location="home")
 def welcome(request):
     return render(request, 'welcome.html')
 
@@ -18,15 +20,19 @@ def welcome(request):
 def log_in(request):
     if request.method == 'POST':
         form = LogInForm(request.POST)
+        next = request.POST.get('next') or ''
         if form.is_valid():
             email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password')
             user = authenticate(email=email, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('home')
+                redirect_url = next or "home"
+                return redirect(redirect_url)
+    else:
+        next = request.GET.get("next") or ""
     form = LogInForm()
-    return render(request, 'log_in.html', {'form': form})
+    return render(request, 'log_in.html', {'form': form, 'next': next})
 
 def home(request):
     return render(request, 'home.html')   
@@ -88,15 +94,14 @@ def members(request, club_id):
         members = [member.user for member in Members.objects.filter(club=club)]
         return render(request, "partials/members_list_table.html", {"members": members})      
       
-#@login_required
+@login_required
 def show_user(request, user_id=None):
     if user_id is None:
         user_id = request.user.id
-
     try:
         user = User.objects.get(id=user_id)
     except User.DoesNotExist:
-        return redirect()
+        return redirect("home")
     else:
         show_personal_information = False
         if request.user == user:
