@@ -31,6 +31,7 @@ def log_in(request):
 def home(request):
     return render(request, 'home.html')   
 
+@login_prohibited("home")
 def sign_up(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
