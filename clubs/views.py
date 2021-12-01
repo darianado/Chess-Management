@@ -266,7 +266,7 @@ def table(request):
     filtered_clubs = [member.club for member in Members.objects.filter(Q(user=request.user) )]
     list_data = []
     for club in filtered_clubs:
-        data_row = (club.club_name, Members.objects.filter(id = club.id).count(), Members.get_member_role_name(Members.get_member_role(user, club)))
+        data_row = (club.club_name, Members.objects.filter(id = club.id).count(), Members.get_member_role_name(Members.get_member_role(user, club)), club.id)
         list_data.append(data_row)
     return render(
             request,

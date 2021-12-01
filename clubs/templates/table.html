@@ -18,6 +18,11 @@
               <td>{{data.0}} </td>
               <td>{{data.1}} </td>
               <td>{{data.2}} </td>
+              <td>
+                <form action= "{% url 'show_club' data.3 %}">
+                  <input type='submit' value= 'View more'/>
+                </form>
+              </td>
             </tr>
           {%endfor%}
     </div>
