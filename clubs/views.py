@@ -34,10 +34,11 @@ def log_in(request):
     form = LogInForm()
     return render(request, 'log_in.html', {'form': form, 'next': next})
 
+@login_required
 def home(request):
     return render(request, 'home.html')   
 
-@login_prohibited("home")
+@login_prohibited(redirect_location="home")
 def sign_up(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
