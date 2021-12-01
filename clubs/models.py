@@ -5,6 +5,7 @@ from django.apps import apps
 from django.core.validators import RegexValidator
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db.models import Q
+from django.core.exceptions import ObjectDoesNotExist
 
 from libgravatar import Gravatar
 from clubs.helpers import Role
