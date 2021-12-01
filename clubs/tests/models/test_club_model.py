@@ -5,8 +5,8 @@ from django.core.exceptions import ValidationError
 class ClubModelTest(TestCase):
 
     fixtures = [
-        "clubs/tests/fixtures/default_club_hamersmith",
-        "clubs/tests/fixtures/default_club_hame"
+        "clubs/tests/fixtures/default_club_hamersmith.json",
+        "clubs/tests/fixtures/default_club_hame.json"
     ]
 
     def setUp(self):
