@@ -13,16 +13,16 @@
         {% for officer in officers %}
         <tr>
           <td>
-            <img src="{{ officer.user.mini_gravatar }}">
+            <img src="{{ officer.mini_gravatar }}">
           </td>
           <td>
-            <p>{{ officer.user.get_full_name }}</p>
+            <p>{{ officer.get_full_name }}</p>
           </td>
           <td>
             <p>officer</p>
           </td>
           <td>
-            <a href="{% url 'show_user' officer.user.id %}">More detail</a>
+            <a href="{% url 'show_user' officer.id %}">More detail</a>
           </td>
           <td>
             <a href="{% url 'officer_promote' officer.id %}">
@@ -37,16 +37,16 @@
         {% for member in members %}
         <tr>
           <td>
-            <img src="{{ member.user.mini_gravatar }}">
+            <img src="{{ member.mini_gravatar }}">
           </td>
           <td>
-            <p>{{ member.user.get_full_name }}</p>
+            <p>{{ member.get_full_name }}</p>
           </td>
           <td>
             <p>member</p>
           </td>
           <td>
-            <a href="{% url 'show_user' member.user.id %}">More detail</a>
+            <a href="{% url 'show_user' member.id %}">More detail</a>
           </td>
           <td>
             <a href="{% url 'member_promote' member.id %}">
