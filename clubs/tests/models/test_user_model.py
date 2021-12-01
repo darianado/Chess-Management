@@ -3,19 +3,7 @@ from clubs.models import User
 from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import SimpleUploadedFile
 
-import tempfile
-import shutil
-
-# ImageField testing taken from here https://stackoverflow.com/a/61672120
-
-MEDIA_ROOT = tempfile.mkdtemp()
-
-@override_settings(MEDIA_ROOT=MEDIA_ROOT)
 class UserModelTest(TestCase):
-    @classmethod
-    def tearDownClass(self):
-        shutil.rmtree(MEDIA_ROOT, ignore_errors=True)
-        super().tearDownClass()
 
     def setUp(self):
         self.user = User.objects.create_user(
@@ -162,16 +150,6 @@ class UserModelTest(TestCase):
     def test_ps_must_not_contain_more_than_520_characters(self):
         self.user.personal_statement = 'x' * 521
         self._assert_user_is_invalid()
-
-
-# gravatar upload tests
-
-    def test_gravatar_can_be_blank(self):
-        self.user.gravatar = None
-        self._assert_user_is_valid()
-
-
-
 
     def _assert_user_is_valid(self):
         try:
