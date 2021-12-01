@@ -187,39 +187,61 @@ def create_club(request):
         return HttpResponseForbidden()
       
 def officer_promote(request,member_id):
-    c_id=Members.objects.get(id=member_id).club.id
-    Members.objects.get(id=member_id).officer_promote()
-    action = Events.objects.create(club=Members.objects.get(id=member_id).club, user=Members.objects.get(id=member_id).user, action = 4)
-    return redirect('role', club_id = c_id)
+    member = Members.objects.get(id=member_id)
+    c_id = member.club.id
+
+    member.officer_promote()
+
+    action = Events.objects.create(club=member.club, user=member.user, action = 4)
+    return redirect('show_club', club_id = c_id)
 
 def officer_demote(request,member_id):
-    c_id=Members.objects.get(id=member_id).club.id
-    Members.objects.get(id=member_id).officer_demote()
-    action = Events.objects.create(club=Members.objects.get(id=member_id).club, user=Members.objects.get(id=member_id).user, action = 5)
-    return redirect('role', club_id = c_id)
+    member = Members.objects.get(id=member_id)
+    c_id = member.club.id
+
+    member.officer_demote()
+
+    action = Events.objects.create(club=member.club, user=member.user, action = 5)
+    return redirect('show_club', club_id = c_id)
 
 def member_promote(request,member_id):
-    c_id=Members.objects.get(id=member_id).club.id
-    Members.objects.get(id=member_id).member_promote()
-    action = Events.objects.create(club=Members.objects.get(id=member_id).club, user=Members.objects.get(id=member_id).user, action = 4)
-    return redirect('role', club_id = c_id)
+    member = Members.objects.get(id=member_id)
+    c_id = member.club.id
+
+    member.member_promote()
+
+    action = Events.objects.create(club=member.club, user=member.user, action = 4)
+    return redirect('show_club', club_id = c_id)
 
 def member_kick(request,member_id):
-    c_id=Members.objects.get(id=member_id).club.id
-    Members.objects.get(id=member_id).member_kick()
-    action = Events.objects.create(club=Members.objects.get(id=member_id).club, user=Members.objects.get(id=member_id).user, action = 6)
-    return redirect('role', club_id = c_id)
+    member = Members.objects.get(id=member_id)
+    c_id = member.club.id
+    club = member.club
+    user = member.user
+
+    member.member_kick()
+
+    action = Events.objects.create(club=club, user=user, action = 6)
+    return redirect('show_club', club_id = c_id)
 
 def deny_applicant(request, membership_id):
-    c_id=Members.objects.get(id=membership_id).club.id
-    Members.objects.get(id=membership_id).denyApplicant()
-    action = Events.objects.create(club=Members.objects.get(id=member_id).club, user=Members.objects.get(id=member_id).user, action = 3)
+    member = Members.objects.get(id=membership_id)
+    c_id = member.club.id
+    club = member.club
+    user = member.user
+
+    member.denyApplicant()
+
+    action = Events.objects.create(club=club, user=user, action = 3)
     return redirect('show_club', club_id = c_id)
 
 def accept_applicant(request, membership_id):
-    c_id=Members.objects.get(id=membership_id).club.id
-    Members.objects.get(id=membership_id).acceptApplicant()
-    action = Events.objects.create(club=Members.objects.get(id=member_id).club, user=Members.objects.get(id=member_id).user, action = 1)
+    member = Members.objects.get(id=membership_id)
+    c_id = member.club.id
+
+    member.acceptApplicant()
+
+    action = Events.objects.create(club=member.club, user=member.user, action = 1)
     return redirect('show_club', club_id= c_id)
 
 def events_list(request):
