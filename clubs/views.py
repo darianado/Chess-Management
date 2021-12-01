@@ -53,8 +53,8 @@ def show_club(request, club_id):
         show_applicants = False
         if member_in_club==1 :
             show_role = True
-            show_member = False
-            show_applicants = False
+            show_member = True
+            show_applicants = True
         elif member_in_club==2 :
             show_role = False
             show_member = True
@@ -197,9 +197,10 @@ def create_club(request):
 def officer_promote(request,member_id):
     member = Members.objects.get(id=member_id)
     c_id = member.club.id
-
+    current_user=request.user
+    current_member = Members.objects.get(user=current_user,club = member.club)
+    current_member.owner_demote()
     member.officer_promote()
-
     action = Events.objects.create(club=member.club, user=member.user, action = 4)
     return redirect('show_club', club_id = c_id)
 
