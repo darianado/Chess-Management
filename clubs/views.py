@@ -7,6 +7,7 @@ from django.db.models import Q
 from django.contrib.auth.hashers import check_password
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseForbidden
+#  from .filters import OrderFilter
 
 # Create your views here.
 def welcome(request):
@@ -259,10 +260,8 @@ def leave_a_club(request, club_id ):
 def table(request):
     user = request.user
     user_id = user.id 
+    #  myFilter = OrderFilter()
     filtered_clubs = []
-    #  for memberships in Members.objects.filter(user.id=user_id):
-        #  filtered_clubs.append(memberships.club)
-
     filtered_clubs = [member.club for member in Members.objects.filter(Q(user=request.user) )]
     list_data = []
     for club in filtered_clubs:
@@ -272,7 +271,8 @@ def table(request):
             request,
             "table.html",
             {
-                "list_data": list_data
+                "list_data": list_data, 
+                #  "myFilter" : myFilter,
             }
         )
 

@@ -8,3 +8,4 @@ sqlparse==0.4.2
 django-widget-tweaks==1.4.8
 humanize==3.12.0
 Faker==9.8.2
+django-filter==21.1

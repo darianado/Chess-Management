@@ -6,6 +6,10 @@
     <div class="col-sm-12 col-md-6 offset-md-3">
     <h1>Table</h1>
       <div class="card card-body">
+          <form method="get">
+            {{myFilter.form}}
+            <button class="btn btn-primary" type="submit"> Search</button>
+          </form>
         <table class='table table-sm'>
           <tr>
             <th>Club Name</th>
@@ -25,6 +29,7 @@
               </td>
             </tr>
           {%endfor%}
+      </table>
     </div>
   </div>
 </div>
