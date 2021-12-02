@@ -52,8 +52,9 @@ def show_club(request, club_id):
     except ObjectDoesNotExist:
             return redirect('club_list')
     else:
+        nr_member = Members.objects.filter(club=club).exclude(role=4).count()
         return render(request,'show_club.html', 
-                {'club': club, 'member_in_club': member_in_club})
+                {'club': club, 'member_in_club': member_in_club, 'number_of_members':nr_member})
 
 def show_applicants(request, club_id):
     try: 
@@ -199,13 +200,13 @@ def member_kick(request,member_id):
 def deny_applicant(request, membership_id):
     c_id=Members.objects.get(id=membership_id).club.id
     Members.objects.get(id=membership_id).denyApplicant()
-    action = Events.objects.create(club=Members.objects.get(id=member_id).club, user=Members.objects.get(id=member_id).user, action = 3)
+#  action = Events.objects.create(club=Members.objects.get(id=membership_id).club, user=Members.objects.get(id=membership_id).user, action = 3)
     return redirect('show_club', club_id = c_id)
 
 def accept_applicant(request, membership_id):
     c_id=Members.objects.get(id=membership_id).club.id
     Members.objects.get(id=membership_id).acceptApplicant()
-    action = Events.objects.create(club=Members.objects.get(id=member_id).club, user=Members.objects.get(id=member_id).user, action = 1)
+    # action = Events.objects.create(club=Members.objects.get(id=membership_id).club, user=Members.objects.get(id=membership_id).user, action = 1)
     return redirect('show_club', club_id= c_id)
 
 def events_list(request):
