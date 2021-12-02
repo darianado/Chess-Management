@@ -51,9 +51,9 @@ def show_club(request, club_id):
     except ObjectDoesNotExist:
             return redirect('club_list')
     else:
-        nr_memb = Members.objects.filter(club=club).exclude(role=4).count()
+        nr_member = Members.objects.filter(club=club).exclude(role=4).count()
         return render(request,'show_club.html', 
-                {'club': club, 'member_in_club': member_in_club, 'number_of_members':nr_memb})
+                {'club': club, 'member_in_club': member_in_club, 'number_of_members':nr_member})
 
 def show_applicants(request, club_id):
     try: 

@@ -1,12 +1,15 @@
+{% extends 'base.html' %}
 {% load static %}
 
+
+{% block body %}
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 
 
 <div id="mySidebar" class="sidebar m-0 fixed-left" onmouseover="toggleSidebar()" onmouseout="toggleSidebar()">
   
-  <a onclick="showMembers()">
+  <a onclick="showMembers()" >
     <i class="material-icons">accessibility_new</i>
     <span class="icon-text">Members</span>
   </a><br>
@@ -35,8 +38,9 @@ function toggleSidebar() {
     this.mini = false;
   } else {
     console.log("closing sidebar");
-    document.getElementById("mySidebar").style.width = "85px";
+    document.getElementById("mySidebar").style.width = "8%";
     this.mini = true;
   }
 }
 </script>
+{% endblock %}
