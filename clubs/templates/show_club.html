@@ -1,12 +1,7 @@
 
 {% extends 'home.html' %}
 
-
-
-{% block tab_content %}
-
-
-
+{% block card_content %}
 
 
 <script>
@@ -52,21 +47,7 @@
 
 
 
-
-<script>
-  document.getElementById('nav-dashboard-tab').ariaSelected=false;
-  document.getElementById('nav-dashboard-tab').classList.remove('active');
-
-  document.getElementById('nav-one-club-tab').ariaSelected=true;
-  document.getElementById('nav-one-club-tab').classList.add('active');
-
-  document.getElementById('nav-dashboard').classList.remove('active');
-
-
-</script>
-
-
-<div id="clubcard" hidden>
+<div class="card-body">
 
   <div class="container p-0">
     <div class="row m-0">
@@ -86,12 +67,5 @@
   </div>
 </div>
 
-
-
-<script type="text/javascript">
-  k= document.getElementById('clubcard').innerHTML;
-  document.getElementById('nav-one-club').innerHTML =  k;
-</script>
-</div>
 
 {% endblock %}

@@ -4,9 +4,6 @@
 {% include 'partials/main-nav-bar.html' %}
 
 
-
-
-
 <main class="page" >
 
 <div class="container-fluid nav-row" >
@@ -15,13 +12,11 @@
         <div class="col-lg-8 col-md-10 col-sm-12 "  >
             <nav class="nav align-items-end">
                 <div class="nav" id="nav-tab" role="tablist">
-                  <a class="nav-link active pb-0" id="nav-dashboard-tab" data-bs-toggle="tab" data-bs-target="#nav-dashboard" type="button" role="tab" aria-controls="nav-dashboard" aria-selected="true">
+                  <a href="{% url 'dashboard' %}" class="nav-link pb-0" id="nav-dashboard-tab" >
                       <h3 class="title">DashBoard</h3>
                   </a>
-                  <a class="nav-link pb-0" id="nav-clubs-tab" data-bs-toggle="tab" data-bs-target="#nav-clubs" type="button" role="tab" aria-controls="nav-clubs" aria-selected="false">
+                  <a href="{% url 'club_list' %}" class="nav-link pb-0" id="nav-clubs-tab" >
                       <h3 class="title">Clubs</h3>
-                  </a>
-                  <a class="nav-link pb-0" id="nav-one-club-tab" data-bs-toggle="tab" data-bs-target="#nav-one-club" type="button" role="tab" aria-controls="nav-one-club" aria-selected="false">
                   </a>
                 </div>
             </nav>
@@ -39,31 +34,26 @@
         <div class="col-lg-8 col-md-10 col-sm-12"  >
             <div class="card p-0 min-vh-100" >
 
-                <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade show active" id="nav-dashboard" role="tabpanel" aria-labelledby="nav-dashboard-tab">
-
-                        {% include 'partials/dashboard.html' %}
+                <!-- <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show " id="nav-dashboard">
+                        {% block dashboard %}
+                        {%  endblock %}
                     </div>
 
-                    <div class="tab-pane fade" id="nav-clubs" role="tabpanel" aria-labelledby="nav-clubs-tab" >
-                        <script type="text/javascript">
-                            const Http = new XMLHttpRequest();
-                            const url="{% url 'club_list' %}";
-                            Http.open("GET", url);
-                            Http.onreadystatechange = function () {
-                                if (this.readyState == 4 && this.status == 200) {
-                                document.getElementById('nav-clubs').innerHTML ="<div>"+Http.responseText+"</div>";
-                                }
-                            }
-                            Http.send();
-                        </script>
-
-
+                    <div class="tab-pane fade show" id="nav-clubs"  >
+                          {% block clubs %}
+                            {% endblock %}
+                       
                     </div>
-                    <div class="tab-pane fade show active" id="nav-one-club" role="tabpanel" aria-labelledby="nav-one-club-tab">
-                        {% block tab_content %}
+                    <div  id="nav-one-club" >
+                        {% block club_content %}
                         {% endblock %}
                     </div>
+                </div> -->
+
+                <div>
+                    {% block card_content %}
+                    {% endblock %}
                 </div>
 
             </div>
