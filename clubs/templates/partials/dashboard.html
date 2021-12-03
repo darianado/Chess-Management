@@ -40,22 +40,25 @@
 
    
     <script type="text/javascript">
-        function load(){
+        
              http = new XMLHttpRequest();
              u="{% url 'table' %}";
-        }
-    </script>
 
-    {% if list_data %}
-
-    <script type="text/javascript">
-        http.open("GET", u);
+             http.open("GET", u);
         http.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 document.getElementById('my_clubs').innerHTML ="<div>"+http.responseText+"</div>";
             }
         }
         http.send();
+        
+    </script>
+
+    
+    {% if list_data %}
+
+    <script type="text/javascript">
+        
     </script>
 
     {% else %}

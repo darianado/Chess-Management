@@ -177,19 +177,19 @@ def officer_promote(request,member_id):
     c_id=Members.objects.get(id=member_id).club.id
     Members.objects.get(id=member_id).officer_promote()
     action = Events.objects.create(club=Members.objects.get(id=member_id).club, user=Members.objects.get(id=member_id).user, action = 4)
-    return redirect('role', club_id = c_id)
+    return redirect('show_club', club_id = c_id)
 
 def officer_demote(request,member_id):
     c_id=Members.objects.get(id=member_id).club.id
     Members.objects.get(id=member_id).officer_demote()
     action = Events.objects.create(club=Members.objects.get(id=member_id).club, user=Members.objects.get(id=member_id).user, action = 5)
-    return redirect('role', club_id = c_id)
+    return redirect('show_club', club_id = c_id)
 
 def member_promote(request,member_id):
     c_id=Members.objects.get(id=member_id).club.id
     Members.objects.get(id=member_id).member_promote()
     action = Events.objects.create(club=Members.objects.get(id=member_id).club, user=Members.objects.get(id=member_id).user, action = 4)
-    return redirect('role', club_id = c_id)
+    return redirect('show_club', club_id = c_id)
 
 def member_kick(request,member_id):
     c_id=Members.objects.get(id=member_id).club.id
