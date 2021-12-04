@@ -18,6 +18,7 @@ class ShowClubTest(TestCase):
     def setUp(self):
         self.user = User.objects.get(email='janedoe@example.org') #owner
         self.userCharlie = User.objects.get(email='charliedoe@example.org') #owner
+        self.userVictor = User.objects.get(email='victordoe@example.org') #owner
         self.clubHame = Club.objects.get(club_name="Hame Chess Club")
         self.clubHamersmith = Club.objects.get(club_name="Hamersmith Chess Club")
 
@@ -63,6 +64,15 @@ class ShowClubTest(TestCase):
         response = self.client.get(self.urlHame)
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, 'Charlie')
+
+    def test_apply_for_applicant_when_logged_in_user_is_user(self):
+        self.client.login(email=self.userVictor.email, password="Password123")
+        response = self.client.get(self.urlHame)
+
+    #  def test_redirect_when_applicant(self):
+        #  redirect_url = reverse_with_next(self.urlHame,'resend_application')
+        #  response = self.client.get(self.urlHame)
+        #  self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
         
 
