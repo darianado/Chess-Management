@@ -167,7 +167,7 @@ class Members(models.Model):
     def get_member_role(other_user,other_club):
         try:
             member = Members.objects.filter(club=other_club).get(user=other_user)
-        except ObjectDoesNotExist:
+        except Members.DoesNotExist:
             return None
         else:
             return member.role
@@ -206,16 +206,16 @@ class Events(models.Model):
                                     MinValueValidator(1),
                                     MaxValueValidator(6)
                                 ])
-    def getAction():
-        if action == 1:
+    def getAction(self):
+        if self.action == 1:
             return "Accepted by"
-        elif action == 2:
+        elif self.action == 2:
             return "Applied by"
-        elif action == 3:
+        elif self.action == 3:
             return "Rejected by"
-        elif action == 4:
+        elif self.action == 4:
             return "Promoted by"
-        elif action == 5:
+        elif self.action == 5:
             return "Demoted by"
-        elif action == 6:
+        elif self.action == 6:
             return "Kicked by"
