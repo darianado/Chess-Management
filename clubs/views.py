@@ -245,13 +245,11 @@ def resend_application(request, club_id):
                 {'club': club, 'user':user})
     return redirect('show_club', club.id)
 
-#should be tested after them being a member
 def leave_a_club(request, club_id ):
     club = Club.objects.get(id=club_id)
     user = request.user
     member_in_club = Members.get_member_role(user,club)
     if request.method == 'GET':
-        print(" baby one more time and i am out of here")
         Members.objects.filter(club_id=club_id).get(user_id=user.id).delete()
 
     return redirect('show_club', club.id)
