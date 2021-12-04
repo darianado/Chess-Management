@@ -18,7 +18,13 @@
         <p>current members: {{number_of_members}}</p>
       </div>
       <div>
-        {% if member_in_club == None %}
+        <h1>Owner Information</h1>
+        <img src="{{ owner_club.user.gravatar }}">
+        <h3 class=" fs-3 fw-bolder">{{owner_club.user.first_name}}</h3>
+        <h3 class=" fs-3 fw-bolder">{{owner_club.user.bio}} </h3>
+      </div>
+      <div>
+        {%if member_in_club == None %}
             <form action= "{% url 'apply_to_club' club.id %}">
               <input type='submit' value= 'Apply'/>
             </form>

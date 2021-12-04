@@ -1,0 +1,29 @@
+[
+    {
+        "model": "clubs.members",
+        "pk": 3,
+        "fields": {
+            "club": 2,
+            "user": 3,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.members",
+        "pk": 4,
+        "fields": {
+            "club": 2,
+            "user": 4,
+            "role": 2
+        }
+    },
+    {
+        "model": "clubs.members",
+        "pk": 5,
+        "fields": {
+            "club": 2,
+            "user": 5,
+            "role": 2
+        }
+    }
+]
