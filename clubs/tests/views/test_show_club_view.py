@@ -1,34 +1,69 @@
 from django.test import TestCase
 from django.urls import reverse
-from clubs.models import Club
+from clubs.helpers import reverse_with_next
+from clubs.models import Club, User
 
-class ShowUserTest(TestCase):
+class ShowClubTest(TestCase):
+
+    fixtures = [
+        "clubs/tests/fixtures/default_user_john.json",
+        "clubs/tests/fixtures/default_user_jane.json",
+        "clubs/tests/fixtures/default_club_hame.json",
+        "clubs/tests/fixtures/default_club_hamersmith.json",
+        "clubs/tests/fixtures/default_member_jane_hame.json",
+        "clubs/tests/fixtures/other_users.json",
+        "clubs/tests/fixtures/other_members.json",
+    ]
+
     def setUp(self):
-        self.club = Club.objects.create(
-            club_name='London Chess Club',
-            location='SE14XA',
-            description='The quick brown fox jumps over the lazy dog.'
-        )
-        self.url = reverse('show_club', kwargs={'club_id': self.club.id})
+        self.user = User.objects.get(email='janedoe@example.org') #owner
+        self.userCharlie = User.objects.get(email='charliedoe@example.org') #owner
+        self.clubHame = Club.objects.get(club_name="Hame Chess Club")
+        self.clubHamersmith = Club.objects.get(club_name="Hamersmith Chess Club")
+
+        self.urlHame = reverse('show_club', kwargs={'club_id': self.clubHame.id})
 
     def test_show_club_url(self):
-        self.assertEqual(self.url,f'/club/{self.club.id}')
+        self.assertEqual(self.urlHame,f'/club/{self.clubHame.id}')
 
-    # def test_get_show_club_with_valid_id(self):
-    #     response = self.client.get(self.url)
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertTemplateUsed(response, 'show_club.html')
-    #     self.assertContains(response, "London Chess Club")
+    #  def test_get_show_club_redirects_when_not_logged_in(self):
+        #  redirect_url = reverse_with_next('log_in', self.url)
+        #  response = self.client.get(self.url)
+        #  self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
-    def test_get_show_user_with_invalid_id(self):
-        url = reverse('show_club', kwargs={'club_id': self.club.id+1})
+    def test_get_show_club_with_valid_id(self):
+        self.client.login(email=self.user.email, password='Password123')
+        response = self.client.get(self.urlHame)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'show_club.html')
+        self.assertContains(response, "Hame Chess Club")
+
+    def test_get_show_club_with_invalid_id(self):
+        url = reverse('show_club', kwargs={'club_id': self.clubHame.id+9999999})
         response = self.client.get(url, follow=True)
         response_url = reverse('club_list')
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
         self.assertTemplateUsed(response, 'club_list.html')
         
 
-        # tests for apply button and leave button
 
-        #test for resend button
+    #  def test_content_displayed_corectly(self):
+        #  url = reverse('show_club', kwargs={'club_id': clubHamersmith.id})
+        #  response = self.client.get(url)
+
+
+    def test_correct_owner_information_shown(self):
+        self.client.login(email=self.user.email, password="Password123")
+        response = self.client.get(self.urlHame)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Jane')
+
+    def test_incorrect_owner_information_shown(self):
+        self.client.login(email=self.userCharlie.email, password="Password123")
+        response = self.client.get(self.urlHame)
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, 'Charlie')
+
+        
+
 
