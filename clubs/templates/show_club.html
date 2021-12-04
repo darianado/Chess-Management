@@ -1,12 +1,7 @@
 
 {% extends 'home.html' %}
 
-
-
-{% block tab_content %}
-
-
-
+{% block card_content %}
 
 
 <script>
@@ -52,50 +47,25 @@
 
 
 
+<div class="card-body">
 
-<script>
-  document.getElementById('nav-dashboard-tab').ariaSelected=false;
-  document.getElementById('nav-dashboard-tab').classList.remove('active');
+  <div class="container p-0">
+    <div class="row m-0">
 
-  document.getElementById('nav-one-club-tab').ariaSelected=true;
-  document.getElementById('nav-one-club-tab').classList.add('active');
-
-  document.getElementById('nav-dashboard').classList.remove('active');
-
-
-</script>
+        <div class="col-1 p-0" >
+          {% include 'partials/side-bar.html' with show_role=show_role show_member=show_member show_applicants=show_applicants %}
+        </div>
 
 
-<div id="clubcard" hidden>
-
-<div class="container">
-  <div class="row">
-
-
-      <div class="col-xs-12 col-lg-6">
-      {% include 'partials/side-bar.html' with show_role=show_role show_member=show_member show_applicants=show_applicants %}
+      <div class="col-11 p-0">
+        <div id="membersList">
+          {% include 'partials/club_profile.html' %}
+        </div>
       </div>
 
-
-
-    <div class="col-xs-12 col-lg-6">
-      <div id="membersList">
-         {% include 'partials/club_profile.html' %}
-      </div>
     </div>
-
-
-
-
   </div>
 </div>
 
-
-
-<script type="text/javascript">
-  k= document.getElementById('clubcard').innerHTML;
-  document.getElementById('nav-one-club').innerHTML =  k;
-</script>
-</div>
 
 {% endblock %}

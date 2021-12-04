@@ -5,6 +5,7 @@ from django.apps import apps
 from django.core.validators import RegexValidator
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db.models import Q
+from django.core.exceptions import ObjectDoesNotExist
 
 from libgravatar import Gravatar
 from clubs.helpers import Role
@@ -170,7 +171,18 @@ class Members(models.Model):
             return None
         else:
             return member.role
-
+    def get_member_role_name(role):
+        if role == 1:
+            return ('Owner')    
+        elif role == 2:
+            return ('Officer')    
+        elif role == 3:
+            return ('Member')    
+        elif role == 4:
+            return ('Applicant')    
+        elif role == None:
+            return ('User')    
+        return ('')   
 class Events(models.Model):
     date_created = models.DateTimeField(
         auto_now=False,

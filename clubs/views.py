@@ -7,6 +7,7 @@ from django.db.models import Q
 from django.contrib.auth.hashers import check_password
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseForbidden
+#  from .filters import OrderFilter
 
 # Create your views here.
 def welcome(request):
@@ -21,12 +22,13 @@ def log_in(request):
             user = authenticate(email=email, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('home')
+                return redirect('dashboard')
     form = LogInForm()
     return render(request, 'log_in.html', {'form': form})
 
-def home(request):
-    return render(request, 'home.html')
+
+def dashboard(request):
+    return render(request, 'partials/dashboard.html')   
 
 def sign_up(request):
     if request.method == 'POST':
@@ -34,7 +36,7 @@ def sign_up(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('home')
+            return redirect('dashboard')
     else:
         form = SignUpForm()
     return render(request, 'sign_up.html', {'form': form})
@@ -48,6 +50,8 @@ def show_club(request, club_id):
         club = Club.objects.get(id=club_id)
         user = request.user
         member_in_club = Members.get_member_role(user,club)
+        owner_club = Members.objects.filter(club=club).get(role=1)
+        nr_member = Members.objects.filter(club=club).exclude(role=4).count()
         show_role = False
         show_member = False
         show_applicants = False
@@ -75,7 +79,9 @@ def show_club(request, club_id):
                 'member_in_club': member_in_club,
                 'show_role':show_role,
                 'show_member':show_member,
-                'show_applicants':show_applicants})
+                'show_applicants':show_applicants,
+                'number_of_members':nr_member, 
+                'owner_club' : owner_club})
 
 def show_applicants(request, club_id):
     try:
@@ -91,7 +97,7 @@ def show_roles(request,club_id):
     try:
         club = Club.objects.get(id=club_id)
     except ObjectDoesNotExist:
-        return redirect('home')
+        return redirect('club_list')
     else:
         users = Members.objects.all().filter(club=club)
         members = users.filter(role = 3)
@@ -186,7 +192,7 @@ def create_club(request):
                 description = form.cleaned_data.get('description')
                 club = Club.objects.create(club_name=club_name, location=location, description=description)
                 member = Members.objects.create(club=club, user=current_user, role=1)
-                return redirect('home')
+                return redirect('club_list')
             else:
                 return render(request, 'create_club.html', {'form': form})
         else:
@@ -259,7 +265,7 @@ def events_list(request):
         try:
             events = Events.objects.get(user=current_user)
         except ObjectDoesNotExist:
-            return redirect('home')
+            return redirect('dashboard')
         else:
             return render(request, 'events_list.html', {'events': events})
     else:
@@ -288,13 +294,36 @@ def resend_application(request, club_id):
                 {'club': club, 'user':user})
     return redirect('show_club', club.id)
 
-#should be tested after them being a member
 def leave_a_club(request, club_id ):
     club = Club.objects.get(id=club_id)
     user = request.user
     member_in_club = Members.get_member_role(user,club)
     if request.method == 'GET':
-        print(" baby one more time and i am out of here")
         Members.objects.filter(club_id=club_id).get(user_id=user.id).delete()
 
     return redirect('show_club', club.id)
+
+
+
+
+def table(request):
+    user = request.user
+    user_id = user.id 
+    #  myFilter = OrderFilter()
+    filtered_clubs = []
+    filtered_clubs = [member.club for member in Members.objects.filter(Q(user=request.user) )]
+    list_data = []
+    for club in filtered_clubs:
+        
+        data_row = (club.club_name, Members.objects.filter(club=club).exclude(role=4).count(), Members.get_member_role_name(Members.get_member_role(user, club)), club.id)
+        list_data.append(data_row)
+    return render(
+            request,
+            "table.html",
+            {
+                "list_data": list_data, 
+                #  "myFilter" : myFilter,
+            }
+        )
+
+

@@ -7,7 +7,7 @@ class ClubListTest(TestCase):
         self.url = reverse('club_list')
 
     def test_club_list_url(self):
-        self.assertEqual(self.url,'/clubs/')
+        self.assertEqual(self.url,'/home/clubs')
 
     def test_get_club_list(self):
         self._create_test_clubs(15)

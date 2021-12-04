@@ -1,0 +1,58 @@
+[
+    {
+        "model": "clubs.user",
+        "pk": 3,
+        "fields": {
+            "first_name": "Charlie",
+            "last_name": "Doe",
+            "email": "charliedoe@example.org",
+            "password": "pbkdf2_sha256$260000$dREbtBVR05OlBPCXe97KKO$rNpVNh4GPbefUMy0rt6Pwor7Vwar133e8YVaRaJPXNY=",
+            "bio": "Hi I'm Charlie",
+            "chess_experience_level": 3,
+            "personal_statement": "nu mi place sa joc sah",
+            "is_active": true
+        }
+    }, 
+    {
+        "model": "clubs.user",
+        "pk": 4,
+        "fields": {
+            "first_name": "Greta",
+            "last_name": "Doe",
+            "email": "greatdoe@example.org",
+            "password": "pbkdf2_sha256$260000$dREbtBVR05OlBPCXe97KKO$rNpVNh4GPbefUMy0rt6Pwor7Vwar133e8YVaRaJPXNY=",
+            "bio": "Hi I'm Greta",
+            "chess_experience_level": 3,
+            "personal_statement": "nu mi place sa joc sah",
+            "is_active": true
+        }
+    },
+    {
+        "model": "clubs.user",
+        "pk": 6,
+        "fields": {
+            "first_name": "Victor",
+            "last_name": "Doe",
+            "email": "victordoe@example.org",
+            "password": "pbkdf2_sha256$260000$dREbtBVR05OlBPCXe97KKO$rNpVNh4GPbefUMy0rt6Pwor7Vwar133e8YVaRaJPXNY=",
+            "bio": "Hi I'm Victor",
+            "chess_experience_level": 3,
+            "personal_statement": "nu mi place sa joc sah",
+            "is_active": true
+        }
+    },
+    {
+        "model": "clubs.user",
+        "pk": 5,
+        "fields": {
+            "first_name": "Miki",
+            "last_name": "Doe",
+            "email": "mikidoe@example.org",
+            "password": "pbkdf2_sha256$260000$dREbtBVR05OlBPCXe97KKO$rNpVNh4GPbefUMy0rt6Pwor7Vwar133e8YVaRaJPXNY=",
+            "bio": "Hi I'm Miki",
+            "chess_experience_level": 3,
+            "personal_statement": "nu mi place sa joc sah",
+            "is_active": true
+        }
+    }
+]
