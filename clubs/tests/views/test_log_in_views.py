@@ -51,9 +51,9 @@ class LogInViewTestCase(TestCase, LogInTester):
         form_input = {'email': 'xiangyi@gmail.com', 'password': 'Password123'}
         response = self.client.post(self.url, form_input, follow = True)
         self.assertTrue(self._is_logged_in())
-        response_url = reverse('home')
+        response_url = reverse('dashboard')
         self.assertRedirects(response, response_url, status_code = 302, target_status_code = 200)
-        self.assertTemplateUsed(response, 'home.html')
+        self.assertTemplateUsed(response, 'partials/dashboard.html')
 
 
     def test_valid_log_in_by_inactive_user(self):

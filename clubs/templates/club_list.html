@@ -1,6 +1,14 @@
-<div class="container">
-  <div class="row">
-    <div class="col-12">
+{% extends 'home.html' %}
+
+{% block card_content %}
+
+
+<script type="text/javascript">
+  document.getElementById('nav-clubs-tab').classList.add('active');
+</script>
+
+<div class="card-body">
+  <div>
       <h1>Clubs</h1>
       <table class="table">
         {% for club in clubs %}
@@ -10,6 +18,18 @@
           </tr>
         {% endfor %}
       </table>
+      
+        <div>
+          <form action="{% url 'create_club' %}">
+              <button  class="btn btn-dark me-md-2"> 
+                  Create Club
+              </button>
+          </form>    
+        </div>
     </div>
-  </div>
+
+
 </div>
+
+
+{% endblock %}
