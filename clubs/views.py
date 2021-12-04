@@ -129,7 +129,7 @@ def show_user(request, user_id=None):
     try:
         user = User.objects.get(id=user_id)
     except User.DoesNotExist:
-        return redirect("home")
+        return redirect("dashboard")
     else:
         show_personal_information = False
         if request.user == user:
