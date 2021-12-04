@@ -30,7 +30,7 @@ class ShowMemberListTest(TestCase):
     def test_get_show_club_members_when_not_a_member_of_the_club(self):
         self.client.login(email=self.userJane.email, password="Password123")
         response = self.client.get(self.urlHame)
-        redirect_url = reverse("home")
+        redirect_url = reverse("dashboard")
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
     def test_get_club_Hame_members(self):
