@@ -26,6 +26,7 @@ def log_in(request):
     form = LogInForm()
     return render(request, 'log_in.html', {'form': form})
 
+
 def dashboard(request):
     return render(request, 'partials/dashboard.html')   
 
@@ -45,26 +46,51 @@ def club_list(request):
     return render(request,'club_list.html', {'clubs': clubs})
 
 def show_club(request, club_id):
-    try: 
+    try:
         club = Club.objects.get(id=club_id)
         user = request.user
         member_in_club = Members.get_member_role(user,club)
         owner_club = Members.objects.filter(club=club).get(role=1)
         nr_member = Members.objects.filter(club=club).exclude(role=4).count()
+        show_role = False
+        show_member = False
+        show_applicants = False
+        if member_in_club==1 :
+            show_role = True
+            show_member = True
+            show_applicants = True
+        elif member_in_club==2 :
+            show_role = False
+            show_member = True
+            show_applicants = True
+        elif member_in_club==3 :
+            show_role = False
+            show_member = True
+            show_applicants = False
+        elif member_in_club==4 :
+            show_role = False
+            show_member = False
+            show_applicants = False
     except ObjectDoesNotExist:
             return redirect('club_list')
     else:
-        return render(request,'show_club.html', 
-                {'club': club, 'member_in_club': member_in_club, 'number_of_members':nr_member, 'owner_club' : owner_club, })
+        return render(request,'show_club.html',
+                {'club': club,
+                'member_in_club': member_in_club,
+                'show_role':show_role,
+                'show_member':show_member,
+                'show_applicants':show_applicants,
+                'number_of_members':nr_member, 
+                'owner_club' : owner_club})
 
 def show_applicants(request, club_id):
-    try: 
+    try:
         thisClub = Club.objects.get(id=club_id)
     except ObjectDoesNotExist:
             return redirect('club_list')
     else:
         applicants = Members.objects.filter(club=thisClub, role=4)
-        return render(request,"partials/applicants_as_table.html", 
+        return render(request,"partials/applicants_as_table.html",
                  {'club': thisClub, 'applicants':applicants})
 
 def show_roles(request,club_id):
@@ -79,14 +105,14 @@ def show_roles(request,club_id):
         return render(request, "partials/roles_list_table.html", {"members": members,"officers": officers})
 
 def members(request, club_id):
-    try: 
+    try:
         club = Club.objects.get(id=club_id)
     except ObjectDoesNotExist:
         return redirect('club_list')
     else:
         members = [member.user for member in Members.objects.filter(club=club)]
-        return render(request, "partials/members_list_table.html", {"members": members})      
-      
+        return render(request, "partials/members_list_table.html", {"members": members})
+
 #@login_required
 def show_user(request, user_id=None):
     if user_id is None:
@@ -173,13 +199,14 @@ def create_club(request):
             return redirect('log_in')
     else:
         return HttpResponseForbidden()
-      
+
 def officer_promote(request,member_id):
     member = Members.objects.get(id=member_id)
     c_id = member.club.id
-
+    current_user=request.user
+    current_member = Members.objects.get(user=current_user,club = member.club)
+    current_member.owner_demote()
     member.officer_promote()
-
     action = Events.objects.create(club=member.club, user=member.user, action = 4)
     return redirect('show_club', club_id = c_id)
 
@@ -243,7 +270,7 @@ def events_list(request):
             return render(request, 'events_list.html', {'events': events})
     else:
         return redirect('log_in')
-      
+
 def apply_to_club(request, club_id ):
     club = Club.objects.get(id=club_id)
     user = request.user
@@ -263,7 +290,7 @@ def resend_application(request, club_id):
     user = request.user
     member_in_club = Members.get_member_role(user,club)
     if request.method == 'GET':
-        return render(request, 'resend_application.html', 
+        return render(request, 'resend_application.html',
                 {'club': club, 'user':user})
     return redirect('show_club', club.id)
 
