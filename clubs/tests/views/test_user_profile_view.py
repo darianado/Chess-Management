@@ -48,7 +48,7 @@ class UserProfileViewTestCase(TestCase):
     def test_case_when_id_is_incorrect(self):
         self.client.login(email=self.userJohn.email, password="Password123")
         response = self.client.get(self.urlIncorrect, follow=True)
-        redirect_url = reverse("home")
+        redirect_url = reverse("dashboard")
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
     def test_show_url_with_no_id_redirects_to_own_profile(self):
