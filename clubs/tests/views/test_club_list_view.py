@@ -14,7 +14,7 @@ class ClubListTest(TestCase):
         self.userJohn = User.objects.get(email="johndoe@example.org")
 
     def test_club_list_url(self):
-        self.assertEqual(self.url,'/clubs/')
+        self.assertEqual(self.url,'/home/clubs')
 
     def test_get_club_list_when_not_logged_in(self):
         response = self.client.get(self.url)

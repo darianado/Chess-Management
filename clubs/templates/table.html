@@ -1,0 +1,42 @@
+{% extends 'base_content.html' %}
+{% block content %}
+<!-- {% include 'partials/main-nav-bar.html' %} -->
+
+<!-- <div class="row">
+  <div class="col-sm-12 col-md-6 offset-md-3">
+       <h1>Table</h1>
+    <div class="card card-body"> -->
+
+
+
+          <!-- <form method="get">
+            {{myFilter.form}}
+            <button class="btn btn-primary" type="submit"> Search</button>
+          </form> -->
+        <table class='table table-sm'>
+          <tr>
+            <th>Club Name</th>
+            <th>Members' count</th>
+            <th>Status</th>
+            {% comment %} <th></th> {% endcomment %}
+          </tr>
+          {% for data in list_data %}
+            <tr>
+              <td>{{data.0}} </td>
+              <td>{{data.1}} </td>
+              <td>{{data.2}} </td>
+              <td>
+                <form action= "{% url 'show_club' data.3 %}">
+                  <input type='submit' value= 'View more'/>
+                </form>
+              </td>
+            </tr>
+          {%endfor%}
+        </table>
+
+
+
+    <!-- </div>
+  </div>
+</div> -->
+{% endblock %}

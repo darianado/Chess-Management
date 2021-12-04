@@ -44,7 +44,7 @@ class SignUpViewTestCase(TestCase, LogInTester):
 
     def test_successful_sign_up(self):
         response = self.client.post(self.url, self.form_input, follow = True)
-        response_url = reverse('home')
+        response_url = reverse('dashboard')
         self.assertRedirects(response, response_url, status_code = 302, target_status_code = 200)
         self.assertTemplateUsed(response, 'home.html')
         user = User.objects.get(email = 'xiangyi@gmail.com')

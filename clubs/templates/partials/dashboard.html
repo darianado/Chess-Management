@@ -1,3 +1,10 @@
+{% extends 'home.html' %}
+
+{% block card_content %}
+
+<script type="text/javascript">
+    document.getElementById('nav-dashboard-tab').classList.add('active');
+</script>
 
 <div class="card-body">
     <h3 class="card-title"> Hi My Name,</h3>
@@ -21,9 +28,47 @@
     </div>
 
     
-
-    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <h3 class="me-auto">You have not applied to any club</h3>
-        <button class="btn btn-dark me-md-2" type="button">Apply now</button>
+    <div id="not_applied" hidden>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <h3 class="me-auto">You have not applied to any club</h3>
+            <button class="btn btn-dark me-md-2" type="button">Apply now</button>
+        </div>
     </div>
+
+
+    <div id="my_clubs"></div>
+
+   
+    <script type="text/javascript">
+        
+             http = new XMLHttpRequest();
+             u="{% url 'table' %}";
+
+             http.open("GET", u);
+            http.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById('my_clubs').innerHTML ="<div>"+http.responseText+"</div>";
+            }
+        }
+        http.send();
+        
+    </script>
+
+    
+    <!-- {% if list_data %}
+
+    <script type="text/javascript">
+        
+    </script>
+
+    {% else %}
+        <script type="text/javascript">
+            k= document.getElementById('not_applied').innerHTML;
+            document.getElementById('my_clubs').innerHTML =  k;
+        </script>
+    {% endif %} -->
+
+
 </div>
+
+{% endblock %}
