@@ -39,7 +39,7 @@ class ShowClubTest(TestCase):
         self.assertContains(response, "Hame Chess Club")
 
     def test_get_show_club_with_invalid_id(self):
-        self.client.login(email=self.userJohn.email, password="Password123")
+        self.client.login(email=self.user.email, password="Password123")
         url = reverse('show_club', kwargs={'club_id': self.clubHame.id+9999999})
         response = self.client.get(url, follow=True)
         response_url = reverse('club_list')
