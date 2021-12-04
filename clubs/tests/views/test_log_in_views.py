@@ -79,7 +79,7 @@ class LogInViewTestCase(TestCase, LogInTester):
     def test_get_log_in_redirects_when_logged_in(self):
         self.client.login(email=self.user.email, password="Password123")
         response = self.client.get(self.url, follow=True)
-        response_url = reverse("home")
+        response_url = reverse("dashboard")
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
         self.assertTemplateUsed(response, 'home.html')
 
@@ -90,7 +90,7 @@ class LogInViewTestCase(TestCase, LogInTester):
             "password": "WrongPassword123"
         }
         response = self.client.post(self.url, form_input, follow=True)
-        redirect_url = reverse("home")
+        redirect_url = reverse("dashboard")
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
         self.assertTemplateUsed(response, "home.html")
 
