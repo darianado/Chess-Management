@@ -4,7 +4,7 @@
   </div>
 </div>
 
-
+<div>
       <p class="profile-bio">
         {{ club.description}}
       </p>
@@ -28,7 +28,7 @@
             <form action= "{% url 'apply_to_club' club.id %}">
               <input type='submit' value= 'Apply'/>
             </form>
-          {% elif member_in_club == 3 %}
+          {% elif member_in_club == 3 or member_in_club == 2 %}
             <form action= "{% url 'leave_a_club' club.id %}">
               <input type='submit' value= 'Leave'/>
             </form>
@@ -38,4 +38,6 @@
             </form>
         {% endif %}
       </div>
+
+</div>
 
