@@ -247,6 +247,16 @@ class Tournament(models.Model):
 
     participants = models.ManyToManyField(Members, through="Participant", related_name="participants")
 
+    capacity = models.IntegerField(
+            unique=False,
+            blank=False,
+            default=96,
+            validators=[
+                MinValueValidator(2),
+                MaxValueValidator(96)
+            ]
+        )
+
 class Participant(models.Model):
     class Meta:
         ordering=["-score"]

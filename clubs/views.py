@@ -187,20 +187,30 @@ def password(request):
         form = changePasswordForm()
     return render(request, 'password.html', {'form': form})
 
-def create_tournament(request):
-    if request.method == 'POST':
+def create_tournament(request, club_id):
+    current_user = request.user
+    club = Club.objects.get(id=club_id)
+    current_member = Members.objects.get(club=club, user=current_user)
+    possible_coorganisers = Members.objects.filter(Q(club=club) & (Q(role=2) | Q(role=1) )).exclude(user=current_user)
+
+    if request.method == 'GET':
+        form = CreateTournamentForm()
+        return render(request, 'create_tournament.html', {'form': form, 'possible_coorganisers': possible_coorganisers, })
+    elif request.method == 'POST':
         if request.user.is_authenticated:
-            current_user = request.user
-            current_member = Members.objects.get(user=current_user)
-            form = CreateTournament(request.POST)
+            form = CreateTournamentForm(request.POST)
             if form.is_valid():
                 name = form.cleaned_data.get('name')
                 description = form.cleaned_data.get('description')
                 deadline = form.cleaned_data.get('deadline')
+
+                #TODO take the checkbox-ed coorganisers and clean them
+                #  coorganisers=request.POST.getlist('possible_coorganisers')
+                coorganisers = form.cleaned_data.get('coorganisers')
                 tournament = Tournament.objects.create(name=name, description=description, deadline=deadline, organiser=current_user, )
                 return redirect('show_club')
             else:
-                return render(request, 'create_tournament.html', {'form': form})
+                return render(request, 'create_tournament.html', {'form': form, 'possible_coorganisers': possible_coorganisers, })
         else:
             return redirect('log_in')
     else:

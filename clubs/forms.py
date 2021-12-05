@@ -104,8 +104,8 @@ class CreateClubForm(forms.ModelForm):
         fields = ['club_name', 'location', 'description']
         widgets = {'description': forms.Textarea()}
 
-class CreateTournament(forms.ModelForm):
+class CreateTournamentForm(forms.ModelForm):
     class Meta:
         model = Tournament
-        fields = ['name', 'description', 'deadline']
-        widgets = {'description': forms.Textarea()}
+        fields = ['name', 'description', 'deadline', 'coorganisers']
+        widgets = {'description': forms.Textarea(), 'coorganisers' : forms.CheckboxSelectMultiple()}
