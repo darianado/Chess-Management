@@ -238,16 +238,16 @@ class Tournament(models.Model):
 
     deadline = models.DateTimeField(
         auto_now=False,
-        auto_now_add=True
+        auto_now_add=False
     )
 
-    organiser = models.ForeignKey(Members, on_delete=models.CASCADE)
+    organiser = models.ForeignKey(Members, on_delete=models.CASCADE, related_name="organiser")
 
     coorganisers = models.ManyToManyField(Members)
 
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
 
-    participants = models.ManyToManyField(Members, through="Participant")
+    participants = models.ManyToManyField(Members, through="Participant", related_name="participants")
 
 class Participant(models.Model):
     class Meta:
@@ -265,7 +265,7 @@ class Participant(models.Model):
             MinValueValidator(0)
         ]
     )
-    
+
     is_active = models.BooleanField(
         unique=False,
         blank=False,
