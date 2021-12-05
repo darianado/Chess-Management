@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from clubs.forms import LogInForm, SignUpForm, EditProfileForm, changePasswordForm, CreateClubForm
+from clubs.forms import LogInForm, SignUpForm, EditProfileForm, changePasswordForm, CreateClubForm, CreateTournament
 from django.contrib.auth import authenticate, login
 from clubs.models import Club, User, Members, Events
 from django.contrib import messages
@@ -187,6 +187,27 @@ def password(request):
         form = changePasswordForm()
     return render(request, 'password.html', {'form': form})
 
+def create_tournament(request):
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            current_user = request.user
+            current_member = Members.objects.get(user=current_user)
+            form = CreateTournament(request.POST)
+            if form.is_valid():
+                name = form.cleaned_data.get('name')
+                description = form.cleaned_data.get('description')
+                deadline = form.cleaned_data.get('deadline')
+                tournament = Tournament.objects.create(name=name, description=description, deadline=deadline, organiser=current_user, )
+                return redirect('show_club')
+            else:
+                return render(request, 'create_tournament.html', {'form': form})
+        else:
+            return redirect('log_in')
+    else:
+        return HttpResponseForbidden()
+
+
+
 def create_club(request):
     if request.method =='GET':
         form = CreateClubForm()
@@ -287,7 +308,6 @@ def apply_to_club(request, club_id ):
     user = request.user
     member_in_club = Members.get_member_role(user,club)
     if request.method == 'GET':
-        print(" baby one more time")
         Members.objects.create(
                 user = user,
                 club = club,

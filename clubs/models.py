@@ -217,3 +217,30 @@ class Events(models.Model):
             return "Demoted by"
         elif self.action == 6:
             return "Kicked by"
+
+class Tournament(models.Model):
+    class Meta:
+        constraints=[
+            models.UniqueConstraint(fields=["organiser"], condition=Q(role=Role.OFFICER), name="Every tournament has at most 1 leading officer organiser")
+        ]
+
+    name = models.CharField(
+            max_length = 50,
+            unique = True,
+            blank = False
+    )
+
+    description = models.CharField(
+            unique=False,
+            max_length=260,
+            blank=True
+    )
+
+    deadline = models.DateTimeField(
+        auto_now=False,
+        auto_now_add=True
+    )
+    organiser = models.ForeignKey(Members, on_delete=models.CASCADE)
+    club = models.ForeignKey(Club, on_delete=models.CASCADE)
+    participants = models.ManyToManyField(Members)
+
