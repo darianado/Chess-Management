@@ -7,7 +7,7 @@ from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 
 from libgravatar import Gravatar
-from clubs.helpers import Role
+from clubs.helpers import Role, Status
 
 # Using a custom user manager because the default requires the username parameter.
 # This custom user manager is almost identical with the exception of the username requirement being removed.
@@ -219,10 +219,11 @@ class Events(models.Model):
             return "Kicked by"
 
 class Tournament(models.Model):
-    class Meta:
-        constraints=[
-            models.UniqueConstraint(fields=["organiser"], condition=Q(role=Role.OFFICER), name="Every tournament has at most 1 leading officer organiser")
-        ]
+    #  class Meta:
+        #  pass
+        #  constraints=[
+            #  models.UniqueConstraint(fields=["organiser"], condition=Q(role=Role.OFFICER), name="Every tournament has at most 1 leading officer organiser")
+        #  ]
 
     name = models.CharField(
             max_length = 50,
@@ -271,3 +272,28 @@ class Participant(models.Model):
         blank=False,
         default=True
     )
+
+class Match(models.Model):
+    class Meta:
+        constraints = [
+                models.CheckConstraint(check=~Q(playerA=models.F("playerB")), name='players_diff')
+                ]
+
+    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
+    
+    playerA = models.ForeignKey(Participant, on_delete=models.CASCADE, related_name="playerA")
+
+    playerB = models.ForeignKey(Participant, on_delete=models.CASCADE, related_name="playerB")
+
+    match_status = models.IntegerField(
+            choices=Status.choices,
+            default=Status.NOT_PLAYED,
+            validators=[
+                MinValueValidator(1),
+                MaxValueValidator(4)
+            ]
+        )
+
+
+    
+
