@@ -32,13 +32,13 @@ def log_in(request):
                 return redirect(redirect_url)
     else:
         next = request.GET.get("next") or ""
-        
+
     form = LogInForm()
     return render(request, 'log_in.html', {'form': form, 'next': next})
 
 @login_required
 def dashboard(request):
-    return render(request, 'partials/dashboard.html')   
+    return render(request, 'partials/dashboard.html')
 
 @login_prohibited(redirect_location="dashboard")
 def sign_up(request):
@@ -87,7 +87,7 @@ def show_club(request, club_id):
                 'show_role':show_role,
                 'show_member':show_member,
                 'show_applicants':show_applicants,
-                'number_of_members':nr_member, 
+                'number_of_members':nr_member,
                 'owner_club' : owner_club})
 
 def show_applicants(request, club_id):
@@ -120,7 +120,7 @@ def members(request, club_id):
         return redirect('club_list')
     else:
         members = [member.user for member in Members.objects.filter(club=club)]
-        return render(request, "partials/members_list_table.html", {"members": members})      
+        return render(request, "partials/members_list_table.html", {"members": members})
 
 @login_required
 def show_user(request, user_id=None):
@@ -206,18 +206,18 @@ def create_club(request):
                 return render(request, 'create_club.html', {'form': form})
         else:
             return redirect('log_in')
-    else:
-        return HttpResponseForbidden()
+    """else:
+        return HttpResponseForbidden()"""
 
 def officer_promote(request,member_id):
     member = Members.objects.get(id=member_id)
     c_id = member.club.id
     current_user=request.user
     current_member = Members.objects.get(user=current_user,club = member.club)
-    
+
     current_member.owner_demote()
     member.officer_promote()
-    
+
     action = Events.objects.create(club=member.club, user=member.user, action = 4)
     return redirect('show_club', club_id = c_id)
 
@@ -319,22 +319,20 @@ def leave_a_club(request, club_id ):
 
 def table(request):
     user = request.user
-    user_id = user.id 
+    user_id = user.id
     #  myFilter = OrderFilter()
     filtered_clubs = []
     filtered_clubs = [member.club for member in Members.objects.filter(Q(user=request.user) )]
     list_data = []
     for club in filtered_clubs:
-        
+
         data_row = (club.club_name, Members.objects.filter(club=club).exclude(role=4).count(), Members.get_member_role_name(Members.get_member_role(user, club)), club.id)
         list_data.append(data_row)
     return render(
             request,
             "table.html",
             {
-                "list_data": list_data, 
+                "list_data": list_data,
                 #  "myFilter" : myFilter,
             }
         )
-
-
