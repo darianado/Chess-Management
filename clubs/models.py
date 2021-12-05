@@ -170,6 +170,7 @@ class Members(models.Model):
             return None
         else:
             return member.role
+
     def get_member_role_name(role):
         if role == 1:
             return ('Owner')    
@@ -182,6 +183,7 @@ class Members(models.Model):
         elif role == None:
             return ('User')    
         return ('')   
+
 class Events(models.Model):
     date_created = models.DateTimeField(
         auto_now=False,
@@ -219,11 +221,6 @@ class Events(models.Model):
             return "Kicked by"
 
 class Tournament(models.Model):
-    #  class Meta:
-        #  pass
-        #  constraints=[
-            #  models.UniqueConstraint(fields=["organiser"], condition=Q(role=Role.OFFICER), name="Every tournament has at most 1 leading officer organiser")
-        #  ]
 
     name = models.CharField(
             max_length = 50,
@@ -280,7 +277,7 @@ class Match(models.Model):
                 ]
 
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
-    
+
     playerA = models.ForeignKey(Participant, on_delete=models.CASCADE, related_name="playerA")
 
     playerB = models.ForeignKey(Participant, on_delete=models.CASCADE, related_name="playerB")
