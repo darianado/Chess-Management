@@ -9,16 +9,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 #  from .filters import OrderFilter
-
-<<<<<<< HEAD
-
-# Create your views here.
-=======
 from clubs.helpers import Role
 from clubs.decorators import login_prohibited, minimum_role_required
 
 @login_prohibited(redirect_location="dashboard")
->>>>>>> main
 def welcome(request):
     return render(request, 'welcome.html')
 
@@ -87,9 +81,6 @@ def show_club(request, club_id):
             return redirect('club_list')
     else:
         return render(request,'show_club.html',
-<<<<<<< HEAD
-                {'club': club, 'member_in_club': member_in_club})
-=======
                 {'club': club,
                 'member_in_club': member_in_club,
                 'show_role':show_role,
@@ -97,7 +88,6 @@ def show_club(request, club_id):
                 'show_applicants':show_applicants,
                 'number_of_members':nr_member,
                 'owner_club' : owner_club})
->>>>>>> main
 
 def show_applicants(request, club_id):
     try:
@@ -129,15 +119,9 @@ def members(request, club_id):
         return redirect('club_list')
     else:
         members = [member.user for member in Members.objects.filter(club=club)]
-<<<<<<< HEAD
-        return render(request, "partials/members_list_table.html", {"members": members})
-
-#@login_required
-=======
         return render(request, "partials/members_list_table.html", {"members": members})
 
 @login_required
->>>>>>> main
 def show_user(request, user_id=None):
     if user_id is None:
         user_id = request.user.id
