@@ -240,7 +240,34 @@ class Tournament(models.Model):
         auto_now=False,
         auto_now_add=True
     )
-    organiser = models.ForeignKey(Members, on_delete=models.CASCADE)
-    club = models.ForeignKey(Club, on_delete=models.CASCADE)
-    participants = models.ManyToManyField(Members)
 
+    organiser = models.ForeignKey(Members, on_delete=models.CASCADE)
+
+    coorganisers = models.ManyToManyField(Members)
+
+    club = models.ForeignKey(Club, on_delete=models.CASCADE)
+
+    participants = models.ManyToManyField(Members, through="Participant")
+
+class Participant(models.Model):
+    class Meta:
+        ordering=["-score"]
+
+    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
+
+    member = models.ForeignKey(Members, on_delete=models.CASCADE)
+
+    score = models.FloatField(
+        unique=False,
+        blank=False,
+        default=0,
+        validators=[
+            MinValueValidator(0)
+        ]
+    )
+    
+    is_active = models.BooleanField(
+        unique=False,
+        blank=False,
+        default=True
+    )
