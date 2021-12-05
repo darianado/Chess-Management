@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'widget_tweaks',
     'clubs',
+    #  'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -142,6 +143,8 @@ LOGIN_URL = 'log_in'
 # Location for media
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# Login url, login required decorator redirects to here
+LOGIN_URL = "log_in"
 
 # Messages
 MESSAGE_TAGS = {

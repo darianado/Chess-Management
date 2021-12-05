@@ -26,6 +26,11 @@ class PasswordViewTest(TestCase):
     def test_password_url(self):
         self.assertEqual(self.url, '/password/')
 
+    def test_get_edit_password_when_not_logged_in(self):
+        response = self.client.get(self.url)
+        redirect_url = reverse_with_next("log_in", self.url)
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
+
     def test_get_password(self):
         self.client.login(email=self.user.email, password='Password123')
         response = self.client.get(self.url)
@@ -68,11 +73,3 @@ class PasswordViewTest(TestCase):
         self.user.refresh_from_db()
         is_password_correct = check_password('Password123', self.user.password)
         self.assertTrue(is_password_correct)
-
-## uncomment oncew prohibited is implemented
-    #  def test_post_profile_redirects_when_not_logged_in(self):
-        #  redirect_url = reverse_with_next('log_in', self.url)
-        #  response = self.client.post(self.url, self.form_input)
-        #  self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
-        #  is_password_correct = check_password('Password123', self.user.password)
-        #  self.assertTrue(is_password_correct)

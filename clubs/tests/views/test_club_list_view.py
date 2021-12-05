@@ -1,15 +1,28 @@
 from django.test import TestCase
 from django.urls import reverse
-from clubs.models import Club
+from clubs.models import Club, User
+from clubs.tests.helper import reverse_with_next
 
 class ClubListTest(TestCase):
+
+    fixtures = [
+        "clubs/tests/fixtures/default_user_john.json",
+    ]
+
     def setUp(self):
         self.url = reverse('club_list')
+        self.userJohn = User.objects.get(email="johndoe@example.org")
 
     def test_club_list_url(self):
-        self.assertEqual(self.url,'/clubs/')
+        self.assertEqual(self.url,'/home/clubs')
+
+    def test_get_club_list_when_not_logged_in(self):
+        response = self.client.get(self.url)
+        redirect_url = reverse("log_in")
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
     def test_get_club_list(self):
+        self.client.login(email=self.userJohn.email, password="Password123")
         self._create_test_clubs(15)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)

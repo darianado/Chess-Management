@@ -7,6 +7,11 @@ from django.urls import reverse
 from clubs.tests.helper import LogInTester
 
 class LogInFormTestCase(TestCase, LogInTester):
+
+    fixtures = [
+        "clubs/tests/fixtures/default_user_john.json"
+    ]
+
     """Unit tests of the log in form."""
     def setUp(self):
         self.form_input = {
