@@ -5,6 +5,7 @@ from django.apps import apps
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models.fields.json import JSONField
 
 from libgravatar import Gravatar
 from clubs.helpers import Role, Status
@@ -182,7 +183,7 @@ class Members(models.Model):
             return ('Applicant')    
         elif role == None:
             return ('User')    
-        return ('')   
+        return ('')
 
 class Events(models.Model):
     date_created = models.DateTimeField(
@@ -257,6 +258,24 @@ class Tournament(models.Model):
             ]
         )
 
+    def scheduleMatches(self):
+        all_active_participants = self.participants.objects.filter(is_active=True)
+        for x in range(0, all_active_participants.count(), 2):
+            playerA = all_active_participants[x]
+            playerB = all_active_participants[x+1]
+            Match.objects.create(
+                tournament=self,
+                playerA=playerA,
+                playerB=playerB
+            )
+
+    # level_number = models.IntegerField(
+    #     validators=[
+    #         MinValueValidator(1),
+    #         MaxValueValidator(6)
+    #     ]
+    # )
+
 class Participant(models.Model):
     class Meta:
         ordering=["-score"]
@@ -283,8 +302,8 @@ class Participant(models.Model):
 class Match(models.Model):
     class Meta:
         constraints = [
-                models.CheckConstraint(check=~Q(playerA=models.F("playerB")), name='players_diff')
-                ]
+            models.CheckConstraint(check=~Q(playerA=models.F("playerB")), name='players_diff')
+        ]
 
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
 
@@ -302,5 +321,15 @@ class Match(models.Model):
         )
 
 
-    
+# class Group(models.Model):
+#     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
+#     players = JSONField()
+#     # playerA = models.ForeignKey(Participant, null=True, on_delete=models.CASCADE, related_name="playerA")
+#     # playerB = models.ForeignKey(Participant, null=True, on_delete=models.CASCADE, related_name="playerB")
+#     # playerC = models.ForeignKey(Participant, null=True, on_delete=models.CASCADE, related_name="playerC")
+#     # playerD = models.ForeignKey(Participant, null=True, on_delete=models.CASCADE, related_name="playerD")
+#     # playerE = models.ForeignKey(Participant, null=True, on_delete=models.CASCADE, related_name="playerE")
+#     # playerF = models.ForeignKey(Participant, null=True, on_delete=models.CASCADE, related_name="playerF")
 
+#     def allMatchesComplete(self):
+#         pass
