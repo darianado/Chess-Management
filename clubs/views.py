@@ -210,14 +210,17 @@ def create_club(request):
     """else:
         return HttpResponseForbidden()"""
 
+
+@login_required(redirect_field_name="")
+@another_role_required(role_required=Role.OWNER, redirect_location="club_list")
 def officer_promote(request,member_id):
     member = Members.objects.get(id=member_id)
     c_id = member.club.id
     current_user=request.user
     current_member = Members.objects.get(user=current_user,club = member.club)
 
-    current_member.owner_demote()
-    member.officer_promote()
+    current_member.demote()
+    member.promote()
 
     action = Events.objects.create(club=member.club, user=member.user, action = 4)
     return redirect('show_club', club_id = c_id)

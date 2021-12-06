@@ -23,7 +23,7 @@ class OfficerDemoteTest(TestCase):
 
 
 
-    def test_officer_promote_url(self):
+    def test_officer_demote_url(self):
         self.assertEqual(self.url,f'/officer_demote/{self.member.id}')
 
     def test_officer_demote_when_not_logged_in(self):

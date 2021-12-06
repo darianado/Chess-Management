@@ -16,7 +16,7 @@ class ShowApplicantsTest(TestCase):
 
     def setUp(self):
         self.userJane = User.objects.get(email='janedoe@example.org') #owner
-        self.userJohn = User.objects.get(email="johndoe@example.org")
+        self.userJohn = User.objects.get(email="johndoe@example.org") #applicant
         self.clubHame = Club.objects.get(club_name="Hame Chess Club")
         
 
