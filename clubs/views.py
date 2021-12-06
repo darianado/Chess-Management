@@ -101,6 +101,9 @@ def show_applicants(request, club_id):
         return render(request,"partials/applicants_as_table.html",
                  {'club': thisClub, 'applicants':applicants})
 
+
+@login_required(redirect_field_name="")
+@minimum_role_required(role_required=Role.OWNER, redirect_location='club_list')
 def show_roles(request,club_id):
     try:
         club = Club.objects.get(id=club_id)
@@ -262,8 +265,11 @@ def member_kick(request,member_id):
     action = Events.objects.create(club=club, user=user, action = 6)
     return redirect('show_club', club_id = c_id)
 
-def deny_applicant(request, membership_id):
-    member = Members.objects.get(id=membership_id)
+
+@login_required(redirect_field_name="")
+@another_role_required(role_required=Role.OFFICER, redirect_location="club_list")
+def deny_applicant(request, member_id):
+    member = Members.objects.get(id=member_id)
     c_id = member.club.id
     club = member.club
     user = member.user
