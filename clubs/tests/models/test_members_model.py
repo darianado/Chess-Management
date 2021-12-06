@@ -14,14 +14,24 @@ class MembersModelTest(TestCase):
         "clubs/tests/fixtures/default_club_hamersmith.json",
         "clubs/tests/fixtures/default_club_hame.json",
         "clubs/tests/fixtures/default_member_john_hame.json",
+        "clubs/tests/fixtures/default_member_jane_hame.json",
+        "clubs/tests/fixtures/other_users.json",
     ]
 
     def setUp(self):
         self.userJohn = User.objects.get(email="johndoe@example.org")
         self.userJane = User.objects.get(email="janedoe@example.org")
+        self.userCharlie = User.objects.get(email="charliedoe@example.org")
+
         self.clubHame = Club.objects.get(club_name="Hame Chess Club")
+
         self.member = Members.objects.get(club=self.clubHame, user=self.userJohn)
+        self.memberJane = Members.objects.get(club=self.clubHame, user=self.userJane)
+
         self.member.role = 1
+        self.memberJane.role = 2
+        
+        self.memberJane.save()
         self.member.save()
     
     def test_valid_member(self):
@@ -51,6 +61,39 @@ class MembersModelTest(TestCase):
         self.member.role = 0
         self._assert_member_is_invalid()
 
+    def test_get_correct_role_name_owner(self):
+        role_member_john = Members.get_member_role_name(Members.get_member_role(self.userJohn, self.clubHame))
+        self.assertEqual(role_member_john, "Owner")
+
+    def test_get_correct_role_name_member(self):
+        self.member.role = 3
+        self.member.save()
+
+        role_member_john = Members.get_member_role_name(Members.get_member_role(self.userJohn, self.clubHame))
+        self.assertEqual(role_member_john, "Member")
+
+    def test_get_correct_role_name_applicant(self):
+        self.memberJane.role = 4
+        self.memberJane.save()
+
+        role_member_jane = Members.get_member_role_name(Members.get_member_role(self.userJane, self.clubHame))
+        self.assertEqual(role_member_jane, "Applicant")
+
+    def test_get_correct_role_name_officer(self):
+        role_member_jane = Members.get_member_role_name(Members.get_member_role(self.userJane, self.clubHame))
+        self.assertEqual(role_member_jane, "Officer")
+
+    def test_get_incorrect_role_name(self):
+        self.member.role = 0
+        self.member.save()
+
+        role_member_john = Members.get_member_role_name(Members.get_member_role(self.userJohn, self.clubHame))
+        self.assertEqual(role_member_john, "")
+
+    def test_get_correct_role_name_user(self):
+        role_member_charlie = Members.get_member_role_name(Members.get_member_role(self.userCharlie, self.clubHame))
+        self.assertEqual(role_member_charlie, "User")
+
     def test_user_is_only_a_member_of_a_club_exactly_once(self):
         with self.assertRaises(IntegrityError):
             Members.objects.create(
@@ -76,6 +119,7 @@ class MembersModelTest(TestCase):
                 )
                 member.role = 1
                 member.save()
+
 
     def _assert_member_is_valid(self):
         try:
