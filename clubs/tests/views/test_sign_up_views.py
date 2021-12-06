@@ -6,8 +6,12 @@ from django.urls import reverse
 from clubs.models import User
 from clubs.tests.helper import LogInTester
 
-
 class SignUpViewTestCase(TestCase, LogInTester):
+
+    fixtures = [
+        "clubs/tests/fixtures/default_user_john.json"
+    ]
+
     """"Tests of the sign up view."""
     def setUp(self):
         self.url = reverse('sign_up')
@@ -22,6 +26,8 @@ class SignUpViewTestCase(TestCase, LogInTester):
             'password_confirmation': 'Password123',
         }
 
+        self.userJohn = User.objects.get(email="johndoe@example.org")
+
     def test_sign_up_url(self):
         self.assertEqual(self.url, '/sign_up/' )
 
@@ -32,6 +38,13 @@ class SignUpViewTestCase(TestCase, LogInTester):
         form = response.context['form']
         self.assertTrue(isinstance(form, SignUpForm))
         self.assertFalse(form.is_bound)
+
+    def test_get_sign_up_redirects_when_logged_in(self):
+        self.client.login(username=self.userJohn.email, password="Password123")
+        response = self.client.get(self.url, follow=True)
+        redirect_url = reverse("dashboard")
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
+        self.assertTemplateUsed(response, "home.html")
 
     def test_unsuccessful_sign_up(self):
         self.form_input['email'] = 'What'
@@ -63,3 +76,13 @@ class SignUpViewTestCase(TestCase, LogInTester):
         is_password_correct = check_password('Password123', user.password)
         self.assertTrue(is_password_correct)
         self.assertTrue(self._is_logged_in())
+
+    def test_post_sign_up_redirects_when_logged_in(self):
+        self.client.login(username=self.userJohn.email, password="Password123")
+        before_count = User.objects.count()
+        response = self.client.post(self.url, self.form_input, follow=True)
+        after_count = User.objects.count()
+        self.assertEqual(before_count, after_count)
+        redirect_url = reverse("dashboard")
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
+        self.assertTemplateUsed(response, "home.html")

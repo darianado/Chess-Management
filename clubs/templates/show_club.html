@@ -42,7 +42,7 @@
     }
     Http.send();
   }
-  
+
 </script>
 
 
@@ -53,7 +53,7 @@
     <div class="row m-0">
 
         <div class="col-1 p-0" >
-          {% include 'partials/side-bar.html' %}
+          {% include 'partials/side-bar.html' with show_role=show_role show_member=show_member show_applicants=show_applicants %}
         </div>
 
 

@@ -4,23 +4,15 @@ from django.core.exceptions import ValidationError
 from django.db.utils import IntegrityError
 
 class EventsModelTest(TestCase):
+
+    fixtures = [
+        "clubs/tests/fixtures/default_user_john.json",
+        "clubs/tests/fixtures/default_club_hame.json"
+    ]
+
     def setUp(self):
-        self.user = User.objects.create_user(
-            first_name='Xiangyi',
-            last_name='Liu',
-            email='xiangyi@gmail.com',
-            password='Password123',
-            bio='Hi!',
-            chess_experience_level=2,
-            personal_statement='Hi!'
-        )
-
-        self.club = Club.objects.create(
-            club_name="Kings club",
-            location="EC1N",
-            description="Club for Kings students"
-        )
-
+        self.user = User.objects.get(email="johndoe@example.org")
+        self.club = Club.objects.get(club_name="Hame Chess Club")
 
         self.event = Events.objects.create(
             club=self.club,
@@ -52,7 +44,7 @@ class EventsModelTest(TestCase):
         self._assert_event_is_invalid()
 
     def test_action_cannot_be_7(self):
-        self.event.action = 0
+        self.event.action = 7
         self._assert_event_is_invalid()
 
     def test_action_cannot_be_blank(self):

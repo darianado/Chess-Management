@@ -60,15 +60,16 @@
 
 
     <td>
-        <form action="{% url 'deny_applicant' applicant.id  %}">
-            <button >Deny</button>
-        </form>
+        <a action="{% url 'deny_applicant' applicant.id  %}">
+            <button  class="btn btn-secondary">Deny</button>
+        </a>
     <!-- </td>
     <td> -->
-        <form action="{% url 'accept_applicant' applicant.id %}">
-            <button >Accept</button>
-        </form>
+        <a action="{% url 'accept_applicant' applicant.id %}">
+            <button class="btn btn-secondary">Accept</button>
+        </a>
+
     </td>
-    
+
 </tr>
 <!-- {% endblock %} -->

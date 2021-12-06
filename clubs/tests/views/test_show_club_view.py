@@ -6,7 +6,6 @@ from clubs.models import Club, User
 class ShowClubTest(TestCase):
 
     fixtures = [
-        "clubs/tests/fixtures/default_user_john.json",
         "clubs/tests/fixtures/default_user_jane.json",
         "clubs/tests/fixtures/default_club_hame.json",
         "clubs/tests/fixtures/default_club_hamersmith.json",
@@ -27,10 +26,10 @@ class ShowClubTest(TestCase):
     def test_show_club_url(self):
         self.assertEqual(self.urlHame,f'/club/{self.clubHame.id}')
 
-    #  def test_get_show_club_redirects_when_not_logged_in(self):
-        #  redirect_url = reverse_with_next('log_in', self.url)
-        #  response = self.client.get(self.url)
-        #  self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
+    def test_get_show_club_when_not_logged_in(self):
+        response = self.client.get(self.urlHame)
+        redirect_url = reverse("log_in")
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
     def test_get_show_club_with_valid_id(self):
         self.client.login(email=self.user.email, password='Password123')
@@ -40,6 +39,7 @@ class ShowClubTest(TestCase):
         self.assertContains(response, "Hame Chess Club")
 
     def test_get_show_club_with_invalid_id(self):
+        self.client.login(email=self.user.email, password="Password123")
         url = reverse('show_club', kwargs={'club_id': self.clubHame.id+9999999})
         response = self.client.get(url, follow=True)
         response_url = reverse('club_list')

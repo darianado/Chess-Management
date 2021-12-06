@@ -140,6 +140,8 @@ AUTH_USER_MODEL = 'clubs.User'
 # Location for media
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# Login url, login required decorator redirects to here
+LOGIN_URL = "log_in"
 
 # Messages
 MESSAGE_TAGS = {
