@@ -320,6 +320,12 @@ class Match(models.Model):
             ]
         )
 
+    def getPlayerA(self):
+        return self.playerA
+
+    def getPlayerB(self):
+        return self.playerB
+
 
 # class Group(models.Model):
 #     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)

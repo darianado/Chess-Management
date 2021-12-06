@@ -110,8 +110,7 @@ class CreateTournamentForm(forms.ModelForm):
         fields = ['name', 'description', 'deadline', 'coorganisers', 'capacity']
         widgets = {'description': forms.Textarea(), 'coorganisers' : forms.CheckboxSelectMultiple()}
 
-class SetMatchResult(forms.ModelForm):
+class SetMatchResultForm(forms.ModelForm):
     class Meta:
         model = Match
-        fields = ["status"]
-        widgets = {"status": forms.ModelChoiceField()}
+        fields = ["match_status"]
