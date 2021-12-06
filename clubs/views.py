@@ -236,6 +236,9 @@ def officer_demote(request,member_id):
     action = Events.objects.create(club=member.club, user=member.user, action = 5)
     return redirect('show_club', club_id=c_id)
 
+
+@login_required(redirect_field_name="")
+@another_role_required(role_required=Role.OWNER, redirect_location="club_list")
 def member_promote(request,member_id):
     member = Members.objects.get(id=member_id)
     c_id = member.club.id
