@@ -55,7 +55,7 @@ def another_role_required(role_required, redirect_location):
             try:
                 member = Members.objects.get(id=member_id)
                 logged_in_member = Members.objects.get(club=member.club, user=request.user)
-                if logged_in_member.role == role_required:
+                if logged_in_member.role <= role_required:
                     return view_function(request, member_id)
                 else:
                     return redirect(redirect_location)

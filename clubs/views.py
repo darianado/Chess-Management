@@ -248,6 +248,9 @@ def member_promote(request,member_id):
     action = Events.objects.create(club=member.club, user=member.user, action = 4)
     return redirect('show_club', club_id = c_id)
 
+
+@login_required(redirect_field_name="")
+@another_role_required(role_required=Role.OWNER, redirect_location="club_list")
 def member_kick(request,member_id):
     member = Members.objects.get(id=member_id)
     c_id = member.club.id
@@ -270,8 +273,11 @@ def deny_applicant(request, membership_id):
     action = Events.objects.create(club=club, user=user, action = 3)
     return redirect('show_club', club_id = c_id)
 
-def accept_applicant(request, membership_id):
-    member = Members.objects.get(id=membership_id)
+
+@login_required(redirect_field_name="")
+@another_role_required(role_required=Role.OFFICER, redirect_location="club_list")
+def accept_applicant(request,member_id):
+    member = Members.objects.get(id=member_id)
     c_id = member.club.id
 
     member.acceptApplicant()
