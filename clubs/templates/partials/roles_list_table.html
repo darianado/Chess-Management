@@ -58,13 +58,13 @@
           </td>
           <td>
 
-            <form href="{% url 'officer_promote' officer.id %}">
+            <a href="{% url 'officer_promote' officer.id %}">
               <button type="button" id="promote"> promote </button>
-            </form>
+            </a>
           </td>
 
           <td>
-            <form href="{% url 'officer_demote' officer.id %}">
+            <a href="{% url 'officer_demote' officer.id %}">
               <button type="button" id="demote"> demote </button>
             </a>
 
@@ -75,4 +75,3 @@
   </tbody>
 </table>
 </div>
-
