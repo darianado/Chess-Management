@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from clubs.forms import LogInForm, SignUpForm, EditProfileForm, changePasswordForm, CreateClubForm, CreateTournament
+from clubs.forms import LogInForm, SignUpForm, EditProfileForm, changePasswordForm, CreateClubForm, CreateTournamentForm
 from django.contrib.auth import authenticate, login
 from clubs.models import Club, User, Members, Events
 from django.contrib import messages

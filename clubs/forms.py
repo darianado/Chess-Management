@@ -1,5 +1,5 @@
 from django import forms
-from clubs.models import User, Club, Members, Tournament
+from clubs.models import Match, User, Club, Members, Tournament
 from django.core.validators import RegexValidator
 
 class EditProfileForm(forms.ModelForm):
@@ -109,3 +109,9 @@ class CreateTournamentForm(forms.ModelForm):
         model = Tournament
         fields = ['name', 'description', 'deadline', 'coorganisers', 'capacity']
         widgets = {'description': forms.Textarea(), 'coorganisers' : forms.CheckboxSelectMultiple()}
+
+class SetMatchResult(forms.ModelForm):
+    class Meta:
+        model = Match
+        fields = ["status"]
+        widgets = {"status": forms.ModelChoiceField()}
