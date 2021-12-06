@@ -90,6 +90,8 @@ def show_club(request, club_id):
                 'number_of_members':nr_member,
                 'owner_club' : owner_club})
 
+@login_required(redirect_field_name="")
+@minimum_role_required(role_required=Role.OFFICER, redirect_location='club_list')
 def show_applicants(request, club_id):
     try:
         thisClub = Club.objects.get(id=club_id)
