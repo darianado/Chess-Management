@@ -215,8 +215,8 @@ def officer_promote(request,member_id):
     current_user=request.user
     current_member = Members.objects.get(user=current_user,club = member.club)
 
-    current_member.owner_demote()
-    member.officer_promote()
+    current_member.demote()
+    member.promote()
 
     action = Events.objects.create(club=member.club, user=member.user, action = 4)
     return redirect('show_club', club_id = c_id)
@@ -225,7 +225,7 @@ def officer_demote(request,member_id):
     member = Members.objects.get(id=member_id)
     c_id = member.club.id
 
-    member.officer_demote()
+    member.demote()
 
     action = Events.objects.create(club=member.club, user=member.user, action = 5)
     return redirect('show_club', club_id = c_id)
@@ -234,7 +234,7 @@ def member_promote(request,member_id):
     member = Members.objects.get(id=member_id)
     c_id = member.club.id
 
-    member.member_promote()
+    member.promote()
 
     action = Events.objects.create(club=member.club, user=member.user, action = 4)
     return redirect('show_club', club_id = c_id)
