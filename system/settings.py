@@ -137,6 +137,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # User model for authentication purpose
 AUTH_USER_MODEL = 'clubs.User'
 
+#Login URL for redirecting users from login protected views
+LOGIN_URL = 'log_in'
+
 # Location for media
 MEDIA_ROOT = BASE_DIR / 'media'
 

@@ -9,9 +9,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 #  from .filters import OrderFilter
-
 from clubs.helpers import Role
-from clubs.decorators import login_prohibited, minimum_role_required
+from clubs.decorators import login_prohibited, minimum_role_required, exact_role_required, another_role_required
 
 @login_prohibited(redirect_location="dashboard")
 def welcome(request):
@@ -217,12 +216,14 @@ def officer_promote(request,member_id):
     current_user=request.user
     current_member = Members.objects.get(user=current_user,club = member.club)
 
-    current_member.demote()
-    member.promote()
+    current_member.owner_demote()
+    member.officer_promote()
 
     action = Events.objects.create(club=member.club, user=member.user, action = 4)
     return redirect('show_club', club_id = c_id)
 
+@login_required(redirect_field_name="")
+@another_role_required(role_required=Role.OWNER, redirect_location="club_list")
 def officer_demote(request,member_id):
     member = Members.objects.get(id=member_id)
     c_id = member.club.id
@@ -230,7 +231,7 @@ def officer_demote(request,member_id):
     member.demote()
 
     action = Events.objects.create(club=member.club, user=member.user, action = 5)
-    return redirect('show_club', club_id = c_id)
+    return redirect('show_club', club_id=c_id)
 
 def member_promote(request,member_id):
     member = Members.objects.get(id=member_id)
