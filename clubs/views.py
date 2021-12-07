@@ -12,7 +12,6 @@ from django.contrib.auth.decorators import login_required
 from clubs.helpers import Role
 from clubs.decorators import login_prohibited, minimum_role_required, exact_role_required, another_role_required
 
-@login_prohibited(redirect_location="dashboard")
 def welcome(request):
     return render(request, 'welcome.html')
 
@@ -349,6 +348,7 @@ def table(request):
 
         data_row = (club.club_name, Members.objects.filter(club=club).exclude(role=4).count(), Members.get_member_role_name(Members.get_member_role(user, club)), club.id)
         list_data.append(data_row)
+    
     return render(
             request,
             "table.html",
