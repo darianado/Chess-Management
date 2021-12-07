@@ -13,6 +13,9 @@
     <p>uhjxdhcnjdksnvjksdncfjkshdckhskdhkzshcdjkshjkzcjc</p>
     <p>uhjxdhcnjdksnvjksdncfjkshdckhskdhkzshcdjkshjkzcjc</p>
 
+    <h2>Events</h2>
+    <div id="my_events"></div>
+
     <h2> <br></h2>
     <h2> <br></h2>
 
@@ -32,39 +35,32 @@
 
    
     <script type="text/javascript">
-            console.log("hai");
+        // event table
 
-             http = new XMLHttpRequest();
-             u="{% url 'table' %}";
+        http = new XMLHttpRequest();
+        u="{% url 'events_list' %}";
 
-            http.open("GET", u);
-            http.onreadystatechange = function () {
+        http.open("GET", u);
+        http.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
-                document.getElementById('my_clubs').innerHTML ="<div>"+http.responseText+"</div>";
+                document.getElementById('my_events').innerHTML ="<div>"+http.responseText+"</div>";
             }
         }
         http.send();
         
+        // club table
+
+        http2 = new XMLHttpRequest();
+        u2="{% url 'table' %}";
+
+        http2.open("GET", u2);
+        http2.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById('my_clubs').innerHTML ="<div>"+http2.responseText+"</div>";
+            }
+        }
+        http2.send();
     </script>
-
-<!-- 
-<script type="text/javascript">
-    console.log("hai");
-   k= document.getElementById('my_clubs_table').innerHTML;
-   if(k=="<tr> <th>Club Name</th><th>Members' count</th><th>Status</th></tr>")
-   {
-       document.getElementById('not_applied').removeAttribute("hidden");
-       document.getElementById('my_clubs').setAttribute("hidden", false);
-       console.log("nu data");
-   }
-   else{
-       document.getElementById('my_clubs_table'.removeAttribute("hidden"));
-       document.getElementById('not_applied').setAttribute("hidden", false);
-       console.log("are data");
-   }
- </script> -->
-
-
 
 </div>
 

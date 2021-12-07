@@ -279,22 +279,16 @@ def accept_applicant(request,member_id):
     action = Events.objects.create(club=member.club, user=member.user, action = 1)
     return redirect('show_club', club_id= c_id)
 
+@login_required(redirect_field_name="")
 def events_list(request):
-    if request.user.is_authenticated:
-        current_user = request.user
-        try:
-            events = Events.objects.get(user=current_user)
-        except ObjectDoesNotExist:
-            return redirect('dashboard')
-        else:
-            return render(request, 'events_list.html', {'events': events})
-    else:
-        return redirect('log_in')
+    events = Events.objects.filter(user=request.user)
+    return render(request, 'partials/events_list.html', {'events': events})
 
 def apply_to_club(request, club_id ):
     club = Club.objects.get(id=club_id)
     user = request.user
     member_in_club = Members.get_member_role(user,club)
+    Events.objects.create(club=club, user=request.user, action = 2)
     if request.method == 'GET':
         print(" baby one more time")
         Members.objects.create(
@@ -321,9 +315,6 @@ def leave_a_club(request, club_id ):
         Members.objects.filter(club_id=club_id).get(user_id=user.id).delete()
 
     return redirect('show_club', club.id)
-
-
-
 
 def table(request):
     user = request.user

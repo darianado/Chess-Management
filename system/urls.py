@@ -53,4 +53,5 @@ urlpatterns = [
 
 
     path('table/', views.table, name="table"),
+    path('events/', views.events_list, name="events_list")
 ]

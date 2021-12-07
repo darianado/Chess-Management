@@ -5,7 +5,8 @@
         "fields": {
             "club": 2,
             "user": 1,
-            "action": 4
+            "action": 4,
+            "date_created": "2021-12-6T17:41:28+00:00"
         }
     }
 ]
