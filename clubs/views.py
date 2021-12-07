@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from clubs.forms import LogInForm, SignUpForm, EditProfileForm, changePasswordForm, CreateClubForm
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from clubs.models import Club, User, Members, Events
 from django.contrib import messages
 from django.db.models import Q
@@ -15,6 +15,10 @@ from clubs.decorators import login_prohibited, minimum_role_required, exact_role
 @login_prohibited(redirect_location="dashboard")
 def welcome(request):
     return render(request, 'welcome.html')
+
+def log_out(request):
+    logout(request)
+    return redirect('welcome')
 
 @login_prohibited(redirect_location="dashboard")
 def log_in(request):
