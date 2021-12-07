@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 from clubs.tests.helper import reverse_with_next
 from clubs.helpers import  Role
-from clubs.models import Club, User, Members
+from clubs.models import Club, User, Membership
 
 class ShowrolesTest(TestCase):
 
@@ -12,10 +12,10 @@ class ShowrolesTest(TestCase):
         "clubs/tests/fixtures/default_club_hame.json",
 
         "clubs/tests/fixtures/other_users.json",
-        "clubs/tests/fixtures/other_members.json",
+        "clubs/tests/fixtures/other_memberships.json",
 
-        "clubs/tests/fixtures/default_member_jane_hame.json",
-        "clubs/tests/fixtures/default_member_john_hame.json"
+        "clubs/tests/fixtures/default_membership_jane_hame.json",
+        "clubs/tests/fixtures/default_membership_john_hame.json"
     ]
 
     def setUp(self):

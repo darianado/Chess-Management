@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
-from clubs.models import User, Members, Club
+from clubs.models import User, Membership, Club
 
 
 class ClubApplyTest(TestCase):
@@ -19,9 +19,9 @@ class ClubApplyTest(TestCase):
     def test_successful_apply_to_club(self):
         self.client.login(email=self.userMark.email, password="Password123")
         self.assertTrue(self.client.login(email=self.userMark.email, password="Password123"))
-        member_count_before = Members.objects.count()
+        member_count_before = Membership.objects.count()
         response = self.client.get(self.url, follow=True)
-        member_count_after = Members.objects.count()
+        member_count_after = Membership.objects.count()
         self.assertEqual(member_count_after, member_count_before+1)
         response_url = reverse('club_list')
         self.assertRedirects(

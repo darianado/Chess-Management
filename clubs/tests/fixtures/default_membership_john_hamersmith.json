@@ -1,6 +1,6 @@
 [
     {
-        "model": "clubs.members",
+        "model": "clubs.membership",
         "pk": 99,
         "fields": {
             "club": 1,

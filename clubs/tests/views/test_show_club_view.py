@@ -10,9 +10,9 @@ class ShowClubTest(TestCase):
         "clubs/tests/fixtures/default_user_jane.json",
         "clubs/tests/fixtures/default_club_hame.json",
         "clubs/tests/fixtures/default_club_hamersmith.json",
-        "clubs/tests/fixtures/default_member_jane_hame.json",
+        "clubs/tests/fixtures/default_membership_jane_hame.json",
         "clubs/tests/fixtures/other_users.json",
-        "clubs/tests/fixtures/other_members.json",
+        "clubs/tests/fixtures/other_memberships.json",
     ]
 
     def setUp(self):
