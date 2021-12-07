@@ -39,10 +39,10 @@ seed:
 unseed:
 	python3 manage.py unseed
 
-clubs_seed:
+club_seed:
 	python3 manage.py club_seed
 
-clubs_unseed:
+club_unseed:
 	python3 manage.py club_unseed
 
 member_seed:
@@ -50,3 +50,10 @@ member_seed:
 
 member_unseed:
 	python3 manage.py member_unseed
+
+html: 
+	coverage report
+	coverage html
+
+coverage:
+	coverage run manage.py test
