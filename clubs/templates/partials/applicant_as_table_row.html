@@ -60,14 +60,16 @@
 
 
     <td>
-        <a action="{% url 'deny_applicant' applicant.id  %}">
-            <button  class="btn btn-secondary">Deny</button>
-        </a>
+        <form onsubmit="return confirm('Are you sure you want to deny ' + '{{ applicant.user.get_full_name }}' +'?');;" 
+        action="{% url 'deny_applicant' applicant.id  %}">
+            <input type="submit" class="btn btn-secondary"  value="Deny"></input>
+        </form>
     <!-- </td>
     <td> -->
-        <a action="{% url 'accept_applicant' applicant.id %}">
-            <button class="btn btn-secondary">Accept</button>
-        </a>
+        <form onsubmit="return confirm('Are you sure you want to accept ' + '{{ applicant.user.get_full_name }}' +'?');;" 
+        action="{% url 'accept_applicant' applicant.id %}">
+            <input type="submit" class="btn btn-secondary" value="Accept"></button>
+        </form>
 
     </td>
 
