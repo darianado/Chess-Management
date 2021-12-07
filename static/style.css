@@ -318,11 +318,26 @@ main .sidebar{
   background: linear-gradient(0deg, #2B2E4D 0%, #33364a 100%);
   padding: 80px 0;
 }
+.cta-description {
+  background:  #ffffff;
+  padding: 80px 0;
+}
+.cta-description-2 {
+  background:  #ffffff;
+  padding: 80px 0;
+}
+
+
 .cta h3 {
   color: #fff;
   font-size: 28px;
   font-weight: 700;
 }
+.cta p {
+  width: 80%;
+  margin: 0 auto 30px auto;
+  color: #fff;}
+
 
 @media (max-width: 1024px) {
   .cta {

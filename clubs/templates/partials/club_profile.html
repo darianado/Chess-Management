@@ -21,14 +21,6 @@
 
   <!-- Vendor CSS Files -->
   <link href="{% static '/vendor/animate.css/animate.min.css' %}" rel="stylesheet">
-  <link href="{% static '/vendor/aos/aos.css' %}" rel="stylesheet">
-  <link href="{% static '/vendor/bootstrap/css/bootstrap.min.cs' %}" rel="stylesheet">
-  <link href="{% static '/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
-  <link href="{% static '/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
-  <link href="{% static '/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
-  <link href="{% static '/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
-  <link href="{% static '/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
-
 
   <section id="hero" class="d-flex flex-column justify-content-end align-items-center"> 
     <div id="heroCarousel" data-bs-interval="5000" class="container carousel carousel-fade" data-bs-ride="carousel">
@@ -74,24 +66,57 @@
 
 </section>
 
-<div>       
-   <p class="profile-bio">
-      {{ club.description}} 
-   </p> 
-   <p class="profile-statistics"> 
-     <span> 
-     <b>{{ club.location}} </b> Location 
-     </span> 
-   </p>
-</div>
+<section id="cta-description" class="cta-description">
+  <div class="container">
+    <h3>Description</h3>
+      <div class = "row">
+        <div class = "col-2" >
+          <img src="{% static '/images/knight.svg' %}" alt="" id ="Knight-logo">
+        </div>
+        <div class = "col-10" align-items-left>
+           <p class="profile-bio">
+              {{ club.description}} 
+           </p> 
+           {% comment %} <p class="profile-statistics">  {% endcomment %}
+             {% comment %} <span>  {% endcomment %}
+               {% comment %} <b>{{ club.location}} </b> Location  {% endcomment %}
+             {% comment %} </span>  {% endcomment %}
+           {% comment %} </p> {% endcomment %}
+        </div>
+      </div>
+    </div>
+</section
+
+<section id="cta-description-2" class="cta-description">
+  <div class="container">
+    <h3>Location</h3>
+      <div class = "row">
+        <div class = "col-2" >
+          <img src="{% static '/images/bishop.svg' %}" alt="" id ="Bishop-logo">
+        </div>
+        <div class = "col-10" align-items-left>
+            <p class="profile-statistics"> 
+             <span> 
+               <b>{{ club.location}} </b> Location 
+             </span> 
+           </p>
+        </div>
+      </div>
+    </div>
+</section>
+
     <section id="cta" class="cta">
       <div class="container">
-          <div class="col-lg-9 ">
             <h3>Owner Information</h3>
-             <img src="{{ owner_club.user.gravatar }}"> 
-             <h3 class=" fs-3 fw-bolder">{{owner_club.user.first_name}}</h3>
-             <h3 class=" fs-3 fw-bolder">{{owner_club.user.bio}} </h3>
-          </div>
+            <div class = "row">
+              <div class = "col-4" align-items-center>
+               <img src="{{ owner_club.user.gravatar }}"> 
+               <h3 class=" fs-3 fw-bolder">{{owner_club.user.get_full_name}}</h3>
+              </div>
+              <div class = "col-8">
+                 <p >{{owner_club.user.bio}} </p>
+              </div>
+            </div>
         </div>
       </div>
     </section>
