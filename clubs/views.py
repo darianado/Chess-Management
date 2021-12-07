@@ -18,6 +18,7 @@ def welcome(request):
 
 def log_out(request):
     logout(request)
+    messages.success(request, 'You have logged out.')
     return redirect('welcome')
 
 @login_prohibited(redirect_location="dashboard")
@@ -32,7 +33,10 @@ def log_in(request):
             if user is not None:
                 login(request, user)
                 redirect_url = next or "dashboard"
+                messages.success(request, 'You have logged in.')
                 return redirect(redirect_url)
+            else:
+                messages.error(request, 'You have error message.')
     else:
         next = request.GET.get("next") or ""
 
@@ -50,6 +54,7 @@ def sign_up(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
+            messages.success(request, 'You have signed up.')
             return redirect('dashboard')
     else:
         form = SignUpForm()
@@ -197,10 +202,13 @@ def create_club(request):
                 description = form.cleaned_data.get('description')
                 club = Club.objects.create(club_name=club_name, location=location, description=description)
                 member = Members.objects.create(club=club, user=current_user, role=1)
+                messages.add_message(request, messages.SUCCESS, "Club create successful!")
                 return redirect('club_list')
             else:
+                messages.add_message(request, messages.ERROR, "You have error messages")
                 return render(request, 'create_club.html', {'form': form})
         else:
+            messages.add_message(request, messages.ERROR, "You should log in first")
             return redirect('log_in')
     """else:
         return HttpResponseForbidden()"""
@@ -218,6 +226,7 @@ def officer_promote(request,member_id):
     member.promote()
 
     action = Events.objects.create(club=member.club, user=member.user, action = 4)
+    messages.add_message(request, messages.SUCCESS, "Officer pormote successful")
     return redirect('show_club', club_id = c_id)
 
 @login_required(redirect_field_name="")
@@ -229,6 +238,7 @@ def officer_demote(request,member_id):
     member.demote()
 
     action = Events.objects.create(club=member.club, user=member.user, action = 5)
+    messages.add_message(request, messages.SUCCESS, "Officer demote successful")
     return redirect('show_club', club_id=c_id)
 
 
@@ -241,6 +251,7 @@ def member_promote(request,member_id):
     member.promote()
 
     action = Events.objects.create(club=member.club, user=member.user, action = 4)
+    messages.add_message(request, messages.SUCCESS, "Member pormote successful")
     return redirect('show_club', club_id = c_id)
 
 
@@ -255,6 +266,7 @@ def member_kick(request,member_id):
     member.member_kick()
 
     action = Events.objects.create(club=club, user=user, action = 6)
+    messages.add_message(request, messages.SUCCESS, "Member kick successful")
     return redirect('show_club', club_id = c_id)
 
 
@@ -269,6 +281,7 @@ def deny_applicant(request, member_id):
     member.denyApplicant()
 
     action = Events.objects.create(club=club, user=user, action = 3)
+    messages.add_message(request, messages.SUCCESS, "Applicant has denied")
     return redirect('show_club', club_id = c_id)
 
 
@@ -281,6 +294,7 @@ def accept_applicant(request,member_id):
     member.acceptApplicant()
 
     action = Events.objects.create(club=member.club, user=member.user, action = 1)
+    messages.add_message(request, messages.SUCCESS, "Applicant has accepted")
     return redirect('show_club', club_id= c_id)
 
 @login_required(redirect_field_name="")
@@ -299,7 +313,9 @@ def apply_to_club(request, club_id ):
                 club = club,
                 role = 4,
         )
+    messages.add_message(request, messages.SUCCESS, 'You have apply the club.')
     return redirect('show_club', club.id)
+
 
 def resend_application(request, club_id):
     club = Club.objects.get(id=club_id)
@@ -308,6 +324,7 @@ def resend_application(request, club_id):
     if request.method == 'GET':
         return render(request, 'resend_application.html',
                 {'club': club, 'user':user})
+    messages.add_message(request, messages.SUCCESS, 'You have resend your application.')
     return redirect('show_club', club.id)
 
 def leave_a_club(request, club_id ):
@@ -315,8 +332,9 @@ def leave_a_club(request, club_id ):
     user = request.user
     member_in_club = Members.get_member_role(user,club)
     if request.method == 'GET':
+        messages.success(request,"You have left the club")
         Members.objects.filter(club_id=club_id).get(user_id=user.id).delete()
-
+    messages.add_message(request, messages.SUCCESS, 'You have leave the club.')
     return redirect('show_club', club.id)
 
 def table(request):
@@ -330,7 +348,7 @@ def table(request):
 
         data_row = (club.club_name, Members.objects.filter(club=club).exclude(role=4).count(), Members.get_member_role_name(Members.get_member_role(user, club)), club.id)
         list_data.append(data_row)
-    
+
     return render(
             request,
             "table.html",
