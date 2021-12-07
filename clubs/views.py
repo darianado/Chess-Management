@@ -18,6 +18,7 @@ def welcome(request):
 
 def log_out(request):
     logout(request)
+    messages.add_message(request, messages.SUCCESS, "You've logged out.")
     return redirect('welcome')
 
 @login_prohibited(redirect_location="dashboard")
@@ -33,6 +34,7 @@ def log_in(request):
                 login(request, user)
                 redirect_url = next or "dashboard"
                 return redirect(redirect_url)
+        messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
     else:
         next = request.GET.get("next") or ""
 
@@ -330,7 +332,7 @@ def table(request):
 
         data_row = (club.club_name, Members.objects.filter(club=club).exclude(role=4).count(), Members.get_member_role_name(Members.get_member_role(user, club)), club.id)
         list_data.append(data_row)
-    
+
     return render(
             request,
             "table.html",
