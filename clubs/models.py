@@ -251,7 +251,7 @@ class Tournament(models.Model):
     capacity = models.IntegerField(
             unique=False,
             blank=False,
-            default=96,
+            default=16,
             validators=[
                 MinValueValidator(2),
                 MaxValueValidator(96)
@@ -259,7 +259,8 @@ class Tournament(models.Model):
         )
 
     def scheduleMatches(self):
-        all_active_participants = self.participants.objects.filter(is_active=True)
+        all_active_participants = list(self.participants.objects.filter(is_active=True))
+        all_active_participants.reverse()
         for x in range(0, all_active_participants.count(), 2):
             playerA = all_active_participants[x]
             playerB = all_active_participants[x+1]
