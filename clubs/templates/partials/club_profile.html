@@ -22,6 +22,7 @@
   <!-- Vendor CSS Files -->
   <link href="{% static '/vendor/animate.css/animate.min.css' %}" rel="stylesheet">
 
+<div>
   <section id="hero" class="d-flex flex-column justify-content-end align-items-center"> 
     <div id="heroCarousel" data-bs-interval="5000" class="container carousel carousel-fade" data-bs-ride="carousel">
 
@@ -36,8 +37,8 @@
                  </form> 
                {% elif member_in_club == 3 or member_in_club == 2 %} 
                  <form action= "{% url 'leave_a_club' club.id %}"> 
-                  <intput class="btn-get-started animate__animated animate__fadeInUp" type='submit' value= 'Leave'/> 
-                 </form> -->
+                  <input class="btn-get-started animate__animated animate__fadeInUp" type='submit' value= 'Leave'/> 
+                 </form> 
                {% elif member_in_club == 4 %} 
                 <form action= "{% url 'resend_application' club.id %}"> 
                   <input class="btn-get-started animate__animated animate__fadeInUp" type='submit' value= 'Resend'/>
@@ -126,7 +127,6 @@
       <div class="card info-card members-card">
         <div class="card-body">
           <h5 class="card-title">Current Members</h5>
-
           <div class="d-flex align-items-center">
             <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
              <i class="bi bi-people-fill"></i>
@@ -139,6 +139,8 @@
         </div>
       </div>
   </div>
+  
+</div>
 
 
 
