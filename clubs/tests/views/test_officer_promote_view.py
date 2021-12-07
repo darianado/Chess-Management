@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
-from clubs.helpers import reverse_with_next, Role
+from clubs.tests.helper import reverse_with_next
+from clubs.helpers import  Role
 from clubs.models import Club, User, Members
 
 class OfficerPromoteTest(TestCase):

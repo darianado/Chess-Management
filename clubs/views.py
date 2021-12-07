@@ -294,7 +294,6 @@ def apply_to_club(request, club_id ):
     member_in_club = Members.get_member_role(user,club)
     Events.objects.create(club=club, user=request.user, action = 2)
     if request.method == 'GET':
-        print(" baby one more time")
         Members.objects.create(
                 user = user,
                 club = club,
