@@ -1,15 +1,15 @@
-<table>
+<table class="table table-sm">
   <thead>
     <tr>
-      <th>Events</th>
+      <th>Action</th>
+      <th>Club</th>
     </tr>
   </thead>
   <tbody>
       {% for event in events %}
-      <tr>
-        <td>
-          You are {{ event.getAction }} {{ event.club.club_name }}.
-        </td>
+      <tr style="background-color: {{ event.getActionColour }}">
+        <td>{{ event.getActionString }}</td>
+        <td>{{ event.club.club_name }}</td>
       </tr>
       {% endfor %}
   </tbody>

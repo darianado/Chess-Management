@@ -13,6 +13,9 @@
     <p>uhjxdhcnjdksnvjksdncfjkshdckhskdhkzshcdjkshjkzcjc</p>
     <p>uhjxdhcnjdksnvjksdncfjkshdckhskdhkzshcdjkshjkzcjc</p>
 
+    <h2>Events</h2>
+    <div id="my_events"></div>
+
     <h2> <br></h2>
     <h2> <br></h2>
 
@@ -40,19 +43,34 @@
 
    
     <script type="text/javascript">
-        
-             http = new XMLHttpRequest();
-             u="{% url 'table' %}";
 
-             http.open("GET", u);
-            http.onreadystatechange = function () {
+        // event table
+
+        http = new XMLHttpRequest();
+        u="{% url 'events_list' %}";
+
+        http.open("GET", u);
+        http.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
-                document.getElementById('my_clubs').innerHTML ="<div>"+http.responseText+"</div>";
+                document.getElementById('my_events').innerHTML ="<div>"+http.responseText+"</div>";
             }
         }
         http.send();
         
+        // club table
+
+        http2 = new XMLHttpRequest();
+        u2="{% url 'table' %}";
+
+        http2.open("GET", u2);
+        http2.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById('my_clubs').innerHTML ="<div>"+http2.responseText+"</div>";
+            }
+        }
+        http2.send();
     </script>
+
 
     
     <!-- {% if list_data %}

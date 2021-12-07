@@ -199,16 +199,30 @@ class Events(models.Model):
                                     MinValueValidator(1),
                                     MaxValueValidator(6)
                                 ])
-    def getAction(self):
+    def getActionString(self):
         if self.action == 1:
-            return "Accepted by"
+            return "Accepted"
         elif self.action == 2:
-            return "Applied by"
+            return "Applied"
         elif self.action == 3:
-            return "Rejected by"
+            return "Rejected"
         elif self.action == 4:
-            return "Promoted by"
+            return "Promoted"
         elif self.action == 5:
-            return "Demoted by"
+            return "Demoted"
         elif self.action == 6:
-            return "Kicked by"
+            return "Kicked"
+
+    def getActionColour(self):
+        if self.action == 1:
+            return "green"
+        elif self.action == 2:
+            return "yellow"
+        elif self.action == 3:
+            return "red"
+        elif self.action == 4:
+            return "green"
+        elif self.action == 5:
+            return "red"
+        elif self.action == 6:
+            return "red"
