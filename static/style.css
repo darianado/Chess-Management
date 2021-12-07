@@ -38,7 +38,9 @@ a.active h3{
 a.active{
   background: #2B2E4D !important;
 }
-
+body{
+  min-height: 100vh;
+}
 #cover-image {
   background: url('images/welcome.jpg') no-repeat center center fixed;
   -webkit-background-size: cover;
