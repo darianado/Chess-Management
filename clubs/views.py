@@ -18,7 +18,7 @@ def welcome(request):
 
 def log_out(request):
     logout(request)
-    messages.add_message(request, messages.SUCCESS, "You've logged out.")
+    messages.add_message(request, messages.success, "You've logged out.")
     return redirect('welcome')
 
 @login_prohibited(redirect_location="dashboard")
