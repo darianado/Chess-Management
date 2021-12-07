@@ -13,6 +13,9 @@
     <p>uhjxdhcnjdksnvjksdncfjkshdckhskdhkzshcdjkshjkzcjc</p>
     <p>uhjxdhcnjdksnvjksdncfjkshdckhskdhkzshcdjkshjkzcjc</p>
 
+    <h2>Events</h2>
+    <div id="my_events"></div>
+
     <h2> <br></h2>
     <h2> <br></h2>
 
@@ -27,47 +30,37 @@
         <span class="badge rounded-pill bg-warning text-dark">Pending</span>  
     </div>
 
-    
-    <div id="not_applied" hidden>
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <h3 class="me-auto">You have not applied to any club</h3>
-            <button class="btn btn-dark me-md-2" type="button">Apply now</button>
-        </div>
-    </div>
-
 
     <div id="my_clubs"></div>
 
    
     <script type="text/javascript">
-        
-             http = new XMLHttpRequest();
-             u="{% url 'table' %}";
+        // event table
 
-             http.open("GET", u);
-            http.onreadystatechange = function () {
+        http = new XMLHttpRequest();
+        u="{% url 'events_list' %}";
+
+        http.open("GET", u);
+        http.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
-                document.getElementById('my_clubs').innerHTML ="<div>"+http.responseText+"</div>";
+                document.getElementById('my_events').innerHTML ="<div>"+http.responseText+"</div>";
             }
         }
         http.send();
         
+        // club table
+
+        http2 = new XMLHttpRequest();
+        u2="{% url 'table' %}";
+
+        http2.open("GET", u2);
+        http2.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById('my_clubs').innerHTML ="<div>"+http2.responseText+"</div>";
+            }
+        }
+        http2.send();
     </script>
-
-    
-    <!-- {% if list_data %}
-
-    <script type="text/javascript">
-        
-    </script>
-
-    {% else %}
-        <script type="text/javascript">
-            k= document.getElementById('not_applied').innerHTML;
-            document.getElementById('my_clubs').innerHTML =  k;
-        </script>
-    {% endif %} -->
-
 
 </div>
 

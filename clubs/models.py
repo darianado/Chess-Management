@@ -148,20 +148,15 @@ class Members(models.Model):
     def denyApplicant(self):
         self.delete()
 
-    def officer_promote(self):
-        self.role=1
+    def promote(self):
+        self.role=self.role-1
         self.save()
-    def officer_demote(self):
-        self.role=3
-        self.save()
-    def member_promote(self):
-        self.role=2
+    def demote(self):
+        self.role=self.role+1
         self.save()
     def member_kick(self):
         self.delete()
-    def owner_demote(self):
-        self.role=2
-        self.save()
+
 
     def get_member_role(other_user,other_club):
         try:
@@ -172,16 +167,16 @@ class Members(models.Model):
             return member.role
     def get_member_role_name(role):
         if role == 1:
-            return ('Owner')    
+            return ('Owner')
         elif role == 2:
-            return ('Officer')    
+            return ('Officer')
         elif role == 3:
-            return ('Member')    
+            return ('Member')
         elif role == 4:
-            return ('Applicant')    
+            return ('Applicant')
         elif role == None:
-            return ('User')    
-        return ('')   
+            return ('User')
+        return ('')
 class Events(models.Model):
     date_created = models.DateTimeField(
         auto_now=False,
@@ -204,16 +199,30 @@ class Events(models.Model):
                                     MinValueValidator(1),
                                     MaxValueValidator(6)
                                 ])
-    def getAction(self):
+    def getActionString(self):
         if self.action == 1:
-            return "Accepted by"
+            return "Accepted"
         elif self.action == 2:
-            return "Applied by"
+            return "Applied"
         elif self.action == 3:
-            return "Rejected by"
+            return "Rejected"
         elif self.action == 4:
-            return "Promoted by"
+            return "Promoted"
         elif self.action == 5:
-            return "Demoted by"
+            return "Demoted"
         elif self.action == 6:
-            return "Kicked by"
+            return "Kicked"
+
+    def getActionColour(self):
+        if self.action == 1:
+            return "green"
+        elif self.action == 2:
+            return "yellow"
+        elif self.action == 3:
+            return "red"
+        elif self.action == 4:
+            return "green"
+        elif self.action == 5:
+            return "red"
+        elif self.action == 6:
+            return "red"

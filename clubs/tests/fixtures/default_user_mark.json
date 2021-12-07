@@ -1,0 +1,16 @@
+[
+    {
+        "model": "clubs.user",
+        "pk": 3,
+        "fields": {
+            "first_name": "Mark",
+            "last_name": "Vue",
+            "email": "Markvue@example.org",
+            "password": "pbkdf2_sha256$260000$wjZyPH9O2F7yNvzw7oQQLP$JN1zXdB/S47AQ1TOewVWflEOHqZGOzpY13LrDV6VbDw=",
+            "bio": "Hi I'm Mark",
+            "chess_experience_level": 3,
+            "personal_statement": "I like chess",
+            "is_active": true
+        }
+    }
+]
