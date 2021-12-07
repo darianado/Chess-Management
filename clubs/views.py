@@ -293,7 +293,6 @@ def apply_to_club(request, club_id ):
                 club = club,
                 role = 4,
         )
-
     return redirect('show_club', club.id)
 
 def resend_application(request, club_id):
