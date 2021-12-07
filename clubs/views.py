@@ -281,12 +281,8 @@ def accept_applicant(request,member_id):
 
 @login_required(redirect_field_name="")
 def events_list(request):
-    try:
-        events = Events.objects.filter(user=request.user)
-    except ObjectDoesNotExist:
-        return redirect('club_list')
-    else:
-        return render(request, 'partials/events_list.html', {'events': events})
+    events = Events.objects.filter(user=request.user)
+    return render(request, 'partials/events_list.html', {'events': events})
 
 def apply_to_club(request, club_id ):
     club = Club.objects.get(id=club_id)
@@ -319,9 +315,6 @@ def leave_a_club(request, club_id ):
         Members.objects.filter(club_id=club_id).get(user_id=user.id).delete()
 
     return redirect('show_club', club.id)
-
-
-
 
 def table(request):
     user = request.user
