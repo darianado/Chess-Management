@@ -1,12 +1,6 @@
 {% load static %}
-<!-- <div class="py-5 bg-image-full club_title_cover"> -->
-  <!-- <div class="text-center my-5"> -->
-      <!-- <h1 class=" fs-3 fw-bolder" style="color: #D7A786;">{{ club.club_name}}</h1> -->
-  <!-- </div> -->
-<!-- </div> -->
-<!--  -->
 
-{% comment %} this code is provided by https://bootstrapmade.com/selecao-bootstrap-template/, licensed by   {% endcomment %}
+{% comment %} part of this code is provided by https://bootstrapmade.com/selecao-bootstrap-template/, licensed by   {% endcomment %}
   <!-- =======================================================
   * Template Name: Selecao - v4.7.0
   * Template URL: https://bootstrapmade.com/selecao-bootstrap-template/
@@ -36,14 +30,9 @@
   <link href="{% static '/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
 
 
-
-
-
-  <!-- ======= Hero Section ======= -->
   <section id="hero" class="d-flex flex-column justify-content-end align-items-center"> 
     <div id="heroCarousel" data-bs-interval="5000" class="container carousel carousel-fade" data-bs-ride="carousel">
 
-      <!-- Slide 1 -->
       <div class="carousel-item active">
         <div class="carousel-container">
           <h2 class="animate__animated animate__fadeInDown">Welcome to <span>{{ club.club_name}}</span></h2>
@@ -85,6 +74,46 @@
 
 </section>
 
+<div>       
+   <p class="profile-bio">
+      {{ club.description}} 
+   </p> 
+   <p class="profile-statistics"> 
+     <span> 
+     <b>{{ club.location}} </b> Location 
+     </span> 
+   </p>
+</div>
+    <section id="cta" class="cta">
+      <div class="container">
+          <div class="col-lg-9 ">
+            <h3>Owner Information</h3>
+             <img src="{{ owner_club.user.gravatar }}"> 
+             <h3 class=" fs-3 fw-bolder">{{owner_club.user.first_name}}</h3>
+             <h3 class=" fs-3 fw-bolder">{{owner_club.user.bio}} </h3>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+ <div class="col-xxl-4 col-xl-12">
+      <div class="card info-card members-card">
+        <div class="card-body">
+          <h5 class="card-title">Current Members</h5>
+
+          <div class="d-flex align-items-center">
+            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+             <i class="bi bi-people-fill"></i>
+            </div>
+            <div class="ps-3">
+              <h6>{{number_of_members}}</h6>
+            </div>
+          </div>
+
+        </div>
+      </div>
+  </div>
 
 
 
@@ -96,44 +125,4 @@
 
 
 
-
-
-
-<!--  -->
-<!-- <div> -->
-      <!-- <p class="profile-bio"> -->
-        <!-- {{ club.description}} -->
-      <!-- </p> -->
-      <!-- <p class="profile-statistics"> -->
-        <!-- <span> -->
-        <!-- <b>{{ club.location}} </b> Location -->
-        <!-- </span> -->
-      <!-- </p> -->
-      <!-- <div> -->
-        <!-- <i class="bi bi-people-fill"></i> -->
-        <!-- <p>current members: {{number_of_members}}</p> -->
-      <!-- </div> -->
-      <!-- <div> -->
-        <!-- <h1>Owner Information</h1> -->
-        <!-- <img src="{{ owner_club.user.gravatar }}"> -->
-        <!-- <h3 class=" fs-3 fw-bolder">{{owner_club.user.first_name}}</h3> -->
-        <!-- <h3 class=" fs-3 fw-bolder">{{owner_club.user.bio}} </h3> -->
-      <!-- </div> -->
-      <!-- <div> -->
-        <!-- {%if member_in_club == None %} -->
-            <!-- <form action= "{% url 'apply_to_club' club.id %}"> -->
-              <!-- <input type='submit' value= 'Apply'/> -->
-            <!-- </form> -->
-          <!-- {% elif member_in_club == 3 or member_in_club == 2 %} -->
-            <!-- <form action= "{% url 'leave_a_club' club.id %}"> -->
-              <!-- <input type='submit' value= 'Leave'/> -->
-            <!-- </form> -->
-          <!-- {% elif member_in_club == 4 %} -->
-            <!-- <form action= "{% url 'resend_application' club.id %}"> -->
-              <!-- <input type='submit' value= 'Resend'/> -->
-            <!-- </form> -->
-        <!-- {% endif %} -->
-      <!-- </div> -->
-<!--  -->
-<!-- </div> -->
 
