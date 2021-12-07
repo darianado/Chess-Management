@@ -1,11 +1,11 @@
 [
     {
-        "model": "clubs.members",
+        "model": "clubs.membership",
         "pk": 1,
         "fields": {
             "club": 2,
             "user": 1,
-            "role": 4
+            "role": 3
         }
     }
 ]

@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from clubs.models import Club, Members, User
+from clubs.models import Club, Membership, User
 
 class ShowMemberListTest(TestCase):
 
@@ -9,7 +9,7 @@ class ShowMemberListTest(TestCase):
         "clubs/tests/fixtures/default_user_john.json",
         "clubs/tests/fixtures/default_user_jane.json",
         "clubs/tests/fixtures/default_club_hame.json",
-        "clubs/tests/fixtures/default_member_john_hame.json",
+        "clubs/tests/fixtures/default_membership_john_hame.json",
     ]
 
     def setUp(self):

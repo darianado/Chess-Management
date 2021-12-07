@@ -8,4 +8,4 @@ class Command(BaseCommand):
     def handle(self,*arg,**options):
         models.Club.objects.all().exclude(id=101).delete()
         models.User.objects.filter(is_staff=False, is_superuser=False).delete()
-        models.Members.objects.all().delete()
+        models.Membership.objects.all().delete()

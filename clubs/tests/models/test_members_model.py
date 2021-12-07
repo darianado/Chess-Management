@@ -1,22 +1,22 @@
 from django.test import TestCase
-from clubs.models import Club, Members, User
+from clubs.models import Club, Membership, User
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.db.utils import IntegrityError
 from django.db import transaction
 
 from clubs.helpers import Role
 
-class MembersModelTest(TestCase):
+class MembershipModelTest(TestCase):
 
     fixtures = [
         "clubs/tests/fixtures/default_user_john.json",
         "clubs/tests/fixtures/default_user_jane.json",
         "clubs/tests/fixtures/default_club_hamersmith.json",
         "clubs/tests/fixtures/default_club_hame.json",
-        "clubs/tests/fixtures/default_member_john_hame.json",
-        "clubs/tests/fixtures/default_member_jane_hame.json",
+        "clubs/tests/fixtures/default_membership_john_hame.json",
+        "clubs/tests/fixtures/default_membership_jane_hame.json",
         "clubs/tests/fixtures/other_users.json",
-        "clubs/tests/fixtures/other_members.json",
+        "clubs/tests/fixtures/other_memberships.json",
     ]
 
     def setUp(self):
@@ -27,9 +27,9 @@ class MembersModelTest(TestCase):
         
         self.clubHame = Club.objects.get(club_name="Hame Chess Club")
         
-        self.memberJohn = Members.objects.get(club=self.clubHame, user=self.userJohn)
-        self.memberMark = Members.objects.get(club=self.clubHame, user=self.userMark)
-        self.memberJane = Members.objects.get(club=self.clubHame, user=self.userJane)
+        self.memberJohn = Membership.objects.get(club=self.clubHame, user=self.userJohn)
+        self.memberMark = Membership.objects.get(club=self.clubHame, user=self.userMark)
+        self.memberJane = Membership.objects.get(club=self.clubHame, user=self.userJane)
 
         self.memberJohn.role = 1
         self.memberJane.role = 2
@@ -66,41 +66,41 @@ class MembersModelTest(TestCase):
         self._assert_member_is_invalid()
 
     def test_get_correct_role_name_owner(self):
-        role_member_john = Members.get_member_role_name(Members.get_member_role(self.userJohn, self.clubHame))
+        role_member_john = Membership.get_member_role_name(Membership.get_member_role(self.userJohn, self.clubHame))
         self.assertEqual(role_member_john, "Owner")
 
     def test_get_correct_role_name_member(self):
         self.memberJohn.role = 3
         self.memberJohn.save()
 
-        role_member_john = Members.get_member_role_name(Members.get_member_role(self.userJohn, self.clubHame))
+        role_member_john = Membership.get_member_role_name(Membership.get_member_role(self.userJohn, self.clubHame))
         self.assertEqual(role_member_john, "Member")
 
     def test_get_correct_role_name_applicant(self):
         self.memberJane.role = 4
         self.memberJane.save()
 
-        role_member_jane = Members.get_member_role_name(Members.get_member_role(self.userJane, self.clubHame))
+        role_member_jane = Membership.get_member_role_name(Membership.get_member_role(self.userJane, self.clubHame))
         self.assertEqual(role_member_jane, "Applicant")
 
     def test_get_correct_role_name_officer(self):
-        role_member_jane = Members.get_member_role_name(Members.get_member_role(self.userJane, self.clubHame))
+        role_member_jane = Membership.get_member_role_name(Membership.get_member_role(self.userJane, self.clubHame))
         self.assertEqual(role_member_jane, "Officer")
 
     def test_get_incorrect_role_name(self):
         self.memberJohn.role = 0
         self.memberJohn.save()
 
-        role_member_john = Members.get_member_role_name(Members.get_member_role(self.userJohn, self.clubHame))
+        role_member_john = Membership.get_member_role_name(Membership.get_member_role(self.userJohn, self.clubHame))
         self.assertEqual(role_member_john, "")
 
     def test_get_correct_role_name_user(self):
-        role_user_victor = Members.get_member_role_name(Members.get_member_role(self.userVictor, self.clubHame))
+        role_user_victor = Membership.get_member_role_name(Membership.get_member_role(self.userVictor, self.clubHame))
         self.assertEqual(role_user_victor, "User")
 
     def test_user_is_only_a_member_of_a_club_exactly_once(self):
         with self.assertRaises(IntegrityError):
-            Members.objects.create(
+            Membership.objects.create(
                 club=self.clubHame,
                 user=self.userJane
             )
@@ -108,7 +108,7 @@ class MembersModelTest(TestCase):
     def test_a_club_cannot_have_more_than_1_owner(self):
         with self.assertRaises(IntegrityError):
             with transaction.atomic():
-                Members.objects.create(
+                Membership.objects.create(
                     club=self.clubHame,
                     user=self.userJane,
                     role=Role.OWNER
@@ -116,7 +116,7 @@ class MembersModelTest(TestCase):
 
         with self.assertRaises(IntegrityError):
             with transaction.atomic():
-                member = Members.objects.create(
+                member = Membership.objects.create(
                     club=self.clubHame,
                     user=self.userJane,
                     role=Role.MEMBER
@@ -150,7 +150,7 @@ class MembersModelTest(TestCase):
         else:
             self.memberMark.denyApplicant()
             try:
-                member = Members.objects.get(club=self.clubHame, user=self.userMark)
+                member = Membership.objects.get(club=self.clubHame, user=self.userMark)
             except(ObjectDoesNotExist):
                 member = None
             self.assertEqual(member,None)
@@ -168,7 +168,7 @@ class MembersModelTest(TestCase):
     def test_member_kick_successful(self):
         self.memberJohn.member_kick()
         try:
-            member = Members.objects.get(club=self.clubHame, user=self.userJohn)
+            member = Membership.objects.get(club=self.clubHame, user=self.userJohn)
         except(ObjectDoesNotExist):
             member = None
         self.assertEqual(member,None)

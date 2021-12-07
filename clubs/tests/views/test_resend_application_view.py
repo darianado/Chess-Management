@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
-from clubs.models import User, Members, Club
+from clubs.models import User, Membership, Club
 
 
 class ResendApplicationTest(TestCase):

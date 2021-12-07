@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from django.core.exceptions import ObjectDoesNotExist
 
-from clubs.models import Club, Members
+from clubs.models import Club, Membership
 
 def login_prohibited(redirect_location):
     def login_prohibited_redirector(view_function):
@@ -18,7 +18,7 @@ def minimum_role_required(role_required, redirect_location):
         def wrapper(request, club_id):
             try:
                 club = Club.objects.get(id=club_id)
-                member = Members.objects.get(user=request.user, club=club)
+                member = Membership.objects.get(user=request.user, club=club)
 
                 if member.role <= role_required:
                     return view_function(request, club_id)
@@ -36,7 +36,7 @@ def exact_role_required(role_required, redirect_location):
         def wrapper(request, club_id):
             try:
                 club = Club.objects.get(id=club_id)
-                member = Members.objects.get(user=request.user, club=club)
+                member = Membership.objects.get(user=request.user, club=club)
 
                 if member.role == role_required:
                     return view_function(request, club_id)
@@ -53,13 +53,13 @@ def another_role_required(role_required, redirect_location):
     def another_role_required_redirector(view_function):
         def wrapper(request, member_id):
             try:
-                member = Members.objects.get(id=member_id)
-                logged_in_member = Members.objects.get(club=member.club, user=request.user)
+                member = Membership.objects.get(id=member_id)
+                logged_in_member = Membership.objects.get(club=member.club, user=request.user)
                 if logged_in_member.role <= role_required:
                     return view_function(request, member_id)
                 else:
                     return redirect(redirect_location)
-            except Members.DoesNotExist:
+            except Membership.DoesNotExist:
                 return redirect(redirect_location)
 
         return wrapper

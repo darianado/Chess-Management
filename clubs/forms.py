@@ -1,6 +1,6 @@
 from django import forms
 from clubs.models import User
-from clubs.models import Members
+from clubs.models import Membership
 from clubs.models import Club
 from django.core.validators import RegexValidator
 
