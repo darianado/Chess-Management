@@ -6,7 +6,3 @@ class Role(models.IntegerChoices):
         OFFICER = 2
         MEMBER = 3
         APPLICANT = 4
-def reverse_with_next(url_name, next_url):
-    url = reverse(url_name)
-    url += f"?next={next_url}"
-    return url

@@ -4,13 +4,13 @@ from clubs.models import User, Members, Club
 
 
 class ResendApplicationTest(TestCase):
-    fixtures = ['clubs/tests/fixtures/default_user_mark.json',
+    fixtures = ['clubs/tests/fixtures/other_users.json',
                 'clubs/tests/fixtures/default_club_hame.json',
     ]
     def setUp(self):
         super(TestCase, self).setUp()
         self.club = Club.objects.get(club_name="Hame Chess Club")
-        self.user = User.objects.get(email="Markvue@example.org")
+        self.user = User.objects.get(email="markvue@example.org")
         self.url = reverse('resend_application', kwargs={'club_id': self.club.id})
 
     def test_resend_application_url(self):

@@ -4,13 +4,13 @@ from clubs.models import User, Members, Club
 
 
 class ClubApplyTest(TestCase):
-    fixtures = ['clubs/tests/fixtures/default_user_mark.json',
+    fixtures = ['clubs/tests/fixtures/other_users.json',
                 'clubs/tests/fixtures/default_club_hamersmith.json',
     ]
     def setUp(self):
         super(TestCase, self).setUp()
         self.club = Club.objects.get(club_name="Hamersmith Chess Club")
-        self.userMark = User.objects.get(email="Markvue@example.org")
+        self.userMark = User.objects.get(email="markvue@example.org")
         self.url = reverse('apply_to_club', kwargs={'club_id': self.club.id})
 
     def test_apply_to_club_url(self):

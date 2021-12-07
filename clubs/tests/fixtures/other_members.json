@@ -25,5 +25,14 @@
             "user": 5,
             "role": 2
         }
+    }, 
+    {
+        "model": "clubs.members",
+        "pk": 6,
+        "fields": {
+            "club": 2,
+            "user": 6,
+            "role": 4
+        }
     }
 ]
