@@ -6,12 +6,13 @@ from django.contrib import messages
 from django.db.models import Q
 from django.contrib.auth.hashers import check_password
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, request
 from django.contrib.auth.decorators import login_required
 #  from .filters import OrderFilter
 from clubs.helpers import Role
 from clubs.decorators import login_prohibited, minimum_role_required, exact_role_required, another_role_required
 
+@login_prohibited(redirect_location="dashboard")
 def welcome(request):
     return render(request, 'welcome.html')
 
@@ -91,39 +92,27 @@ def show_club(request, club_id):
 @login_required(redirect_field_name="")
 @minimum_role_required(role_required=Role.OFFICER, redirect_location='club_list')
 def show_applicants(request, club_id):
-    try:
-        thisClub = Club.objects.get(id=club_id)
-    except ObjectDoesNotExist:
-            return redirect('club_list')
-    else:
-        applicants = Members.objects.filter(club=thisClub, role=4)
-        return render(request,"partials/applicants_as_table.html",
-                 {'club': thisClub, 'applicants':applicants})
+    thisClub = Club.objects.get(id=club_id)
+    applicants = Members.objects.filter(club=thisClub, role=4)
+    return render(request,"partials/applicants_as_table.html",
+                {'club': thisClub, 'applicants':applicants})
 
 
 @login_required(redirect_field_name="")
 @minimum_role_required(role_required=Role.OWNER, redirect_location='club_list')
 def show_roles(request,club_id):
-    try:
-        club = Club.objects.get(id=club_id)
-    except ObjectDoesNotExist:
-        return redirect('club_list')
-    else:
-        users = Members.objects.all().filter(club=club)
-        members = users.filter(role = 3)
-        officers = users.filter(role = 2)
-        return render(request, "partials/roles_list_table.html", {"members": members,"officers": officers})
+    club = Club.objects.get(id=club_id)
+    users = Members.objects.all().filter(club=club)
+    members = users.filter(role = 3)
+    officers = users.filter(role = 2)
+    return render(request, "partials/roles_list_table.html", {"members": members,"officers": officers})
 
 @login_required(redirect_field_name="")
 @minimum_role_required(role_required=Role.MEMBER, redirect_location="dashboard")
 def members(request, club_id):
-    try:
-        club = Club.objects.get(id=club_id)
-    except ObjectDoesNotExist:
-        return redirect('club_list')
-    else:
-        members = [member.user for member in Members.objects.filter(club=club)]
-        return render(request, "partials/members_list_table.html", {"members": members})
+    club = Club.objects.get(id=club_id)
+    members = [member.user for member in Members.objects.filter(club=club)]
+    return render(request, "partials/members_list_table.html", {"members": members})
 
 @login_required
 def show_user(request, user_id=None):
