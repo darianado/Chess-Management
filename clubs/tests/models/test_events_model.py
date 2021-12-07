@@ -1,5 +1,5 @@
 from django.test import TestCase
-from clubs.models import Club, Members, User, Events
+from clubs.models import Club, Membership, User, Events
 from django.core.exceptions import ValidationError
 from django.db.utils import IntegrityError
 

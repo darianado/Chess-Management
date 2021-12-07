@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 from clubs.tests.helper import reverse_with_next
 from clubs.helpers import  Role
-from clubs.models import Club, User, Members
+from clubs.models import Club, User, Membership
 
 class ShowApplicantsTest(TestCase):
 
@@ -11,7 +11,7 @@ class ShowApplicantsTest(TestCase):
         "clubs/tests/fixtures/default_user_jane.json",
         "clubs/tests/fixtures/default_club_hame.json",
 
-        "clubs/tests/fixtures/default_member_jane_hame.json",
+        "clubs/tests/fixtures/default_membership_jane_hame.json",
         "clubs/tests/fixtures/default_applicant_john_hame.json"
     ]
 
@@ -24,12 +24,12 @@ class ShowApplicantsTest(TestCase):
         self.urlHameApplic = reverse('show_applicants', kwargs={'club_id': self.clubHame.id})
        
     def make_Jane_member_Hame(self):
-        membershipJane = Members.objects.get(user=self.userJane, club=self.clubHame)
+        membershipJane = Membership.objects.get(user=self.userJane, club=self.clubHame)
         membershipJane.role=3
         membershipJane.save()
 
     def make_Jane_officer_Hame(self):
-        membershipJane = Members.objects.get(user=self.userJane, club=self.clubHame)
+        membershipJane = Membership.objects.get(user=self.userJane, club=self.clubHame)
         membershipJane.role=2
         membershipJane.save()
 
