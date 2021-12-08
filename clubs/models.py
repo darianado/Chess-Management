@@ -246,6 +246,8 @@ class Tournament(models.Model):
 
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
 
+    participants = models.ManyToManyField(Members, through="Participant", related_name="participants")
+
     capacity = models.IntegerField(
             unique=False,
             blank=False,
@@ -257,7 +259,7 @@ class Tournament(models.Model):
         )
 
     def scheduleMatches(self):
-        all_active_participants = list(Participant.objects.filter(is_active=True))
+        all_active_participants = list(self.participants.objects.filter(is_active=True))
         all_active_participants.reverse()
         for x in range(0, all_active_participants.count(), 2):
             playerA = all_active_participants[x]
