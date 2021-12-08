@@ -367,3 +367,6 @@ def table(request):
                 #  "myFilter" : myFilter,
             }
         )
+
+def matches(request):
+    return render(request, 'tournament_matches.html')   

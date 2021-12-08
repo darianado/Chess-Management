@@ -270,6 +270,7 @@ class Tournament(models.Model):
     def scheduleMatches(self):
         all_active_participants = list(self.participants.objects.filter(is_active=True))
         all_active_participants.reverse()
+        #assert that it is even here
         for x in range(0, all_active_participants.count(), 2):
             playerA = all_active_participants[x]
             playerB = all_active_participants[x+1]
