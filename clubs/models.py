@@ -124,7 +124,7 @@ class Club(models.Model):
     )
 
 
-class Members(models.Model):
+class Membership(models.Model):
     class Meta:
         constraints=[
             models.UniqueConstraint(fields=["club", "user"], name="Member of a club only once"),
@@ -161,8 +161,8 @@ class Members(models.Model):
 
     def get_member_role(other_user,other_club):
         try:
-            member = Members.objects.filter(club=other_club).get(user=other_user)
-        except Members.DoesNotExist:
+            member = Membership.objects.filter(club=other_club).get(user=other_user)
+        except Membership.DoesNotExist:
             return None
         else:
             return member.role

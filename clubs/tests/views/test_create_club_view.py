@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
-from clubs.models import Club, User, Members, Events
+from clubs.models import Club, User, Membership, Events
 
 class NewPostTest(TestCase):
 
@@ -71,11 +71,11 @@ class NewPostTest(TestCase):
 
     def test_successful_create_club_owner_for_club(self):
         self.client.login(email=self.user.email, password="Password123")
-        member_count_before = Members.objects.count()
+        member_count_before = Membership.objects.count()
         response = self.client.post(self.url, self.data, follow=True)
-        member_count_after = Members.objects.count()
+        member_count_after = Membership.objects.count()
         self.assertEqual(member_count_after, member_count_before+1)
         new_club = Club.objects.get(club_name=self.data.get("club_name"))
-        new_member = Members.objects.get(club=new_club)
+        new_member = Membership.objects.get(club=new_club)
         self.assertEqual(self.user, new_member.user)
         self.assertEqual(new_member.role, 1)

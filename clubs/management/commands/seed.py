@@ -21,13 +21,13 @@
 #         users =models.User.objects.all()
 #         clubs= models.Club.objects.all()
 #         for tuser in users.iterator():
-#             models.Members.objects.create(club = clubs.get(id=101),
+#             models.Membership.objects.create(club = clubs.get(id=101),
 #                                         user = tuser )
 
 from django.core.management.base import BaseCommand, CommandError
 from django.db.utils import IntegrityError
 from faker import Faker
-from clubs.models import User, Club, Members
+from clubs.models import User, Club, Membership
 import random
 from django.db.models import Q
 
@@ -55,11 +55,11 @@ class Command(BaseCommand):
         print('User seeding complete')
         self._create_club()
         print('Club seeding complete')
-        self._init_members()
-        self._create_members()
+        self._init_memberships()
+        self._create_memberships()
         print('Member seeding complete')
 
-    def _init_members(self):
+    def _init_memberships(self):
         self.jed = User.objects.get(email="jeb@example.org")
         self.val = User.objects.get(email="val@example.org")
         self.billie = User.objects.get(email="billie@example.org")
@@ -161,15 +161,15 @@ class Command(BaseCommand):
                 location = 'SW1 3XA',
                 description=description4,
                 )
-    def _create_members(self):
-        self._create_required_members()
+    def _create_memberships(self):
+        self._create_required_memberships()
 
         # Creating owners for the other 3 clubs
         self._create_member(random.choice(self.users), self.kerbal, 1)
         self._create_member(random.choice(self.users), self.borough, 1)
         self._create_member(random.choice(self.users), self.wild, 1)
 
-        # Creating random members
+        # Creating random memberships
         member_count = 0
         while member_count < Command.MEMBER_COUNT:
             try:
@@ -184,7 +184,7 @@ class Command(BaseCommand):
             except IntegrityError:
                 continue
 
-    def _create_required_members(self):
+    def _create_required_memberships(self):
         # All three users are members of kerbal
         self._create_member(self.jed, self.kerbal, 3)
         self._create_member(self.val, self.kerbal, 3)
@@ -200,7 +200,7 @@ class Command(BaseCommand):
         self._create_member(self.billie, self.wild, 3)
 
     def _create_member(self, user, club, role=3):
-        Members.objects.create(
+        Membership.objects.create(
             user=user,
             club=club,
             role=role,
