@@ -13,7 +13,4 @@ class Status(models.IntegerChoices):
         WON_A = 3
         WON_B = 4
 
-def reverse_with_next(url_name, next_url):
-    url = reverse(url_name)
-    url += f"?next={next_url}"
-    return url
+

@@ -124,7 +124,7 @@ class Club(models.Model):
     )
 
 
-class Members(models.Model):
+class Membership(models.Model):
     class Meta:
         constraints=[
             models.UniqueConstraint(fields=["club", "user"], name="Member of a club only once"),
@@ -149,38 +149,33 @@ class Members(models.Model):
     def denyApplicant(self):
         self.delete()
 
-    def officer_promote(self):
-        self.role=1
+    def promote(self):
+        self.role=self.role-1
         self.save()
-    def officer_demote(self):
-        self.role=3
-        self.save()
-    def member_promote(self):
-        self.role=2
+    def demote(self):
+        self.role=self.role+1
         self.save()
     def member_kick(self):
         self.delete()
-    def owner_demote(self):
-        self.role=2
-        self.save()
+
 
     def get_member_role(other_user,other_club):
         try:
-            member = Members.objects.filter(club=other_club).get(user=other_user)
-        except Members.DoesNotExist:
+            member = Membership.objects.filter(club=other_club).get(user=other_user)
+        except Membership.DoesNotExist:
             return None
         else:
             return member.role
 
     def get_member_role_name(role):
         if role == 1:
-            return ('Owner')    
+            return ('Owner')
         elif role == 2:
-            return ('Officer')    
+            return ('Officer')
         elif role == 3:
-            return ('Member')    
+            return ('Member')
         elif role == 4:
-            return ('Applicant')    
+            return ('Applicant')
         elif role == None:
             return ('User')    
         return ('')
@@ -207,19 +202,33 @@ class Events(models.Model):
                                     MinValueValidator(1),
                                     MaxValueValidator(6)
                                 ])
-    def getAction(self):
+    def getActionString(self):
         if self.action == 1:
-            return "Accepted by"
+            return "Accepted"
         elif self.action == 2:
-            return "Applied by"
+            return "Applied"
         elif self.action == 3:
-            return "Rejected by"
+            return "Rejected"
         elif self.action == 4:
-            return "Promoted by"
+            return "Promoted"
         elif self.action == 5:
-            return "Demoted by"
+            return "Demoted"
         elif self.action == 6:
-            return "Kicked by"
+            return "Kicked"
+
+    def getActionColour(self):
+        if self.action == 1:
+            return "green"
+        elif self.action == 2:
+            return "yellow"
+        elif self.action == 3:
+            return "red"
+        elif self.action == 4:
+            return "green"
+        elif self.action == 5:
+            return "red"
+        elif self.action == 6:
+            return "red"
 
 class Tournament(models.Model):
 
@@ -240,13 +249,13 @@ class Tournament(models.Model):
         auto_now_add=False
     )
 
-    organiser = models.ForeignKey(Members, on_delete=models.CASCADE, related_name="organiser")
+    organiser = models.ForeignKey(Membership, on_delete=models.CASCADE, related_name="organiser")
 
-    coorganisers = models.ManyToManyField(Members)
+    coorganisers = models.ManyToManyField(Membership)
 
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
 
-    participants = models.ManyToManyField(Members, through="Participant", related_name="participants")
+    participants = models.ManyToManyField(Membership, through="Participant", related_name="participants")
 
     capacity = models.IntegerField(
             unique=False,
@@ -261,6 +270,7 @@ class Tournament(models.Model):
     def scheduleMatches(self):
         all_active_participants = list(self.participants.objects.filter(is_active=True))
         all_active_participants.reverse()
+        #assert that it is even here
         for x in range(0, all_active_participants.count(), 2):
             playerA = all_active_participants[x]
             playerB = all_active_participants[x+1]
@@ -283,7 +293,7 @@ class Participant(models.Model):
 
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
 
-    member = models.ForeignKey(Members, on_delete=models.CASCADE)
+    member = models.ForeignKey(Membership, on_delete=models.CASCADE)
 
     score = models.FloatField(
         unique=False,
