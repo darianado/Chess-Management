@@ -8,6 +8,67 @@ class TournamentModelTest(TestCase):
     def setUp(self):
         pass
 
+    def test_name_cannot_be_empty(self):
+        pass
+
+    def test_deadline_cannot_be_empty(self):
+        pass
+
+    def test_organiser_cannot_be_empty(self):
+        pass
+
+    def test_coorganisers_cannot_be_empty(self):
+        pass
+
+    def test_club_cannot_be_empty(self):
+        pass
+
+    def test_capacity_cannot_be_empty(self):
+        pass
+
+    def test_description_can_be_empty(self):
+        pass
+
+
+
+    def test_name_must_be_unique(self):
+        pass
+
+    def test_description_need_not_be_unique(self):
+        pass
+
+    def test_deadline_need_not_be_unique(self):
+        pass
+
+    def test_organiser_need_not_be_unique(self):
+        pass
+
+    def test_coorganisers_need_not_be_unique(self):
+        pass
+
+    def test_club_need_not_be_unique(self):
+        pass
+
+    def test_capacity_need_not_be_unique(self):
+        pass
+
+
+
+    def test_capacity_can_be_2(self):
+        pass
+
+    def test_capacity_can_be_96(self):
+        pass
+
+    def test_capacity_cannot_be_1(self):
+        pass
+
+    def test_capacity_cannot_be_97(self):
+        pass
+
+
+
+
     def _assert_tournament_is_valid(self):
         try:
             self.tournament.full_clean()
