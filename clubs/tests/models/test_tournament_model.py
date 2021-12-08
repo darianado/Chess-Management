@@ -6,86 +6,109 @@ class TournamentModelTest(TestCase):
     fixtures = []
 
     def setUp(self):
-        pass
+        self.tournamentYetti = None
+        self.tournamentAlaska = None
 
     def test_name_cannot_be_empty(self):
-        pass
+        self.tournamentYetti.name = None
+        self._assert_tournament_is_invalid()
 
     def test_name_may_contain_50_characters(self):
-        pass
+        self.tournamentYetti.name = "a" * 50
+        self._assert_tournament_is_valid()
 
     def test_name_cannot_contain_51_characters(self):
-        pass
+        self.tournamentYetti.name = "a" * 51
+        self._assert_tournament_is_invalid()
 
     def test_deadline_cannot_be_empty(self):
-        pass
+        self.tournamentYetti.deadline = None
+        self._assert_tournament_is_invalid()
 
     def test_organiser_cannot_be_empty(self):
-        pass
+        self.tournamentYetti.organiser = None
+        self._assert_tournament_is_invalid()
 
     def test_coorganisers_cannot_be_empty(self):
-        pass
+        self.tournamentYetti.coorganiser = None
+        self._assert_tournament_is_invalid()
 
     def test_club_cannot_be_empty(self):
-        pass
+        self.tournamentYetti.club = None
+        self._assert_tournament_is_invalid()
 
     def test_capacity_cannot_be_empty(self):
-        pass
+        self.tournamentYetti.capacity = None
+        self._assert_tournament_is_invalid()
 
     def test_description_can_be_empty(self):
-        pass
+        self.tournamentYetti.description = None
+        self._assert_tournament_is_valid()
 
     def test_description_may_contain_260_characters(self):
-        pass
+        self.tournamentYetti.description = "a" * 260
+        self._assert_tournament_is_valid()
 
     def test_description_cannot_contain_261_characters(self):
-        pass
+        self.tournamentYetti.description = "a" * 261
+        self._assert_tournament_is_invalid()
 
 
 
     def test_name_must_be_unique(self):
-        pass
+        self.tournamentYetti.name = self.tournamentAlaska.name
+        self._assert_tournament_is_invalid()
 
     def test_description_need_not_be_unique(self):
-        pass
+        self.tournamentYetti.description = self.tournamentAlaska.description
+        self._assert_tournament_is_valid()
 
     def test_deadline_need_not_be_unique(self):
-        pass
+        self.tournamentYetti.deadline = self.tournamentAlaska.deadline
+        self._assert_tournament_is_valid()
 
     def test_organiser_need_not_be_unique(self):
-        pass
+        self.tournamentYetti.organiser = self.tournamentAlaska.organiser
+        self._assert_tournament_is_valid()
 
     def test_coorganisers_need_not_be_unique(self):
-        pass
+        self.tournamentYetti.coorganisers = self.tournamentAlaska.coorganisers
+        self._assert_tournament_is_valid()
 
     def test_club_need_not_be_unique(self):
-        pass
+        self.tournamentYetti.club = self.tournamentAlaska.club
+        self._assert_tournament_is_valid()
 
     def test_capacity_need_not_be_unique(self):
-        pass
+        self.tournamentYetti.capacity = self.tournamentAlaska.capacity
+        self._assert_tournament_is_valid()
 
 
 
     def test_capacity_can_be_2(self):
-        pass
+        self.tournamentYetti.capacity = 2
+        self._assert_tournament_is_valid()
 
     def test_capacity_can_be_96(self):
-        pass
+        self.tournamentYetti.capacity = 96
+        self._assert_tournament_is_valid()
 
     def test_capacity_cannot_be_1(self):
-        pass
+        self.tournamentYetti.capacity = 1
+        self._assert_tournament_is_invalid()
 
     def test_capacity_cannot_be_97(self):
-        pass
+        self.tournamentYetti.capacity = 97
+        self._assert_tournament_is_invalid()
 
 
 
     def _assert_tournament_is_valid(self):
         try:
-            self.tournament.full_clean()
+            self.tournamentYetti.full_clean()
         except (ValidationError):
             self.fail('Test tournament should be valid')
 
     def _assert_tournament_is_invalid(self):
         with self.assertRaises(ValidationError):
-            self.tournament.full_clean()
+            self.tournamentYetti.full_clean()
