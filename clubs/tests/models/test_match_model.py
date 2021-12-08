@@ -1,41 +1,75 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 
+from clubs.models import Match
+
 class MatchModelTest(TestCase):
 
     fixtures = []
 
     def setUp(self):
-        pass
+        self.matchOne = None
+        self.matchTwo = None
 
     def test_tournament_cannot_be_empty(self):
-        pass
+        self.matchOne.tournament = None
+        self._assert_match_is_invalid()
 
     def test_playerA_cannot_be_empty(self):
-        pass
+        self.matchOne.playerA = None
+        self._assert_match_is_invalid()
 
     def test_playerB_cannot_be_empty(self):
-        pass
+        self.matchOne.playerB = None
+        self._assert_match_is_invalid()
 
     def test_match_status_cannot_be_empty(self):
-        pass
+        self.matchOne.match_status = None
+        self._assert_match_is_invalid()
 
+
+
+    def test_tournament_need_not_be_unique(self):
+        self.matchOne.tournament = self.matchTwo.tournament
+        self._assert_match_is_valid()
+
+    def test_playerA_need_not_be_unique(self):
+        self.matchOne.playerA = self.matchTwo.playerA
+        self._assert_match_is_valid()
+
+    def test_playerB_need_not_be_unique(self):
+        self.matchOne.playerB = self.matchTwo.playerB
+        self._assert_match_is_valid()
+
+    def test_match_status_need_not_be_unique(self):
+        self.matchOne.match_status = self.matchTwo.match_status
+        self._assert_match_is_valid()
 
 
 
     def test_playerA_and_playerB_cannot_be_the_same(self):
-        pass
+        self.matchOne.playerA = self.matchOne.playerB
+        self._assert_match_is_invalid()
 
 
 
     def test_match_status_can_be_1_2_3_4(self):
-        pass
+        self.matchOne.match_status = 1
+        self._assert_match_is_valid()
+        self.matchOne.match_status = 2
+        self._assert_match_is_valid()
+        self.matchOne.match_status = 3
+        self._assert_match_is_valid()
+        self.matchOne.match_status = 4
+        self._assert_match_is_valid()
 
     def test_match_status_cannot_be_0(self):
-        pass
+        self.matchOne.match_status = 0
+        self._assert_match_is_invalid()
 
     def test_match_status_cannot_be_5(self):
-        pass
+        self.matchOne.match_status = 5
+        self._assert_match_is_invalid()
 
 
 
