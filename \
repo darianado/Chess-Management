@@ -1,0 +1,73 @@
+
+{% extends 'home.html' %}
+
+{% block card_content %}
+
+
+<script>
+
+  function showMembers(){
+    const Http = new XMLHttpRequest();
+    const url="{% url 'show_members' club.id %}";
+    Http.open("GET", url);
+
+    Http.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>";
+        }
+    }
+    Http.send();
+  }
+
+  function showApplicants(){
+    const Http = new XMLHttpRequest();
+    const url="{% url 'show_applicants' club.id %}";
+    Http.open("GET", url);
+    Http.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>";
+        }
+    }
+    Http.send();
+  }
+
+  function showRoles(){
+    const Http = new XMLHttpRequest();
+    const url="{% url 'show_roles' club.id %}";
+    Http.open("GET", url);
+    Http.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>";
+        }
+    }
+    Http.send();
+  }
+
+</script>
+
+
+
+<div class="card-body">
+
+  <div class="container p-0">
+    <div class="row m-0">
+
+      {% if show_member %}
+        <div class="col-1 p-0" >
+          {% include 'partials/side-bar.html' with show_role=show_role show_member=show_member show_applicants=show_applicants %}
+        </div>
+      {% endif %}
+
+
+      <div class="col p-0">
+        <div id="membersList">
+          {% include 'partials/club_profile.html' %}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
