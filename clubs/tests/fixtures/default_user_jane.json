@@ -6,7 +6,7 @@
             "first_name": "Jane",
             "last_name": "Doe",
             "email": "janedoe@example.org",
-            "password": "pbkdf2_sha256$260000$c7uwmk5vANpU8D994bhZKR$k27nPwiOrrUkk1qPNANL36zcIq6cUCsRq6Wo3EAN3KA=",
+            "password": "pbkdf2_sha256$260000$joqP6m7PKw58atUUP8WYKH$a17IQiZuUzMAsSNSpxaaQjjXOGOgTUD/qtZY7IIIFE8=",
             "bio": "Hi I'm Jane",
             "chess_experience_level": 3,
             "personal_statement": "mie imi place sa joc sah!",

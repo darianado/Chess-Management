@@ -13,12 +13,13 @@
             {{myFilter.form}}
             <button class="btn btn-primary" type="submit"> Search</button>
           </form> -->
-        <table class='table table-sm'>
+          
+      {% if list_data|length > 0 %}
+        <table class='table table-sm' id="my_clubs_table">
           <tr>
             <th>Club Name</th>
             <th>Members' count</th>
             <th>Status</th>
-            {% comment %} <th></th> {% endcomment %}
           </tr>
           {% for data in list_data %}
             <tr>
@@ -31,12 +32,19 @@
                 </form>
               </td>
             </tr>
-          {%endfor%}
+          {% endfor %}
         </table>
 
+      {% else %}
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+          <h3 class="me-auto">You have not applied to any club</h3>
+          <button class="btn btn-dark me-md-2" type="button">Apply now</button>
+        </div>
+      {% endif %}
+       
 
 
-    <!-- </div>
-  </div>
-</div> -->
+
+
+   
 {% endblock %}
