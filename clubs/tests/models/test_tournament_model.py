@@ -11,6 +11,12 @@ class TournamentModelTest(TestCase):
     def test_name_cannot_be_empty(self):
         pass
 
+    def test_name_may_contain_50_characters(self):
+        pass
+
+    def test_name_cannot_contain_51_characters(self):
+        pass
+
     def test_deadline_cannot_be_empty(self):
         pass
 
@@ -27,6 +33,12 @@ class TournamentModelTest(TestCase):
         pass
 
     def test_description_can_be_empty(self):
+        pass
+
+    def test_description_may_contain_260_characters(self):
+        pass
+
+    def test_description_cannot_contain_261_characters(self):
         pass
 
 
@@ -65,7 +77,6 @@ class TournamentModelTest(TestCase):
 
     def test_capacity_cannot_be_97(self):
         pass
-
 
 
 
