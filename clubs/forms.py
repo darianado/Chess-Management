@@ -1,5 +1,5 @@
 from django import forms
-from clubs.models import Match, User, Club, Members, Tournament
+from clubs.models import Match, User, Club, Membership, Tournament
 from clubs.models import Membership
 from clubs.models import Club
 from django.core.validators import RegexValidator

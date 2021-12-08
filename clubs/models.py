@@ -249,13 +249,13 @@ class Tournament(models.Model):
         auto_now_add=False
     )
 
-    organiser = models.ForeignKey(Members, on_delete=models.CASCADE, related_name="organiser")
+    organiser = models.ForeignKey(Membership, on_delete=models.CASCADE, related_name="organiser")
 
-    coorganisers = models.ManyToManyField(Members)
+    coorganisers = models.ManyToManyField(Membership)
 
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
 
-    participants = models.ManyToManyField(Members, through="Participant", related_name="participants")
+    participants = models.ManyToManyField(Membership, through="Participant", related_name="participants")
 
     capacity = models.IntegerField(
             unique=False,

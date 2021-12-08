@@ -191,8 +191,8 @@ def password(request):
 def create_tournament(request, club_id):
     current_user = request.user
     club = Club.objects.get(id=club_id)
-    current_member = Members.objects.get(club=club, user=current_user)
-    possible_coorganisers = Members.objects.filter(Q(club=club) & (Q(role=2) | Q(role=1) )).exclude(user=current_user)
+    current_member = Membership.objects.get(club=club, user=current_user)
+    possible_coorganisers = Membership.objects.filter(Q(club=club) & (Q(role=2) | Q(role=1) )).exclude(user=current_user)
 
     if request.method == 'GET':
         form = CreateTournamentForm()
