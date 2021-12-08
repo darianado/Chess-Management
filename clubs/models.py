@@ -349,6 +349,3 @@ class Match(models.Model):
 
 #     def allMatchesComplete(self):
 #         pass
-=======
-            
->>>>>>> main
