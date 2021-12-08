@@ -293,7 +293,7 @@ class Participant(models.Model):
 
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
 
-    member = models.ForeignKey(Members, on_delete=models.CASCADE)
+    member = models.ForeignKey(Membership, on_delete=models.CASCADE)
 
     score = models.FloatField(
         unique=False,
