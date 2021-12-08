@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from clubs.forms import LogInForm, SignUpForm, EditProfileForm, changePasswordForm, CreateClubForm, CreateTournamentForm, SetMatchResultForm
 from django.contrib.auth import authenticate, login, logout
-from clubs.models import Club, User, Membership, Events
+from clubs.models import Club, Match, Tournament, User, Membership, Events
 from django.contrib import messages
 from django.db.models import Q
 from django.contrib.auth.hashers import check_password
@@ -217,7 +217,10 @@ def create_tournament(request, club_id):
     else:
         return HttpResponseForbidden()
 
-
+def show_matches(request, tournament_id):
+    tournament = Tournament.objects.get(id=tournament_id)
+    matches = Match.objects.filter(tournament=tournament)
+    return render(request, "partial/matches.html", {"matches": matches})
 
 def create_club(request):
     if request.method =='GET':
