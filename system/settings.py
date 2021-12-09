@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 import os
 from pathlib import Path
-from django.contrib.messages import constants as message_constants
+from django.contrib.messages import constants as messages
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -148,8 +148,11 @@ LOGIN_URL = "log_in"
 
 # Messages
 MESSAGE_TAGS = {
-    message_constants.DEBUG: 'dark',
-    message_constants.ERROR: 'danger',
+    messages.DEBUG: 'alert-info',
+    messages.INFO: 'alert-info',
+    messages.SUCCESS: 'alert-success',
+    messages.WARNING: 'alert-warning',
+    messages.ERROR: 'alert-danger',
 }
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
