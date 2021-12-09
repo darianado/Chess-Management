@@ -38,7 +38,7 @@ urlpatterns = [
     path('password/', views.password, name="password"),
 
     path('create_club/', views.create_club, name = 'create_club'),
-    path('create_tournament/', views.create_tournament, name = 'tournament'),
+    path('create_tournament/<int:club_id>', views.create_tournament, name = 'create_tournament'),
 
     path('club/<int:club_id>/roles', views.show_roles, name = 'show_roles'),
     path('officer_promote/<int:member_id>', views.officer_promote, name = 'officer_promote'),

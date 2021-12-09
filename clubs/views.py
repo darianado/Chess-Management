@@ -76,6 +76,7 @@ def show_club(request, club_id):
         show_role = False
         show_member = False
         show_applicants = False
+        create_tournament = False
         if member_in_club==1 :
             show_role = True
             show_member = True
@@ -83,6 +84,7 @@ def show_club(request, club_id):
         elif member_in_club==2 :
             show_member = True
             show_applicants = True
+            create_tournament = True
         elif member_in_club==3 :
             show_member = True
 
@@ -96,7 +98,8 @@ def show_club(request, club_id):
                 'show_member':show_member,
                 'show_applicants':show_applicants,
                 'number_of_members':nr_member,
-                'owner_club' : owner_club})
+                'owner_club' : owner_club,
+                'create_tournament' : create_tournament})
 
 @login_required(redirect_field_name="")
 @minimum_role_required(role_required=Role.OFFICER, redirect_location='club_list')
@@ -193,13 +196,20 @@ def create_tournament(request, club_id):
     club = Club.objects.get(id=club_id)
     current_member = Membership.objects.get(club=club, user=current_user)
     possible_coorganisers = Membership.objects.filter(Q(club=club) & (Q(role=2) | Q(role=1) )).exclude(user=current_user)
+    coo = []
+    for i in possible_coorganisers:
+        coo.append(i.user.first_name)
+    print(coo)
+
 
     if request.method == 'GET':
-        form = CreateTournamentForm()
-        return render(request, 'create_tournament.html', {'form': form, 'possible_coorganisers': possible_coorganisers, })
+        form = CreateTournamentForm(enumerate(possible_coorganisers))
+        #  form = CreateTournamentForm(coo)
+        return render(request, 'create_tournament.html', {'form': form, 'possible_coorganisers': possible_coorganisers, 'club': club })
     elif request.method == 'POST':
         if request.user.is_authenticated:
-            form = CreateTournamentForm(request.POST)
+            #  form = CreateTournamentForm(request.POST,coo)
+            form = CreateTournamentForm(request.POST,enumerate(possible_coorganisers))
             if form.is_valid():
                 name = form.cleaned_data.get('name')
                 description = form.cleaned_data.get('description')
@@ -207,8 +217,10 @@ def create_tournament(request, club_id):
 
                 #TODO take the checkbox-ed coorganisers and clean them
                 #  coorganisers=request.POST.getlist('possible_coorganisers')
+                #  coorganisers=request.POST.getlist('checks[]')
                 coorganisers = form.cleaned_data.get('coorganisers')
-                tournament = Tournament.objects.create(name=name, description=description, deadline=deadline, organiser=current_user, )
+                print(coorganisers)
+                tournament = Tournament.objects.create(name=name, description=description, deadline=deadline, organiser=current_member,coorganisers=coorganisers,club=club, capacity=capacity )
                 return redirect('show_club')
             else:
                 return render(request, 'create_tournament.html', {'form': form, 'possible_coorganisers': possible_coorganisers, })
