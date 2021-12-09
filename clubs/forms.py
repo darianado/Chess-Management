@@ -107,10 +107,15 @@ class CreateClubForm(forms.ModelForm):
         widgets = {'description': forms.Textarea()}
 
 class CreateTournamentForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if (kwargs.get("initial")):
+            self.fields["coorganisers"].queryset = kwargs.get("initial")["coorganisers"]
+
     class Meta:
         model = Tournament
         fields = ['name', 'description', 'deadline', 'coorganisers', 'capacity']
-        widgets = {'description': forms.Textarea(), 'coorganisers' : forms.CheckboxSelectMultiple()}
+        widgets = {"description": forms.Textarea()}
 
 class SetMatchResultForm(forms.ModelForm):
     class Meta:
