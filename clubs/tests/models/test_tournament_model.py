@@ -5,11 +5,20 @@ from clubs.models import Tournament
 
 class TournamentModelTest(TestCase):
 
-    fixtures = []
+    fixtures = [
+        "clubs/tests/fixtures/default_user_jane.json",
+        "clubs/tests/fixtures/default_club_hame.json",
+        "clubs/tests/fixtures/default_club_hamersmith.json",
+        "clubs/tests/fixtures/other_users.json",
+        "clubs/tests/fixtures/default_membership_jane_hame.json",
+        "clubs/tests/fixtures/default_membership_jane_hamersmith.json",
+        "clubs/tests/fixtures/default_tournament_hame.json",
+        "clubs/tests/fixtures/default_tournament_hamersmith.json"
+    ]
 
     def setUp(self):
-        self.tournamentYetti = None
-        self.tournamentAlaska = None
+        self.tournamentYetti = Tournament.objects.get(name="Yetti")
+        self.tournamentAlaska = Tournament.objects.get(name="Alaska")
 
     def test_name_cannot_be_empty(self):
         self.tournamentYetti.name = None
@@ -31,9 +40,9 @@ class TournamentModelTest(TestCase):
         self.tournamentYetti.organiser = None
         self._assert_tournament_is_invalid()
 
-    def test_coorganisers_cannot_be_empty(self):
+    def test_coorganisers_can_be_empty(self):
         self.tournamentYetti.coorganiser = None
-        self._assert_tournament_is_invalid()
+        self._assert_tournament_is_valid()
 
     def test_club_cannot_be_empty(self):
         self.tournamentYetti.club = None
@@ -74,7 +83,7 @@ class TournamentModelTest(TestCase):
         self._assert_tournament_is_valid()
 
     def test_coorganisers_need_not_be_unique(self):
-        self.tournamentYetti.coorganisers = self.tournamentAlaska.coorganisers
+        self.tournamentYetti.coorganisers.set(self.tournamentAlaska.coorganisers.all())
         self._assert_tournament_is_valid()
 
     def test_club_need_not_be_unique(self):
