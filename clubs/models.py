@@ -180,6 +180,9 @@ class Membership(models.Model):
             return ('User')    
         return ('')
 
+    def __str__(self):
+        return self.user.get_full_name() + " " + self.club.club_name
+
 class Events(models.Model):
     date_created = models.DateTimeField(
         auto_now=False,
