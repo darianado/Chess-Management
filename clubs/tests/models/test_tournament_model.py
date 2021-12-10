@@ -12,6 +12,7 @@ class TournamentModelTest(TestCase):
         "clubs/tests/fixtures/other_users.json",
         "clubs/tests/fixtures/default_membership_jane_hame.json",
         "clubs/tests/fixtures/default_membership_jane_hamersmith.json",
+        "clubs/tests/fixtures/other_memberships.json",
         "clubs/tests/fixtures/default_tournament_hame.json",
         "clubs/tests/fixtures/default_tournament_hamersmith.json"
     ]

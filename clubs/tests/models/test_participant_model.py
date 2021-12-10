@@ -1,19 +1,21 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 
-from clubs.models import Participant
+from clubs.models import Participant, Tournament
 
 class ParticipantModelTest(TestCase):
 
     fixtures = [
         "clubs/tests/fixtures/default_user_jane.json",
         "clubs/tests/fixtures/default_user_john.json",
+        "clubs/tests/fixtures/other_users.json",
         "clubs/tests/fixtures/default_club_hame.json",
         "clubs/tests/fixtures/default_membership_jane_hame.json",
         "clubs/tests/fixtures/default_membership_john_hame.json",
+        "clubs/tests/fixtures/other_memberships.json",
         "clubs/tests/fixtures/default_tournament_hame.json",
         "clubs/tests/fixtures/default_participant_john.json",
-        "clubs/tests/fixtures/default_participant_jane.json",
+        "clubs/tests/fixtures/default_participant_jane.json"
     ]
 
     def setUp(self):
@@ -34,6 +36,12 @@ class ParticipantModelTest(TestCase):
 
     def test_is_active_cannot_be_empty(self):
         self.participantJohn.is_active = None
+        self._assert_participant_is_invalid()
+
+
+
+    def test_organiser_cannot_be_a_participant(self):
+        self.participantJohn = Tournament.objects.get(id=1).organiser
         self._assert_participant_is_invalid()
 
 

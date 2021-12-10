@@ -1,15 +1,29 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 
-from clubs.models import Match
+from clubs.models import Match, Tournament
 
 class MatchModelTest(TestCase):
 
-    fixtures = []
+    fixtures = [
+        "clubs/tests/fixtures/default_user_john.json",
+        "clubs/tests/fixtures/default_user_jane.json",
+        "clubs/tests/fixtures/default_club_hame.json",
+        "clubs/tests/fixtures/other_users.json",
+        "clubs/tests/fixtures/other_memberships.json",
+        "clubs/tests/fixtures/default_membership_jane_hame.json",
+        "clubs/tests/fixtures/default_membership_john_hame.json",
+        "clubs/tests/fixtures/default_tournament_hame.json",
+        "clubs/tests/fixtures/default_participant_john.json",
+        "clubs/tests/fixtures/default_participant_jane.json",
+        "clubs/tests/fixtures/other_participants.json",
+        "clubs/tests/fixtures/default_match_john_jane.json",
+        "clubs/tests/fixtures/default_match_john_charlie.json"
+    ]
 
     def setUp(self):
-        self.matchOne = None
-        self.matchTwo = None
+        self.matchOne = Match.objects.get(id=1)
+        self.matchTwo = Match.objects.get(id=2)
 
     def test_tournament_cannot_be_empty(self):
         self.matchOne.tournament = None
@@ -75,10 +89,10 @@ class MatchModelTest(TestCase):
 
     def _assert_match_is_valid(self):
         try:
-            self.match.full_clean()
+            self.matchOne.full_clean()
         except (ValidationError):
             self.fail('Test match should be valid')
 
     def _assert_match_is_invalid(self):
         with self.assertRaises(ValidationError):
-            self.match.full_clean()
+            self.matchOne.full_clean()
