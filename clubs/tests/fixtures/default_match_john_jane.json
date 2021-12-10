@@ -1,0 +1,11 @@
+[
+    {
+        "model": "clubs.match",
+        "pk": 1,
+        "fields": {
+            "tournament": 1,
+            "playerA": 1,
+            "playerB": 2
+        }
+    }
+]

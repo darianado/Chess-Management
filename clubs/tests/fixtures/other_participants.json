@@ -1,0 +1,10 @@
+[
+    {
+        "model": "clubs.participant",
+        "pk": 3,
+        "fields" :{
+            "tournament": 1,
+            "member": 3
+        }
+    }
+]
