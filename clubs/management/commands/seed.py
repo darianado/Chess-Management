@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.db.utils import IntegrityError
 from faker import Faker
 from clubs.models import User, Club, Membership
-from helpers import Role
+from clubs.helpers import Role
 import random
 from django.db.models import Q
 
@@ -19,6 +19,9 @@ class Command(BaseCommand):
         self.create_users()
         self.create_clubs()
         self.create_memberships()
+        self.create_tournaments()
+        self.create_participants()
+        self.create_matches()
 
     def create_users(self):
         self._create_jed()
@@ -70,8 +73,7 @@ class Command(BaseCommand):
         self._init_memberships()
         self._create_required_memberships()
 
-        # Creating owners for the other 3 clubs
-        self._create_member(random.choice(self.users), self.kerbal, Role.OWNER)
+        # Creating owners for the other 2 clubs
         self._create_member(random.choice(self.users), self.borough, Role.OWNER)
         self._create_member(random.choice(self.users), self.wild, Role.OWNER)
 
@@ -163,8 +165,8 @@ class Command(BaseCommand):
     def _create_required_memberships(self):
         # All three users are members of kerbal
         self._create_member(self.jed, self.kerbal, Role.MEMBER)
-        self._create_member(self.val, self.kerbal, Role.MEMBER)
-        self._create_member(self.billie, self.kerbal, Role.MEMBER)
+        self._create_member(self.val, self.kerbal, Role.OFFICER)
+        self._create_member(self.billie, self.kerbal, Role.OWNER)
 
         # jed is an officer of borough
         self._create_member(self.jed, self.borough, Role.OFFICER)
