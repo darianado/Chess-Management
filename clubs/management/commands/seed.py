@@ -37,24 +37,24 @@ class Command(BaseCommand):
     def create_clubs(self):
         description1 = self.faker.text(max_nb_chars=260)
         Club.objects.create(
-                club_name = 'Kerbal Chess Club',
-                location = 'SE1 4XA',
-                description=description1,
-                )
+            club_name = 'Kerbal Chess Club',
+            location = 'SE1 4XA',
+            description=description1,
+        )
 
         description2 = self.faker.text(max_nb_chars=260)
         Club.objects.create(
-                club_name = 'Borough Chess Club',
-                location = 'SE1 3XA',
-                description=description2,
-                )
+            club_name = 'Borough Chess Club',
+            location = 'SE1 3XA',
+            description=description2,
+        )
 
         description3 = self.faker.text(max_nb_chars=260)
         Club.objects.create(
-                club_name = 'Leon Paul Chess Club',
-                location = 'SW1 3XA',
-                description=description3,
-                )
+            club_name = 'Leon Paul Chess Club',
+            location = 'SW1 3XA',
+            description=description3,
+        )
 
         description4 = self.faker.text(max_nb_chars=260)
         Club.objects.create(
@@ -92,21 +92,21 @@ class Command(BaseCommand):
         print('Member seeding complete')
 
     def _create_user(self):
-            first_name = self.faker.first_name()
-            last_name = self.faker.last_name()
-            email = self.faker.unique.email()
-            bio = self.faker.text(max_nb_chars=260)
-            chess_experience_level = random.randint(1,5)
-            personal_statement = self.faker.text(max_nb_chars=520)
-            User.objects.create_user(
-                first_name=first_name,
-                last_name=last_name,
-                email=email,
-                password=Command.PASSWORD,
-                bio=bio,
-                chess_experience_level=chess_experience_level,
-                personal_statement=personal_statement,
-            )
+        first_name = self.faker.first_name()
+        last_name = self.faker.last_name()
+        email = self.faker.unique.email()
+        bio = self.faker.text(max_nb_chars=260)
+        chess_experience_level = random.randint(1,5)
+        personal_statement = self.faker.text(max_nb_chars=520)
+        User.objects.create_user(
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            password=Command.PASSWORD,
+            bio=bio,
+            chess_experience_level=chess_experience_level,
+            personal_statement=personal_statement,
+        )
 
     def _create_jed(self):
         first_name = 'Jebediah'
@@ -116,14 +116,14 @@ class Command(BaseCommand):
         chess_experience_level = random.randint(1,5)
         personal_statement = self.faker.text(max_nb_chars=520)
         User.objects.create_user(
-                first_name=first_name,
-                last_name=last_name,
-                email=email,
-                password=Command.PASSWORD,
-                bio=bio,
-                chess_experience_level=chess_experience_level,
-                personal_statement=personal_statement,
-            )
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            password=Command.PASSWORD,
+            bio=bio,
+            chess_experience_level=chess_experience_level,
+            personal_statement=personal_statement,
+        )
 
     def _create_val(self):
         first_name = 'Valentina'
@@ -133,13 +133,13 @@ class Command(BaseCommand):
         chess_experience_level = random.randint(1,5)
         personal_statement = self.faker.text(max_nb_chars=520)
         User.objects.create_user(
-                first_name=first_name,
-                last_name=last_name,
-                email=email,
-                password=Command.PASSWORD,
-                bio=bio,
-                chess_experience_level=chess_experience_level,
-                personal_statement=personal_statement,
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            password=Command.PASSWORD,
+            bio=bio,
+            chess_experience_level=chess_experience_level,
+            personal_statement=personal_statement,
         )
 
     def _create_billie(self):
@@ -150,14 +150,14 @@ class Command(BaseCommand):
         chess_experience_level = random.randint(1,5)
         personal_statement = self.faker.text(max_nb_chars=520)
         User.objects.create_user(
-                first_name=first_name,
-                last_name=last_name,
-                email=email,
-                password=Command.PASSWORD,
-                bio=bio,
-                chess_experience_level=chess_experience_level,
-                personal_statement=personal_statement,
-            )
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            password=Command.PASSWORD,
+            bio=bio,
+            chess_experience_level=chess_experience_level,
+            personal_statement=personal_statement,
+        )
 
     def _create_required_memberships(self):
         # All three users are members of kerbal
