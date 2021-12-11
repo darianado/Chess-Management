@@ -45,7 +45,8 @@ def log_in(request):
 
 @login_required
 def dashboard(request):
-    return render(request, 'partials/dashboard.html')
+    user = request.user
+    return render(request, 'partials/dashboard.html', {'user': user})
 
 @login_prohibited(redirect_location="dashboard")
 def sign_up(request):

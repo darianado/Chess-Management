@@ -2,33 +2,40 @@
 
 {% block card_content %}
 
+{% load static %}
 <script type="text/javascript">
     document.getElementById('nav-dashboard-tab').classList.add('active');
 </script>
 
 <div class="card-body">
-    <h3 class="card-title"> Hi My Name,</h3>
-    <p>uhjxdhcnjdksnvjksdncfjkshdckhskdhkzshcdjkshjkzcjc</p>
-    <p>uhjxdhcnjdksnvjksdncfjkshdckhskdhkzshcdjkshjkzcjc</p>
-    <p>uhjxdhcnjdksnvjksdncfjkshdckhskdhkzshcdjkshjkzcjc</p>
-    <p>uhjxdhcnjdksnvjksdncfjkshdckhskdhkzshcdjkshjkzcjc</p>
-
-    <h2>Events</h2>
-    <div id="my_events"></div>
+  <h3 class="card-title"> Hi, {{user.first_name}}</h3>
 
     <h2> <br></h2>
-    <h2> <br></h2>
 
-    <div class="input-group mb-3 ">
-        <select class="custom-select w-50" id="inputGroupSelect02">
-          <option value="1">Club X</option>
-          <option value="2">Club Y</option>
-          <option value="3">Club Z</option>
-        </select>
-        <span class="badge rounded-pill bg-success">Member</span>
-        <span class="badge rounded-pill bg-danger">Denied</span>
-        <span class="badge rounded-pill bg-warning text-dark">Pending</span>  
+    <div class="row">
+      <div class = "col-7" align-items-left>
+        <h4>Events</h4>
+        <div id="my_events"></div>
+          </div>
+          <div class = "col-5" align-items-center >
+            <img src="{% static '/images/chess_board_small.svg' %}" alt="" id ="chess_board_small-logo">
+          </div>
+      </div>
     </div>
+
+    <h2> <br></h2>
+    <h2> <br></h2>
+
+    {% comment %} <div class="input-group mb-3 "> {% endcomment %}
+        {% comment %} <select class="custom-select w-50" id="inputGroupSelect02"> {% endcomment %}
+          {% comment %} <option value="1">Club X</option> {% endcomment %}
+          {% comment %} <option value="2">Club Y</option> {% endcomment %}
+          {% comment %} <option value="3">Club Z</option> {% endcomment %}
+        {% comment %} </select> {% endcomment %}
+        {% comment %} <span class="badge rounded-pill bg-success">Member</span> {% endcomment %}
+        {% comment %} <span class="badge rounded-pill bg-danger">Denied</span> {% endcomment %}
+        {% comment %} <span class="badge rounded-pill bg-warning text-dark">Pending</span>   {% endcomment %}
+    {% comment %} </div> {% endcomment %}
 
 
     <div id="my_clubs"></div>
