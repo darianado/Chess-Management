@@ -99,19 +99,34 @@ class Command(BaseCommand):
     def create_tournaments(self):
         self._create_required_tournaments()
 
+        organiser = Membership.objects.get(user=self.billie, club=self.kerbal)
+        self.tournamentKerbal3 = Tournament.objects.create(
+            name="Kerbal Chess Club Tournament 3",
+            description="Another one??!",
+            deadline=datetime.isoformat(datetime.now(tz=timezone.utc) - timedelta(days=1)),
+            organiser=organiser,
+            club=self.kerbal,
+        )
+
         print("Tournament seeding complete")
 
     def create_participants(self):
         self._create_required_participants()
 
-        participants = Membership.objects.filter(club=self.kerbal, role=Role.MEMBER).exclude(user=self.jed)
+        participants = Membership.objects.filter(club=self.kerbal).exclude(id=self.tournamentKerbal2.organiser.id)
+        participants = participants.difference(self.tournamentKerbal2.coorganisers.all())
         for participant in participants:
-            self._create_participant(self.tourny, participant)
+            self._create_participant(self.tournamentKerbal2, participant)
+
+        participants = Membership.objects.filter(club=self.kerbal).exclude(id=self.tournamentKerbal3.organiser.id)
+        participants = participants.difference(self.tournamentKerbal3.coorganisers.all())
+        for participant in participants:
+            self._create_participant(self.tournamentKerbal3, participant)
 
         print("Participant seeding complete")
 
     def create_matches(self):
-        #TODO: Seed some matches
+        self.tournamentKerbal3.scheduleMatches()
         print("Matches seeding complete")
 
     def _create_user(self):
@@ -208,7 +223,7 @@ class Command(BaseCommand):
             club=self.kerbal,
         )
 
-        self.tourny = Tournament.objects.create(
+        self.tournamentKerbal2 = Tournament.objects.create(
             name="Kerbal Chess Club Tournament 2",
             description="Welcome to our tournament again!",
             deadline=datetime.isoformat(datetime.now(tz=timezone.utc) - timedelta(hours=1)),
@@ -218,7 +233,7 @@ class Command(BaseCommand):
 
     def _create_required_participants(self):
         jed = Membership.objects.get(user=self.jed, club=self.kerbal)
-        self._create_participant(self.tourny, jed)
+        self._create_participant(self.tournamentKerbal2, jed)
 
     def _create_participant(self, tournament, member):
         Participant.objects.create(

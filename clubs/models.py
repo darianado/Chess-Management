@@ -283,13 +283,6 @@ class Tournament(models.Model):
                 playerB=playerB
             )
 
-    # level_number = models.IntegerField(
-    #     validators=[
-    #         MinValueValidator(1),
-    #         MaxValueValidator(6)
-    #     ]
-    # )
-
 class Participant(models.Model):
     class Meta:
         ordering=["-score"]
@@ -339,17 +332,3 @@ class Match(models.Model):
 
     def getPlayerB(self):
         return self.playerB
-
-
-# class Group(models.Model):
-#     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
-#     players = JSONField()
-#     # playerA = models.ForeignKey(Participant, null=True, on_delete=models.CASCADE, related_name="playerA")
-#     # playerB = models.ForeignKey(Participant, null=True, on_delete=models.CASCADE, related_name="playerB")
-#     # playerC = models.ForeignKey(Participant, null=True, on_delete=models.CASCADE, related_name="playerC")
-#     # playerD = models.ForeignKey(Participant, null=True, on_delete=models.CASCADE, related_name="playerD")
-#     # playerE = models.ForeignKey(Participant, null=True, on_delete=models.CASCADE, related_name="playerE")
-#     # playerF = models.ForeignKey(Participant, null=True, on_delete=models.CASCADE, related_name="playerF")
-
-#     def allMatchesComplete(self):
-#         pass
