@@ -36,6 +36,8 @@ class NewPostTest(TestCase):
         )
         user_count_after = Club.objects.count()
         self.assertEqual(user_count_after, user_count_before)
+        messages_list = list(response.context["messages"])
+        self.assertEqual(len(messages_list), 1)
 
     def test_successful_create_club(self):
         self.client.login(email=self.user.email, password="Password123")
@@ -50,6 +52,8 @@ class NewPostTest(TestCase):
             fetch_redirect_response=True
         )
         self.assertTemplateUsed(response, 'club_list.html')
+        messages_list = list(response.context["messages"])
+        self.assertEqual(len(messages_list), 1)
 
     def test_unsuccessful_create_club_with_blank_club_name(self):
         self.client.login(email='johndoe@example.org', password='Password123')
@@ -59,6 +63,8 @@ class NewPostTest(TestCase):
         club_count_after = Club.objects.count()
         self.assertEqual(club_count_after, club_count_before)
         self.assertTemplateUsed(response, 'create_club.html')
+        messages_list = list(response.context["messages"])
+        self.assertEqual(len(messages_list), 1)
 
     def test_unsuccessful_create_club_with_blank_location(self):
         self.client.login(email='johndoe@example.org', password='Password123')
@@ -79,3 +85,5 @@ class NewPostTest(TestCase):
         new_member = Membership.objects.get(club=new_club)
         self.assertEqual(self.user, new_member.user)
         self.assertEqual(new_member.role, 1)
+        messages_list = list(response.context["messages"])
+        self.assertEqual(len(messages_list), 1)

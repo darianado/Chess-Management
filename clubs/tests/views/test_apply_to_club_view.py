@@ -30,3 +30,5 @@ class ClubApplyTest(TestCase):
             fetch_redirect_response=True
         )
         self.assertTemplateUsed(response, 'club_list.html')
+        messages_list = list(response.context["messages"])
+        self.assertEqual(len(messages_list), 1)

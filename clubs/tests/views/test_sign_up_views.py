@@ -38,6 +38,8 @@ class SignUpViewTestCase(TestCase, LogInTester):
         form = response.context['form']
         self.assertTrue(isinstance(form, SignUpForm))
         self.assertFalse(form.is_bound)
+        messages_list = list(response.context["messages"])
+        self.assertEqual(len(messages_list), 0)
 
     def test_get_sign_up_redirects_when_logged_in(self):
         self.client.login(username=self.userJohn.email, password="Password123")
@@ -76,6 +78,8 @@ class SignUpViewTestCase(TestCase, LogInTester):
         is_password_correct = check_password('Password123', user.password)
         self.assertTrue(is_password_correct)
         self.assertTrue(self._is_logged_in())
+        messages_list = list(response.context["messages"])
+        self.assertEqual(len(messages_list), 1)
 
     def test_post_sign_up_redirects_when_logged_in(self):
         self.client.login(username=self.userJohn.email, password="Password123")

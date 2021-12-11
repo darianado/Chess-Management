@@ -47,4 +47,3 @@ class OfficerPromoteTest(TestCase):
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
         self.assertEqual(Membership.get_member_role(self.userMiki, self.club), Role.OWNER)
         self.assertEqual(Membership.get_member_role(self.user, self.club), Role.OFFICER)
-

@@ -23,3 +23,5 @@ class ResendApplicationTest(TestCase):
         response_url = reverse('resend_application', kwargs={'club_id': self.club.id})
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'resend_application.html')
+        messages_list = list(response.context["messages"])
+        self.assertEqual(len(messages_list), 0)
