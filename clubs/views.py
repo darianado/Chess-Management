@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from clubs.forms import LogInForm, SignUpForm, EditProfileForm, changePasswordForm, CreateClubForm, CreateTournamentForm, SetMatchResultForm
 from django.contrib.auth import authenticate, login, logout
-from clubs.models import Club, Match, Tournament, User, Membership, Events
+from clubs.models import Club, User, Membership, Events, Tournament, Match
 from django.contrib import messages
 from django.db.models import Q
 from django.contrib.auth.hashers import check_password
@@ -194,7 +194,6 @@ def password(request):
 def create_tournament(request, club_id):
     current_user = request.user
     club = Club.objects.get(id=club_id)
-    current_member = Membership.objects.get(club=club, user=current_user)
     possible_coorganisers = Membership.objects.filter(Q(club=club) & (Q(role=2) | Q(role=1) )).exclude(user=current_user)
     coo = []
     for i in possible_coorganisers:
@@ -203,9 +202,8 @@ def create_tournament(request, club_id):
 
 
     if request.method == 'GET':
-        form = CreateTournamentForm(enumerate(possible_coorganisers))
-        #  form = CreateTournamentForm(coo)
-        return render(request, 'create_tournament.html', {'form': form, 'possible_coorganisers': possible_coorganisers, 'club': club })
+        form = CreateTournamentForm(initial={"coorganisers": possible_coorganisers})
+        return render(request, 'create_tournament.html', {'form': form, "club_id": club.id})
     elif request.method == 'POST':
         if request.user.is_authenticated:
             #  form = CreateTournamentForm(request.POST,coo)
@@ -214,16 +212,16 @@ def create_tournament(request, club_id):
                 name = form.cleaned_data.get('name')
                 description = form.cleaned_data.get('description')
                 deadline = form.cleaned_data.get('deadline')
+                coorganisers = form.cleaned_data.get('coorganisers')
 
                 #TODO take the checkbox-ed coorganisers and clean them
-                #  coorganisers=request.POST.getlist('possible_coorganisers')
-                #  coorganisers=request.POST.getlist('checks[]')
+                logged_in_users_membership = Membership.objects.get(club=club, user=current_user)
                 coorganisers = form.cleaned_data.get('coorganisers')
-                print(coorganisers)
-                tournament = Tournament.objects.create(name=name, description=description, deadline=deadline, organiser=current_member,coorganisers=coorganisers,club=club, capacity=capacity )
-                return redirect('show_club')
+                tournament = Tournament.objects.create(name=name, description=description, deadline=deadline, organiser=logged_in_users_membership, club=club)
+                tournament.coorganisers.set(coorganisers)
+                return redirect('dashboard')
             else:
-                return render(request, 'create_tournament.html', {'form': form, 'possible_coorganisers': possible_coorganisers, })
+                return render(request, 'create_tournament.html', {'form': form, "club_id": club.id })
         else:
             return redirect('log_in')
     else:
