@@ -15,6 +15,14 @@ class Command(BaseCommand):
         self.faker = Faker('en_GB')
 
     def handle(self, *args, **options):
+        self.create_users()
+        self.create_clubs()
+        self.create_memberships()
+
+    def create_users(self):
+        self._create_jed()
+        self._create_val()
+        self._create_billie()
         user_count = 0
         while user_count < Command.USER_COUNT:
             print(f'Seeding user {user_count}',  end='\r')
@@ -23,26 +31,65 @@ class Command(BaseCommand):
             except (IntegrityError):
                 continue
             user_count += 1
-        self._create_jed()
-        self._create_val()
-        self._create_billie()
+
         print('User seeding complete')
-        self._create_club()
+
+    def create_clubs(self):
+        description1 = self.faker.text(max_nb_chars=260)
+        Club.objects.create(
+                club_name = 'Kerbal Chess Club',
+                location = 'SE1 4XA',
+                description=description1,
+                )
+
+        description2 = self.faker.text(max_nb_chars=260)
+        Club.objects.create(
+                club_name = 'Borough Chess Club',
+                location = 'SE1 3XA',
+                description=description2,
+                )
+
+        description3 = self.faker.text(max_nb_chars=260)
+        Club.objects.create(
+                club_name = 'Leon Paul Chess Club',
+                location = 'SW1 3XA',
+                description=description3,
+                )
+
+        description4 = self.faker.text(max_nb_chars=260)
+        Club.objects.create(
+                club_name = 'Wild Horses Chess Club',
+                location = 'SW1 3XA',
+                description=description4,
+                )
+
         print('Club seeding complete')
+
+    def create_memberships(self):
         self._init_memberships()
-        self._create_memberships()
+        self._create_required_memberships()
+
+        # Creating owners for the other 3 clubs
+        self._create_member(random.choice(self.users), self.kerbal, 1)
+        self._create_member(random.choice(self.users), self.borough, 1)
+        self._create_member(random.choice(self.users), self.wild, 1)
+
+        # Creating random memberships
+        member_count = 0
+        while member_count < Command.MEMBER_COUNT:
+            try:
+                self._create_member(random.choice(self.users), self.kerbal, random.randint(2, 4))
+                member_count += 1
+                self._create_member(random.choice(self.users), self.borough, random.randint(2, 4))
+                member_count += 1
+                self._create_member(random.choice(self.users), self.leon, random.randint(2, 4))
+                member_count += 1
+                self._create_member(random.choice(self.users), self.wild, random.randint(2, 4))
+                member_count += 1
+            except IntegrityError:
+                continue
+
         print('Member seeding complete')
-
-    def _init_memberships(self):
-        self.jed = User.objects.get(email="jeb@example.org")
-        self.val = User.objects.get(email="val@example.org")
-        self.billie = User.objects.get(email="billie@example.org")
-
-        self.users = User.objects.filter(~(Q(email=self.jed.email) | Q(email=self.val.email) | Q(email=self.billie.email)))
-        self.kerbal = Club.objects.get(club_name="Kerbal Chess Club")
-        self.borough = Club.objects.get(club_name="Borough Chess Club")
-        self.leon = Club.objects.get(club_name="Leon Paul Chess Club")
-        self.wild = Club.objects.get(club_name="Wild Horses Chess Club")
 
     def _create_user(self):
             first_name = self.faker.first_name()
@@ -77,6 +124,7 @@ class Command(BaseCommand):
                 chess_experience_level=chess_experience_level,
                 personal_statement=personal_statement,
             )
+
     def _create_val(self):
         first_name = 'Valentina'
         last_name ='Kerman'
@@ -93,6 +141,7 @@ class Command(BaseCommand):
                 chess_experience_level=chess_experience_level,
                 personal_statement=personal_statement,
         )
+
     def _create_billie(self):
         first_name = 'Billie'
         last_name ='Kerman'
@@ -109,54 +158,6 @@ class Command(BaseCommand):
                 chess_experience_level=chess_experience_level,
                 personal_statement=personal_statement,
             )
-
-    def _create_club(self):
-        description1 = self.faker.text(max_nb_chars=260)
-        Club.objects.create(
-                club_name = 'Kerbal Chess Club',
-                location = 'SE1 4XA',
-                description=description1,
-                )
-        description2 = self.faker.text(max_nb_chars=260)
-        Club.objects.create(
-                club_name = 'Borough Chess Club',
-                location = 'SE1 3XA',
-                description=description2,
-                )
-        description3 = self.faker.text(max_nb_chars=260)
-        Club.objects.create(
-                club_name = 'Leon Paul Chess Club',
-                location = 'SW1 3XA',
-                description=description3,
-                )
-        description4 = self.faker.text(max_nb_chars=260)
-        Club.objects.create(
-                club_name = 'Wild Horses Chess Club',
-                location = 'SW1 3XA',
-                description=description4,
-                )
-    def _create_memberships(self):
-        self._create_required_memberships()
-
-        # Creating owners for the other 3 clubs
-        self._create_member(random.choice(self.users), self.kerbal, 1)
-        self._create_member(random.choice(self.users), self.borough, 1)
-        self._create_member(random.choice(self.users), self.wild, 1)
-
-        # Creating random memberships
-        member_count = 0
-        while member_count < Command.MEMBER_COUNT:
-            try:
-                self._create_member(random.choice(self.users), self.kerbal, random.randint(2, 4))
-                member_count += 1
-                self._create_member(random.choice(self.users), self.borough, random.randint(2, 4))
-                member_count += 1
-                self._create_member(random.choice(self.users), self.leon, random.randint(2, 4))
-                member_count += 1
-                self._create_member(random.choice(self.users), self.wild, random.randint(2, 4))
-                member_count += 1
-            except IntegrityError:
-                continue
 
     def _create_required_memberships(self):
         # All three users are members of kerbal
@@ -179,3 +180,14 @@ class Command(BaseCommand):
             club=club,
             role=role,
         )
+
+    def _init_memberships(self):
+        self.jed = User.objects.get(email="jeb@example.org")
+        self.val = User.objects.get(email="val@example.org")
+        self.billie = User.objects.get(email="billie@example.org")
+
+        self.users = User.objects.filter(~(Q(email=self.jed.email) | Q(email=self.val.email) | Q(email=self.billie.email)))
+        self.kerbal = Club.objects.get(club_name="Kerbal Chess Club")
+        self.borough = Club.objects.get(club_name="Borough Chess Club")
+        self.leon = Club.objects.get(club_name="Leon Paul Chess Club")
+        self.wild = Club.objects.get(club_name="Wild Horses Chess Club")
