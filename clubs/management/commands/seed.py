@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.db.utils import IntegrityError
 from faker import Faker
 from clubs.models import User, Club, Membership
+from helpers import Role
 import random
 from django.db.models import Q
 
@@ -58,10 +59,10 @@ class Command(BaseCommand):
 
         description4 = self.faker.text(max_nb_chars=260)
         Club.objects.create(
-                club_name = 'Wild Horses Chess Club',
-                location = 'SW1 3XA',
-                description=description4,
-                )
+            club_name = 'Wild Horses Chess Club',
+            location = 'SW1 3XA',
+            description=description4,
+        )
 
         print('Club seeding complete')
 
@@ -70,21 +71,21 @@ class Command(BaseCommand):
         self._create_required_memberships()
 
         # Creating owners for the other 3 clubs
-        self._create_member(random.choice(self.users), self.kerbal, 1)
-        self._create_member(random.choice(self.users), self.borough, 1)
-        self._create_member(random.choice(self.users), self.wild, 1)
+        self._create_member(random.choice(self.users), self.kerbal, Role.OWNER)
+        self._create_member(random.choice(self.users), self.borough, Role.OWNER)
+        self._create_member(random.choice(self.users), self.wild, Role.OWNER)
 
         # Creating random memberships
         member_count = 0
         while member_count < Command.MEMBER_COUNT:
             try:
-                self._create_member(random.choice(self.users), self.kerbal, random.randint(2, 4))
+                self._create_member(random.choice(self.users), self.kerbal, random.randint(Role.OFFICER, Role.APPLICANT))
                 member_count += 1
-                self._create_member(random.choice(self.users), self.borough, random.randint(2, 4))
+                self._create_member(random.choice(self.users), self.borough, random.randint(Role.OFFICER, Role.APPLICANT))
                 member_count += 1
-                self._create_member(random.choice(self.users), self.leon, random.randint(2, 4))
+                self._create_member(random.choice(self.users), self.leon, random.randint(Role.OFFICER, Role.APPLICANT))
                 member_count += 1
-                self._create_member(random.choice(self.users), self.wild, random.randint(2, 4))
+                self._create_member(random.choice(self.users), self.wild, random.randint(Role.OFFICER, Role.APPLICANT))
                 member_count += 1
             except IntegrityError:
                 continue
@@ -161,20 +162,20 @@ class Command(BaseCommand):
 
     def _create_required_memberships(self):
         # All three users are members of kerbal
-        self._create_member(self.jed, self.kerbal, 3)
-        self._create_member(self.val, self.kerbal, 3)
-        self._create_member(self.billie, self.kerbal, 3)
+        self._create_member(self.jed, self.kerbal, Role.MEMBER)
+        self._create_member(self.val, self.kerbal, Role.MEMBER)
+        self._create_member(self.billie, self.kerbal, Role.MEMBER)
 
         # jed is an officer of borough
-        self._create_member(self.jed, self.borough, 2)
+        self._create_member(self.jed, self.borough, Role.OFFICER)
 
         # val is the owner of leon
-        self._create_member(self.val, self.leon, 1)
+        self._create_member(self.val, self.leon, Role.OWNER)
 
         # billie is a member of wild
-        self._create_member(self.billie, self.wild, 3)
+        self._create_member(self.billie, self.wild, Role.MEMBER)
 
-    def _create_member(self, user, club, role=3):
+    def _create_member(self, user, club, role=Role.MEMBER):
         Membership.objects.create(
             user=user,
             club=club,
