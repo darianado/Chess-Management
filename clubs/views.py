@@ -232,6 +232,18 @@ def show_matches(request, tournament_id):
     matches = Match.objects.filter(tournament=tournament)
     return render(request, "partial/matches.html", {"matches": matches})
 
+def show_tournament(request,tournament_id):
+    try:
+        tournament = Tournament.objects.get(id=tournament_id)
+    except ObjectDoesNotExist:
+            return redirect('club_list')
+    else:
+        return render(request,'show_tournament.html',
+                {'tournament': tournament})
+
+    
+
+
 def create_club(request):
     if request.method =='GET':
         form = CreateClubForm()
