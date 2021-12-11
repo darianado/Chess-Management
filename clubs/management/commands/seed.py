@@ -1,10 +1,12 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.db.utils import IntegrityError
 from faker import Faker
-from clubs.models import User, Club, Membership
+from clubs.models import Match, Participant, Tournament, User, Club, Membership
 from clubs.helpers import Role
 import random
 from django.db.models import Q
+from django.utils import timezone
+from datetime import datetime, time, timedelta
 
 class Command(BaseCommand):
     PASSWORD = "Password123"
@@ -94,6 +96,24 @@ class Command(BaseCommand):
 
         print('Member seeding complete')
 
+    def create_tournaments(self):
+        self._create_required_tournaments()
+
+        print("Tournament seeding complete")
+
+    def create_participants(self):
+        self._create_required_participants()
+
+        participants = Membership.objects.filter(club=self.kerbal, role=Role.MEMBER).exclude(user=self.jed)
+        for participant in participants:
+            self._create_participant(self.tourny, participant)
+
+        print("Participant seeding complete")
+
+    def create_matches(self):
+        #TODO: Seed some matches
+        print("Matches seeding complete")
+
     def _create_user(self):
         first_name = self.faker.first_name()
         last_name = self.faker.last_name()
@@ -176,6 +196,42 @@ class Command(BaseCommand):
 
         # billie is a member of wild
         self._create_member(self.billie, self.wild, Role.MEMBER)
+
+    def _create_required_tournaments(self):
+        organiser = Membership.objects.get(user=self.val, club=self.kerbal)
+
+        Tournament.objects.create(
+            name="Kerbal Chess Club Tournament",
+            description="Welcome to our tournament!",
+            deadline=datetime.isoformat(datetime.now(tz=timezone.utc) + timedelta(days=1)),
+            organiser=organiser,
+            club=self.kerbal,
+        )
+
+        self.tourny = Tournament.objects.create(
+            name="Kerbal Chess Club Tournament 2",
+            description="Welcome to our tournament again!",
+            deadline=datetime.isoformat(datetime.now(tz=timezone.utc) - timedelta(hours=1)),
+            organiser=organiser,
+            club=self.kerbal,
+        )
+
+    def _create_required_participants(self):
+        jed = Membership.objects.get(user=self.jed, club=self.kerbal)
+        self._create_participant(self.tourny, jed)
+
+    def _create_participant(self, tournament, member):
+        Participant.objects.create(
+            tournament=tournament,
+            member=member,
+        )
+
+    def _create_match(self, tournament, playerA, playerB):
+        Match.objects.create(
+            tournament=tournament,
+            playerA=playerA,
+            playerB=playerB
+        )
 
     def _create_member(self, user, club, role=Role.MEMBER):
         Membership.objects.create(
