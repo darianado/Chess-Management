@@ -9,6 +9,13 @@
         <a href="{% url 'show_tournament' tournament.id %}">
           <button type="button"> More detail </button>
         </a>
+
       </div>
+
   </div>
 {% endfor %}
+{% if is_officer %}
+<a href="{% url 'tournament' club.id %}">
+  <button type="button"> Create tournament </button>
+</a>
+{% endif %}
