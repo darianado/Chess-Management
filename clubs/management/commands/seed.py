@@ -107,6 +107,8 @@ class Command(BaseCommand):
             organiser=organiser,
             club=self.kerbal,
         )
+        coorganiser = Membership.objects.get(user=self.val, club=self.kerbal)
+        self.tournamentKerbal3.coorganisers.add(coorganiser)
 
         print("Tournament seeding complete")
 
