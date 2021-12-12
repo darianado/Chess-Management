@@ -1,6 +1,8 @@
 
 
 <table>
+  {% if members|length > 0 %}
+
     <thead>
         <tr>
             <th>Profile Picture</th>
@@ -13,4 +15,7 @@
             {% include "partials/member_as_table_row.html" with user=user %}
         {% endfor %}
     </tbody>
+  {% else %}
+    <h5>There are no members in the club</h5>
+  {% endif %}
 </table>

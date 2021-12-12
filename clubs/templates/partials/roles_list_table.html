@@ -1,6 +1,7 @@
-
+{% load static %}
 
 <div>
+  {% if members|length > 0 %}
 <table class='table table-hover'>
     <thead>
         <tr>
@@ -29,14 +30,14 @@
           <a href="{% url 'show_user' member.user.id %}">More detail</a>
         </td>
         <td>
-          <a href="{% url 'member_promote' member.id %}">
-          <button type="button" id="promote"> promote </button>
-          </a>
+           <form action= "{% url 'member_promote' member.id %}">
+              <button type="submit" id="promote"> promote </button>
+           </form> 
         </td>
         <td>
-          <a href="{% url 'member_kick' member.id %}">
-          <button type="button" id="demote"> demote </button>
-          </a>
+           <form action= "{% url 'member_kick' member.id %}">
+              <button type="submit" id="demote"> demote </button>
+           </form> 
         </td>
       </tr>
       {% endfor %}
@@ -54,19 +55,19 @@
             <p>officer</p>
           </td>
           <td>
-            <a href="{% url 'show_user' officer.user.id %}">More detail</a>
+            <a href="{% url 'show_user' officer.user.id %}">More details</a>
           </td>
           <td>
+           <form action= "{% url 'officer_promote' officer.id %}">
+              <button type="submit" id="promote"> promote </button>
+           </form> 
 
-            <a href="{% url 'officer_promote' officer.id %}">
-              <button type="button" id="promote"> promote </button>
-            </a>
           </td>
 
           <td>
-            <a href="{% url 'officer_demote' officer.id %}">
-              <button type="button" id="demote"> demote </button>
-            </a>
+           <form action= "{% url 'officer_demote' officer.id %}">
+              <button type="submit" id="demote"> demote </button>
+           </form> 
 
           </td>
         </tr>
@@ -74,4 +75,7 @@
 
   </tbody>
 </table>
+  {% else %}
+      <h5 align-items-center>There are no officers to promote or demote in the club</h5>
+  {% endif %}
 </div>

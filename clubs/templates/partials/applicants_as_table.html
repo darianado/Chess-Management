@@ -2,6 +2,7 @@
 {% extends 'base_content.html' %}
 {% block content %}
 <div>
+  {% if applicants|length > 0 %}
     <table>
         <thead>
             <tr>
@@ -16,5 +17,8 @@
             {% endfor %}
         </tbody>
     </table>
+    {% else %}
+      <h5>There are no applicants in the club</h5>
+    {% endif %}
 </div>
 {% endblock %}
