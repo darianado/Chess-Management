@@ -5,19 +5,19 @@ button, input[type="submit"]{
 }
 #nav-title {
 
-    font-family: Roboto Slab;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 20px;
-    line-height: 41px;
+  font-family: Roboto Slab;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 41px;
 
-    color: #FFFFFF;
-  }
+  color: #FFFFFF;
+}
 
-  .nav-row{
-    background: #2B2E4D;
-    box-shadow: 0px 3px 20px 3px rgba(0, 0, 0, 0.5);
-  }
+.nav-row{
+  background: #2B2E4D;
+  box-shadow: 0px 3px 20px 3px rgba(0, 0, 0, 0.5);
+}
 
   #nav-logo
 {
