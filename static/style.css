@@ -346,4 +346,31 @@ main .sidebar{
     background-attachment: scroll;
   }
 }
+/*--------------------------------------------------------------
+# Dashboard  
+--------------------------------------------------------------*/
+/* .section-title  { */
+  /* text-align:left; */
+  /* padding-bottom: 20px; */
+/* } */
+/* .section-title h4 { */
+  /* font-size: 20px; */
+  /* font-weight: bold; */
+  /* text-transform: uppercase; */
+  /* position: relative; */
+/* } */
+/*  */
+/* *, ::after, ::before{ */
+  /* box-sizing : border-box; */
+/* } */
+/* .section-title h4::after { */
+  /* content: ""; */
+  /* position: absolute; */
+  /* display: block; */
+  /* width: 100px; */
+  /* height: 3px; */
+  /* background: #5846f9; */
+  /* bottom: 0; */
+  /* left: calc(50% - 25px); */
+/* } */
 
