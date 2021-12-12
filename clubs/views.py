@@ -14,7 +14,8 @@ from clubs.decorators import login_prohibited, minimum_role_required, exact_role
 
 @login_prohibited(redirect_location="dashboard")
 def welcome(request):
-    return render(request, 'welcome.html')
+    user = request.user
+    return render(request, 'welcome.html',{'user': user})
 
 def log_out(request):
     logout(request)
