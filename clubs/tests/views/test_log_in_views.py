@@ -25,8 +25,12 @@ class LogInViewTestCase(TestCase, LogInTester):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'log_in.html')
         form = response.context['form']
+        next = response.context['next']
         self.assertTrue(isinstance(form, LogInForm))
         self.assertFalse(form.is_bound)
+        self.assertFalse(next)
+        messages_list = list(response.context["messages"])
+        self.assertEqual(len(messages_list), 0)
 
     def test_get_log_in_with_redirect(self):
         destination_url = reverse("show_user")
@@ -39,6 +43,8 @@ class LogInViewTestCase(TestCase, LogInTester):
         self.assertTrue(isinstance(form, LogInForm))
         self.assertFalse(form.is_bound)
         self.assertEqual(next, destination_url)
+        messages_list = list(response.context["messages"])
+        self.assertEqual(len(messages_list), 0)
 
     def test_unsuccessful_log_in(self):
         form_input = {
@@ -52,6 +58,9 @@ class LogInViewTestCase(TestCase, LogInTester):
         self.assertTrue(isinstance(form, LogInForm))
         self.assertFalse(form.is_bound)
         self.assertFalse(self._is_logged_in())
+        messages_list = list(response.context["messages"])
+        self.assertEqual(len(messages_list), 1)
+        self.assertEqual(messages_list[0].level, messages.ERROR)
 
     def test_successful_log_in(self):
         form_input = {
@@ -63,6 +72,8 @@ class LogInViewTestCase(TestCase, LogInTester):
         response_url = reverse('dashboard')
         self.assertRedirects(response, response_url, status_code = 302, target_status_code = 200)
         self.assertTemplateUsed(response, 'partials/dashboard.html')
+        messages_list = list(response.context["messages"])
+        self.assertEqual(len(messages_list), 1)
 
     def test_successful_log_in_with_redirect(self):
         redirect_url = reverse("show_user")
@@ -75,6 +86,8 @@ class LogInViewTestCase(TestCase, LogInTester):
         self.assertTrue(self._is_logged_in())
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
         self.assertTemplateUsed(response, "show_user.html")
+        messages_list = list(response.context["messages"])
+        self.assertEqual(len(messages_list), 1)
 
     def test_get_log_in_redirects_when_logged_in(self):
         self.client.login(email=self.user.email, password="Password123")
@@ -108,6 +121,9 @@ class LogInViewTestCase(TestCase, LogInTester):
         self.assertTrue(isinstance(form, LogInForm))
         self.assertFalse(form.is_bound)
         self.assertFalse(self._is_logged_in())
+        messages_list = list(response.context["messages"])
+        self.assertEqual(len(messages_list), 1)
+        self.assertEqual(messages_list[0].level, messages.ERROR)
 
     def test_post_log_in_with_incorrect_credentials_and_redirect(self):
         redirect_url = reverse('show_user')

@@ -1,13 +1,16 @@
 
-{% extends 'base_content.html' %}
-{% block content %}
+{% extends 'base.html' %}
+{% block body %}
 <div>
-    <table>
+    <table class="table table-striped">
         <thead>
             <tr>
-                <th>Profile Picture</th>
-                <th>Full Name</th>
-                <th>Bio</th>
+                <th scope="col">Profile Picture</th>
+                <th scope="col">Full Name</th>
+                <th scope="col">Bio</th>
+                <th scope="col">More detail</th>
+                <th scope="col">Deny</th>
+                <th scope="col">Accept</th>
             </tr>
         </thead>
         <tbody>

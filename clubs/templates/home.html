@@ -1,8 +1,6 @@
 {% extends 'base_content.html' %}
 
-{% block body %}
-{% include 'partials/main-nav-bar.html' %}
-{% include 'partials/messages.html' %}
+{% block content %}
 
 
 <main class="page" >
@@ -36,6 +34,7 @@
             <div class="card p-0 min-vh-100" >
 
                 <div>
+                    
                     {% block card_content %}
                     {% endblock %}
                 </div>

@@ -1,24 +1,24 @@
 
 
 <div>
-<table class='table table-hover'>
+<table class="table table-striped">
     <thead>
         <tr>
-            <th>Profile Picture</th>
-            <th>Full Name</th>
-            <th>Role</th>
-            <th>Detail</th>
-            <th>Promote</th>
-            <th>Demote</th>
+            <th scope="col">Profile Picture</th>
+            <th scope="col">Full Name</th>
+            <th scope="col">Role</th>
+            <th scope="col">Detail</th>
+            <th scope="col">Promote</th>
+            <th scope="col">Demote</th>
         </tr>
     </thead>
     <tbody>
 
       {% for member in members %}
       <tr>
-        <td>
+        <th scope="row">
           <img src="{{ member.user.mini_gravatar }}">
-        </td>
+        </th>
         <td>
           <p>{{ member.user.get_full_name }}</p>
         </td>
@@ -29,14 +29,16 @@
           <a href="{% url 'show_user' member.user.id %}">More detail</a>
         </td>
         <td>
-          <a href="{% url 'member_promote' member.id %}">
-          <button type="button" id="promote"> promote </button>
-          </a>
+          <form onsubmit="return confirm('You are about to promote ' + '{{ member.user.get_full_name }}' +' to be an officer!');;" 
+              action="{% url 'member_promote' member.id %}">
+            <input type="submit" class="btn btn-secondary" value="Promote"> </input>
+          </form>
         </td>
         <td>
-          <a href="{% url 'member_kick' member.id %}">
-          <button type="button" id="demote"> demote </button>
-          </a>
+          <form onsubmit="return confirm('You are about to kick out ' + '{{ member.user.get_full_name }}' +'!');;" 
+              action="{% url 'member_kick' member.id %}">
+            <input type="submit" class="btn btn-secondary" value="Kick"> </input>
+          </form>
         </td>
       </tr>
       {% endfor %}
@@ -44,9 +46,9 @@
 
         {% for officer in officers %}
         <tr>
-          <td>
+          <th scope="row">
             <img src="{{ officer.user.mini_gravatar }}">
-          </td>
+          </th>
           <td>
             <p>{{ officer.user.get_full_name }}</p>
           </td>
@@ -58,15 +60,17 @@
           </td>
           <td>
 
-            <a href="{% url 'officer_promote' officer.id %}">
-              <button type="button" id="promote"> promote </button>
-            </a>
+          <form onsubmit="return confirm('You are about to promote ' + '{{ officer.user.get_full_name }}' +' to be the new owner of the club. You will lose your current owner rights and be demoted to an officer!');;"
+                action="{% url 'officer_promote' officer.id %}">
+                <input type="submit" class="btn btn-secondary" value="Promote"> </input>
+          </form>
           </td>
 
           <td>
-            <a href="{% url 'officer_demote' officer.id %}">
-              <button type="button" id="demote"> demote </button>
-            </a>
+            <form onsubmit="return confirm('You are about to demote ' + '{{ officer.user.get_full_name }}' +' to a member!');;"
+                action="{% url 'officer_demote' officer.id %}">
+                <input type="submit" class="btn btn-secondary" value="Demote"> </input>
+          </form>
 
           </td>
         </tr>

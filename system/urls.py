@@ -46,7 +46,6 @@ urlpatterns = [
 
     path('apply/<int:club_id>', views.apply_to_club, name = 'apply_to_club'),
     path('leave_a_club/<int:club_id>', views.leave_a_club, name = 'leave_a_club'),
-    path('resend_application/<int:club_id>', views.resend_application, name = 'resend_application'),
 
     path('deny_applicant/<int:member_id>', views.deny_applicant, name = 'deny_applicant'),
     path('accept_applicant/<int:member_id>', views.accept_applicant,name = 'accept_applicant'),

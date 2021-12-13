@@ -3,8 +3,9 @@
 
 
 {% comment %} <div id="mySidebar" class="sidebar m-0 fixed-left" onmouseover="toggleSidebar()" onmouseout="toggleSidebar()">
+
   {% if show_member %}
-  <a onclick="showMembers()">
+  <a onclick="showMembers()"  >
     <i class="material-icons">accessibility_new</i>
     <span class="icon-text">Members</span>
   </a><br>
@@ -29,14 +30,11 @@
 
 {% comment %} <script>
 var mini = true;
-
 function toggleSidebar() {
   if (mini) {
-    console.log("opening sidebar");
     document.getElementById("mySidebar").style.width = "250px";
     this.mini = false;
   } else {
-    console.log("closing sidebar");
     document.getElementById("mySidebar").style.width = "8%";
     this.mini = true;
   }
