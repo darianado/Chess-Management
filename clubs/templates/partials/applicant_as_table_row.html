@@ -1,44 +1,8 @@
 
-<!-- {% extends 'partials/member_as_table_row.html' %}
-{% load humanize %}
 
-
-
-{% block columns %} -->
 
 <tr>
-    <!-- <td>
-        <p >
-            <span >
-                {{ applicant.user.first_name }}
-            </span>
-            <span >
-                {{ applicant.user.last_name }}
-            </span>
-        </p>
-    </td>
-    <td >
-        <p>
-            {{ applicant.user.bio }}
-        </p>
-    </td>
-    <td >
-        <p>
-            {{ applicant.user.email }}
-        </p>
-    </td>
-    <td >
-        <p>
-            {{ applicant.user.chess_experience_level }}
-        </p>
-    </td>
-    <td>
-        <p >
-            {{ applicant.user.personal_statement }}
-        </p>
-    </td> -->
-
-
+    
     <td>
         <img src="{{ applicant.user.mini_gravatar }}">
     </td>
@@ -60,18 +24,17 @@
 
 
     <td>
-        <form onsubmit="return confirm('Are you sure you want to deny ' + '{{ applicant.user.get_full_name }}' +'?');;" 
+        <form onsubmit="return confirm('You are about to deny ' + '{{ applicant.user.get_full_name }}' +'\'s application!');;" 
         action="{% url 'deny_applicant' applicant.id  %}">
             <input type="submit" class="btn btn-secondary"  value="Deny"></input>
         </form>
     <!-- </td>
     <td> -->
-        <form onsubmit="return confirm('Are you sure you want to accept ' + '{{ applicant.user.get_full_name }}' +'?');;" 
+        <form onsubmit="return confirm('You are about to accept ' + '{{ applicant.user.get_full_name }}' +'\'s application!');;" 
         action="{% url 'accept_applicant' applicant.id %}">
-            <input type="submit" class="btn btn-secondary" value="Accept"></button>
+            <input type="submit" class="btn btn-secondary" value="Accept"></input>
         </form>
 
     </td>
 
 </tr>
-<!-- {% endblock %} -->

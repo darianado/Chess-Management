@@ -29,14 +29,16 @@
           <a href="{% url 'show_user' member.user.id %}">More detail</a>
         </td>
         <td>
-          <a href="{% url 'member_promote' member.id %}">
-          <button type="button" id="promote"> promote </button>
-          </a>
+          <form onsubmit="return confirm('You are about to promote ' + '{{ member.user.get_full_name }}' +' to be an officer!');;" 
+              action="{% url 'member_promote' member.id %}">
+            <input type="submit" class="btn btn-secondary" value="Promote"> </input>
+          </form>
         </td>
         <td>
-          <a href="{% url 'member_kick' member.id %}">
-          <button type="button" id="demote"> demote </button>
-          </a>
+          <form onsubmit="return confirm('You are about to kick out ' + '{{ member.user.get_full_name }}' +'!');;" 
+              action="{% url 'member_kick' member.id %}">
+            <input type="submit" class="btn btn-secondary" value="Kick"> </input>
+          </form>
         </td>
       </tr>
       {% endfor %}
@@ -58,15 +60,17 @@
           </td>
           <td>
 
-            <a href="{% url 'officer_promote' officer.id %}">
-              <button type="button" id="promote"> promote </button>
-            </a>
+          <form onsubmit="return confirm('You are about to promote ' + '{{ officer.user.get_full_name }}' +' to be the new owner of the club. You will lose your current owner rights and be demoted to an officer!');;"
+                action="{% url 'officer_promote' officer.id %}">
+                <input type="submit" class="btn btn-secondary" value="Promote"> </input>
+          </form>
           </td>
 
           <td>
-            <a href="{% url 'officer_demote' officer.id %}">
-              <button type="button" id="demote"> demote </button>
-            </a>
+            <form onsubmit="return confirm('You are about to demote ' + '{{ officer.user.get_full_name }}' +' to a member!');;"
+                action="{% url 'officer_demote' officer.id %}">
+                <input type="submit" class="btn btn-secondary" value="Demote"> </input>
+          </form>
 
           </td>
         </tr>
