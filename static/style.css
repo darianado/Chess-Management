@@ -154,6 +154,10 @@ p.cover-text {
 #roles {
   top: 150px;
 }
+#tournament {
+  top: 200px;
+}
+
 
 #sidebar button:hover {
   left: -180px;
