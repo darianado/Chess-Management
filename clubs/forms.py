@@ -106,6 +106,7 @@ class CreateClubForm(forms.ModelForm):
         fields = ['club_name', 'location', 'description']
         widgets = {'description': forms.Textarea()}
 
+
 class CreateTournamentForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

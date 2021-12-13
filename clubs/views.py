@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from clubs.forms import LogInForm, SignUpForm, EditProfileForm, changePasswordForm, CreateClubForm, CreateTournamentForm, SetMatchResultForm
 from django.contrib.auth import authenticate, login, logout
-from clubs.models import Club, User, Membership, Events, Tournament, Participant
+from clubs.models import Club, User, Membership, Events, Tournament, Match, Participant
 from django.contrib import messages
 from django.db.models import Q
 from django.contrib.auth.hashers import check_password
@@ -77,6 +77,7 @@ def show_club(request, club_id):
         show_role = False
         show_member = False
         show_applicants = False
+        create_tournament = False
         if member_in_club==1 :
             show_role = True
             show_member = True
@@ -84,6 +85,7 @@ def show_club(request, club_id):
         elif member_in_club==2 :
             show_member = True
             show_applicants = True
+            create_tournament = True
         elif member_in_club==3 :
             show_member = True
 
@@ -97,7 +99,8 @@ def show_club(request, club_id):
                 'show_member':show_member,
                 'show_applicants':show_applicants,
                 'number_of_members':nr_member,
-                'owner_club' : owner_club})
+                'owner_club' : owner_club,
+                'create_tournament' : create_tournament})
 
 @login_required(redirect_field_name="")
 @minimum_role_required(role_required=Role.OFFICER, redirect_location='club_list')
@@ -198,13 +201,19 @@ def create_tournament(request, club_id):
     current_user = request.user
     club = Club.objects.get(id=club_id)
     possible_coorganisers = Membership.objects.filter(Q(club=club) & (Q(role=2) | Q(role=1) )).exclude(user=current_user)
+    coo = []
+    for i in possible_coorganisers:
+        coo.append(i.user.first_name)
+    print(coo)
+
 
     if request.method == 'GET':
         form = CreateTournamentForm(initial={"coorganisers": possible_coorganisers})
         return render(request, 'create_tournament.html', {'form': form, "club_id": club.id})
     elif request.method == 'POST':
         if request.user.is_authenticated:
-            form = CreateTournamentForm(request.POST)
+            #  form = CreateTournamentForm(request.POST,coo)
+            form = CreateTournamentForm(request.POST,enumerate(possible_coorganisers))
             if form.is_valid():
                 name = form.cleaned_data.get('name')
                 description = form.cleaned_data.get('description')
@@ -212,7 +221,6 @@ def create_tournament(request, club_id):
                 coorganisers = form.cleaned_data.get('coorganisers')
 
                 #TODO take the checkbox-ed coorganisers and clean them
-                #  coorganisers=request.POST.getlist('possible_coorganisers')
                 logged_in_users_membership = Membership.objects.get(club=club, user=current_user)
                 coorganisers = form.cleaned_data.get('coorganisers')
                 tournament = Tournament.objects.create(name=name, description=description, deadline=deadline, organiser=logged_in_users_membership, club=club)
@@ -225,6 +233,10 @@ def create_tournament(request, club_id):
     else:
         return HttpResponseForbidden()
 
+def show_matches(request, tournament_id):
+    tournament = Tournament.objects.get(id=tournament_id)
+    matches = Match.objects.filter(tournament=tournament)
+    return render(request, "partial/matches.html", {"matches": matches})
 
 
 def create_club(request):
@@ -399,6 +411,7 @@ def tournament_list(request,club_id):
     if member.role==2 or member.role==1:
         is_officer = True
     tournaments = Tournament.objects.all().filter(club=club)
+    print(is_officer)
     return render(request, "partials/tournaments_list_table.html", {"tournaments": tournaments, "is_officer": is_officer, "club": club})
 
 @login_required(redirect_field_name="")
