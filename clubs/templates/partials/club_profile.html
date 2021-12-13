@@ -69,36 +69,56 @@
 
 <section id="cta-description" class="cta-description">
   <div class="container">
-    <h3>Description</h3>
-      <div class = "row">
-        <div class = "col-2" >
-          <img src="{% static '/images/knight.svg' %}" alt="" id ="Knight-logo">
+    <div class="row">
+      <div class="col" style="text-align: center;">
+        <h3>Current Members</h3>
+        <div class="row" style="margin-top: 30px;">
+          <div class="col">
+            <img src="{% static '/images/members.svg' %}" alt="" id ="Members-logo">
+           </div>
         </div>
-        <div class = "col-10" align-items-left>
+        <div class="row" style="margin-top: 30px;">
+          <div class="col">
+          <div class="ps-3">
+            <h4>{{number_of_members}}</h4>
+          </div>
+        </div>
+        </div>
+      </div>
+      <div class = "col" style="text-align: center;">
+        <h3>Description</h3>
+        <div class = "row" style="margin-top: 30px;">
+          <div class="col">
+          <img src="{% static '/images/knight.svg' %}" alt="" id ="Knight-logo">
+          </div>
+        </div>
+        <div class = "row" style="margin-top: 30px;">
+          <div class="col">
            <p class="profile-bio">
               {{ club.description}} 
            </p> 
+          </div>
         </div>
       </div>
-    </div>
-</section
-
-<section id="cta-description-2" class="cta-description">
-  <div class="container">
-    <h3>Location</h3>
-      <div class = "row">
-        <div class = "col-2" >
+      <div class = "col" style="text-align: center;">
+        <h3>Location</h3>
+        <div class = "row" style="margin-top: 30px;">
+          <div class="col">
           <img src="{% static '/images/bishop.svg' %}" alt="" id ="Bishop-logo">
         </div>
-        <div class = "col-10" align-items-left>
+        </div>
+        <div class = "row" style="margin-top: 30px;">
+          <div class="col">
             <p class="profile-statistics"> 
              <span> 
                <b>{{ club.location}} </b> Location 
              </span> 
            </p>
+          </div>
         </div>
       </div>
     </div>
+  </div>
 </section>
 
     <section id="cta" class="cta">
@@ -116,35 +136,5 @@
         </div>
       </div>
     </section>
-
-
- <div class="col-xxl-4 col-xl-12">
-      <div class="card info-card members-card">
-        <div class="card-body">
-          <h5 class="card-title">Current Members</h5>
-          <div class="d-flex align-items-center">
-            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-             <i class="bi bi-people-fill"></i>
-            </div>
-            <div class="ps-3">
-              <h6>{{number_of_members}}</h6>
-            </div>
-          </div>
-
-        </div>
-      </div>
-  </div>
   
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
