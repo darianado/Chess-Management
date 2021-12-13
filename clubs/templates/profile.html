@@ -1,16 +1,19 @@
+
 {% extends 'home.html' %}
 {% block card_content %}
 <div class="card-body">
   <div class="container p-0">
     <div class="row m-0">
-    <div class="col-sm-12 col-md-6 offset-md-3">
-    <h1>Edit Profile</h1>
-    <form action = "{% url 'profile' %}" method="post">
-      {% csrf_token %}
-      {% include 'partials/bootstrap_form.html' with form=form %}
-      <input type="submit" value = "Save" class="btn btn-primary">
-    </form>
-    </div>
+      
+      <div class="col-sm-12 col-md-6 offset-md-3">
+        <h1>Edit Profile</h1>
+          <form action = "{% url 'profile' %}" method="post">
+            {% csrf_token %}
+            {% include 'partials/bootstrap_form.html' with form=form %}
+            <input type="submit" value = "Save" class="btn btn-primary">
+          </form>
+      </div>
+      
   </div>
 </div>
 </div>
