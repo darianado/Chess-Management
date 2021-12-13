@@ -13,28 +13,24 @@
   <link href="{% static '/vendor/animate.css/animate.min.css' %}" rel="stylesheet">
 
 <div>
-  <section id="hero" class="d-flex flex-column justify-content-end align-items-center"> 
+  <section id="hero" class="d-flex flex-column justify-content-end align-items-center">
     <div id="heroCarousel" data-bs-interval="5000" class="container carousel carousel-fade" data-bs-ride="carousel">
 
       <div class="carousel-item active">
         <div class="carousel-container">
           <h2 class="animate__animated animate__fadeInDown">Welcome to <span>{{ club.club_name}}</span></h2>
           <p class="animate__animated fanimate__adeInUp">“Chess is the struggle against the error.” – Johannes Zukertort</p>
-           <div> 
-             {%if member_in_club == None %} 
-                <form action= "{% url 'apply_to_club' club.id %}"> 
-                  <input class="btn-get-started animate__animated animate__fadeInUp" type='submit' value= 'Apply'/> 
+           <div>
+             {%if member_in_club == None %}
+                <form action= "{% url 'apply_to_club' club.id %}">
+                  <input class="btn-get-started animate__animated animate__fadeInUp" type='submit' value= 'Apply'/>
+                 </form>
+               {% elif member_in_club == 3 or member_in_club == 2 %}
+                 <form action= "{% url 'leave_a_club' club.id %}">
+                  <input class="btn-get-started animate__animated animate__fadeInUp" type='submit' value= 'Leave'/>
                  </form> 
-               {% elif member_in_club == 3 or member_in_club == 2 %} 
-                 <form action= "{% url 'leave_a_club' club.id %}"> 
-                  <input class="btn-get-started animate__animated animate__fadeInUp" type='submit' value= 'Leave'/> 
-                 </form> 
-               {% elif member_in_club == 4 %} 
-                <form action= "{% url 'resend_application' club.id %}"> 
-                  <input class="btn-get-started animate__animated animate__fadeInUp" type='submit' value= 'Resend'/>
-                 </form> 
-            {% endif %} 
-           </div> 
+            {% endif %}
+           </div>
         </div>
       </div>
 
@@ -85,8 +81,8 @@
         <div class = "row" style="margin-top: 30px;">
           <div class="col">
            <p class="profile-bio">
-              {{ club.description}} 
-           </p> 
+              {{ club.description}}
+           </p>
           </div>
         </div>
       </div>
@@ -99,10 +95,10 @@
         </div>
         <div class = "row" style="margin-top: 30px;">
           <div class="col">
-            <p class="profile-statistics"> 
-             <span> 
-               <b>{{ club.location}} </b> Location 
-             </span> 
+            <p class="profile-statistics">
+             <span>
+               <b>{{ club.location}} </b> Location
+             </span>
            </p>
           </div>
         </div>
@@ -116,7 +112,7 @@
             <h3>Owner Information</h3>
             <div class = "row">
               <div class = "col-4" align-items-center>
-               <img src="{{ owner_club.user.gravatar }}"> 
+               <img src="{{ owner_club.user.gravatar }}">
                <h3 class=" fs-3 fw-bolder">{{owner_club.user.get_full_name}}</h3>
               </div>
               <div class = "col-8">
@@ -126,5 +122,5 @@
         </div>
       </div>
     </section>
-  
+
 </div>
