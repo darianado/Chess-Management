@@ -2,8 +2,8 @@
 {% load static %}
 
 
-<div id="mySidebar" class="sidebar m-0 fixed-left" onmouseover="toggleSidebar()" onmouseout="toggleSidebar()">
-  
+{% comment %} <div id="mySidebar" class="sidebar m-0 fixed-left" onmouseover="toggleSidebar()" onmouseout="toggleSidebar()">
+
   {% if show_member %}
   <a onclick="showMembers()"  >
     <i class="material-icons">accessibility_new</i>
@@ -25,9 +25,10 @@
   </a>
   {% endif %}
 
-</div>
+</div> {% endcomment %}
 
-<script>
+
+{% comment %} <script>
 var mini = true;
 function toggleSidebar() {
   if (mini) {
@@ -38,4 +39,24 @@ function toggleSidebar() {
     this.mini = true;
   }
 }
-</script>
+</script> {% endcomment %}
+
+<div id="sidebar">
+  {% if show_member %}
+  <button id="members" type="button" class="sidebarbutton" onclick="showMembers()">
+  <i class="material-icons">accessibility_new</i>Members
+  </button>
+  <br>
+  {% endif %}
+  {% if show_applicants %}
+  <button id="applications" type="button" class="sidebarbutton" onclick="showApplicants()">
+  <i class="material-icons">sticky_note_2</i>Applications
+  </button>
+  <br>
+  {% endif %}
+  {% if show_role %}
+  <button id="roles" type="button" class="sidebarbutton" onclick="showRoles()">
+  <i class="material-icons">swap_vert</i>Roles
+  </button>
+  {% endif %}
+</div>

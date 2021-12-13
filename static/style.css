@@ -121,6 +121,43 @@ p.cover-text {
 .cover-card-block {
   opacity: 1
 }
+
+#sidebar {
+  position: absolute;
+}
+
+#membersListDiv {
+  background-color: #FFFFFF;
+  z-index: 3;
+}
+
+#sidebar button {
+  position: absolute;
+  left: -50px;
+  text-align: left;
+  border-radius: 0 5px 5px 0;
+  width: 190px;
+  height: 50px;
+  z-index: 0;
+  transition: 0.4s;
+}
+
+#members {
+  top: 50px;
+}
+
+#applications {
+  top: 100px;
+}
+
+#roles {
+  top: 150px;
+}
+
+#sidebar button:hover {
+  left: -180px;
+}
+
 #mySidebar {
   height: 100%;
   width: 8%;
