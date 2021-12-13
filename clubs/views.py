@@ -339,12 +339,13 @@ def leave_a_club(request, club_id ):
 
     return redirect('show_club', club.id)
 
+@login_required(redirect_field_name="")
 def table(request):
     user = request.user
     user_id = user.id
     #  myFilter = OrderFilter()
     filtered_clubs = []
-    filtered_clubs = [member.club for member in Membership.objects.filter(Q(user=request.user) )]
+    filtered_clubs = [member.club for member in Membership.objects.filter(Q(user=user) )]
     list_data = []
     for club in filtered_clubs:
 
