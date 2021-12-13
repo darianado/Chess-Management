@@ -6,6 +6,21 @@
 
 <script>
 
+  
+   function showClub(){
+    const Http = new XMLHttpRequest();
+    const url="{% url 'show_club' club.id %}";
+    Http.open("GET", url);
+
+    Http.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>";
+        }
+    }
+    Http.send();
+  }
+
+
   function showMembers(){
     const Http = new XMLHttpRequest();
     const url="{% url 'show_members' club.id %}";

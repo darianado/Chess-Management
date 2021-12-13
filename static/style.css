@@ -143,19 +143,22 @@ p.cover-text {
   transition: 0.4s;
 }
 
-#members {
+#theclub {
   top: 50px;
-}
 
-#applications {
+}#members {
   top: 100px;
 }
 
-#roles {
+#applications {
   top: 150px;
 }
-#tournament {
+
+#roles {
   top: 200px;
+}
+#tournament {
+  top: 250px;
 }
 
 
