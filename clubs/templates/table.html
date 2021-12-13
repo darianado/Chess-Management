@@ -26,8 +26,10 @@
 
       {% else %}
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-          <h3 class="me-auto">You have not applied to any club</h3>
-          <button class="btn btn-dark me-md-2" type="button">Apply now</button>
+          <h4 class="me-auto">You have not applied to any club</h4>
+           <form action= "{% url 'club_list' %}">
+              <button class="btn btn-dark me-md-2" type="submit">Apply now</button>
+           </form> 
         </div>
       {% endif %}
 

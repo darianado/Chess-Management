@@ -3,6 +3,7 @@
 {% block body %}
 <div>
     <table class="table table-striped">
+  {% if applicants|length > 0 %}
         <thead>
             <tr>
                 <th scope="col">Profile Picture</th>
@@ -19,5 +20,8 @@
             {% endfor %}
         </tbody>
     </table>
+    {% else %}
+      <h5>There are no applicants in the club</h5>
+    {% endif %}
 </div>
 {% endblock %}

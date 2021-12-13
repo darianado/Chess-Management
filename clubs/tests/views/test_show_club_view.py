@@ -48,12 +48,6 @@ class ShowClubTest(TestCase):
         self.assertTemplateUsed(response, 'club_list.html')
         
 
-
-    #  def test_content_displayed_corectly(self):
-        #  url = reverse('show_club', kwargs={'club_id': clubHamersmith.id})
-        #  response = self.client.get(url)
-
-
     def test_correct_owner_information_shown(self):
         self.client.login(email=self.user.email, password="Password123")
         response = self.client.get(self.urlHame)
@@ -69,12 +63,5 @@ class ShowClubTest(TestCase):
     def test_apply_for_applicant_when_logged_in_user_is_user(self):
         self.client.login(email=self.userVictor.email, password="Password123")
         response = self.client.get(self.urlHame)
-
-    #  def test_redirect_when_applicant(self):
-        #  redirect_url = reverse_with_next(self.urlHame,'resend_application')
-        #  response = self.client.get(self.urlHame)
-        #  self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
-
-        
 
 

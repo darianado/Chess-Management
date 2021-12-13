@@ -216,8 +216,6 @@ def create_club(request):
         else:
             messages.error(request, "You should log in first")
             return redirect('log_in')
-    """else:
-        return HttpResponseForbidden()"""
 
 
 @login_required(redirect_field_name="")
@@ -308,6 +306,7 @@ def events_list(request):
     events = Events.objects.filter(user=request.user)
     return render(request, 'partials/events_list.html', {'events': events})
 
+@login_required(redirect_field_name="")
 def apply_to_club(request, club_id ):
     club = Club.objects.get(id=club_id)
     user = request.user
@@ -323,6 +322,7 @@ def apply_to_club(request, club_id ):
     return redirect('show_club', club.id)
 
 
+@login_required(redirect_field_name="")
 def leave_a_club(request, club_id ):
     club = Club.objects.get(id=club_id)
     user = request.user
@@ -330,15 +330,15 @@ def leave_a_club(request, club_id ):
     if request.method == 'GET':
         messages.success(request,"You have left the club")
         Membership.objects.filter(club_id=club_id).get(user_id=user.id).delete()
-
     return redirect('show_club', club.id)
 
+@login_required(redirect_field_name="")
 def table(request):
     user = request.user
     user_id = user.id
     #  myFilter = OrderFilter()
     filtered_clubs = []
-    filtered_clubs = [member.club for member in Membership.objects.filter(Q(user=request.user) )]
+    filtered_clubs = [member.club for member in Membership.objects.filter(Q(user=user) )]
     list_data = []
     for club in filtered_clubs:
 

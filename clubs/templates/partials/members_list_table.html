@@ -1,6 +1,6 @@
-
 <div>
 <table class="table table-striped">
+  {% if members|length > 0 %}
     <thead>
         <tr>
             <th scope="col">Profile Picture</th>
@@ -16,5 +16,8 @@
             {% include "partials/member_as_table_row.html" with user=user is_officer=is_officer %}
         {% endfor %}
     </tbody>
+  {% else %}
+    <h5>There are no members in the club</h5>
+  {% endif %}
 </table>
 </div>
