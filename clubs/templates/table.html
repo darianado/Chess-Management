@@ -13,17 +13,18 @@
             {{myFilter.form}}
             <button class="btn btn-primary" type="submit"> Search</button>
           </form> -->
-          
+
       {% if list_data|length > 0 %}
-        <table class='table table-sm' id="my_clubs_table">
+        <table class='table table-striped' id="my_clubs_table">
           <tr>
-            <th>Club Name</th>
-            <th>Members' count</th>
-            <th>Status</th>
+            <th scope="col">Club Name</th>
+            <th scope="col">Members' count</th>
+            <th scope="col">Status</th>
+            <th scope="col"></th>
           </tr>
           {% for data in list_data %}
             <tr>
-              <td>{{data.0}} </td>
+              <th scope="row">{{data.0}} </th>
               <td>{{data.1}} </td>
               <td>{{data.2}} </td>
               <td>
@@ -41,10 +42,10 @@
           <button class="btn btn-dark me-md-2" type="button">Apply now</button>
         </div>
       {% endif %}
-       
 
 
 
 
-   
+
+
 {% endblock %}

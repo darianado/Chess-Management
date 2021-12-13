@@ -1,24 +1,24 @@
 
 
 <div>
-<table class='table table-hover'>
+<table class="table table-striped">
     <thead>
         <tr>
-            <th>Profile Picture</th>
-            <th>Full Name</th>
-            <th>Role</th>
-            <th>Detail</th>
-            <th>Promote</th>
-            <th>Demote</th>
+            <th scope="col">Profile Picture</th>
+            <th scope="col">Full Name</th>
+            <th scope="col">Role</th>
+            <th scope="col">Detail</th>
+            <th scope="col">Promote</th>
+            <th scope="col">Demote</th>
         </tr>
     </thead>
     <tbody>
 
       {% for member in members %}
       <tr>
-        <td>
+        <th scope="row">
           <img src="{{ member.user.mini_gravatar }}">
-        </td>
+        </th>
         <td>
           <p>{{ member.user.get_full_name }}</p>
         </td>
@@ -44,9 +44,9 @@
 
         {% for officer in officers %}
         <tr>
-          <td>
+          <th scope="row">
             <img src="{{ officer.user.mini_gravatar }}">
-          </td>
+          </th>
           <td>
             <p>{{ officer.user.get_full_name }}</p>
           </td>
