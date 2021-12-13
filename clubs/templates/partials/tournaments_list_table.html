@@ -1,5 +1,5 @@
-{% for tournament in tournaments %}
 <div class="card border-secondary mb-3" style="max-width: 90rem;">
+{% for tournament in tournaments %}
   <div class="card-header"> {{tournament.name}}</div>
       <div class="card-body text-secondary">
 
@@ -11,11 +11,10 @@
         </a>
 
       </div>
-
-  </div>
 {% endfor %}
 {% if is_officer %}
 <a href="{% url 'tournament' club.id %}">
   <button type="button"> Create tournament </button>
 </a>
 {% endif %}
+</div>
