@@ -32,10 +32,11 @@ button, input[type="submit"]{
     height: 40px;
 }
 
-.events-list {
-  display: block;  
-  height: 200px;
-  overflow-y: auto; 
+.events-list { 
+  display: block;
+  height: 150px;
+  overflow-y: scroll; 
+  overflow-x: auto; 
 }
 
 a .title{
@@ -108,12 +109,12 @@ body{
 }
 
 p.cover-text {
-  font-size: 1.7rem;
+  font-size: 2rem;
 }
 
 .cover-card {
   background-color: rgba(245, 245, 245, 0.6);
-  max-width: 30rem;
+  /* max-width: 30rem; */
   padding-top: 30px;
   padding-left: 50px;
   padding-right: 50px;
