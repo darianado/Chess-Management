@@ -35,8 +35,7 @@ def log_in(request):
                 redirect_url = next or "dashboard"
                 messages.success(request, 'You have logged in.')
                 return redirect(redirect_url)
-            else:
-                messages.error(request, 'You have error message.')
+        messages.error(request, 'The credentials provided were invalid!')
     else:
         next = request.GET.get("next") or ""
 
@@ -206,7 +205,7 @@ def create_club(request):
                 messages.success(request, "Club create successful!")
                 return redirect('club_list')
             else:
-                messages.error(request, "You have error messages")
+                messages.error(request, "The credentials provided were invalid!")
                 return render(request, 'create_club.html', {'form': form})
         else:
             messages.error(request, "You should log in first")
@@ -317,16 +316,6 @@ def apply_to_club(request, club_id ):
     messages.success(request, 'You have apply the club.')
     return redirect('show_club', club.id)
 
-
-def resend_application(request, club_id):
-    club = Club.objects.get(id=club_id)
-    user = request.user
-    member_in_club = Membership.get_member_role(user,club)
-    if request.method == 'GET':
-        return render(request, 'resend_application.html',
-                {'club': club, 'user':user})
-    messages.success(request,"You have resend your application.")
-    return redirect('show_club', club.id)
 
 def leave_a_club(request, club_id ):
     club = Club.objects.get(id=club_id)
