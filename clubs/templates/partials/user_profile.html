@@ -38,8 +38,8 @@
 <div class="row content">
     <div class="col-auto">
         {% if own_profile %}
-            <p><a href="{% url 'profile' %}" class="btn btn-lg btn-secondary">Edit Profile</a></p>
-            <p><a href="{% url 'password' %}" class="btn btn-lg btn-secondary">Change Password</a></p>
+            <p><a href="{% url 'profile' %}" class="btn btn-lg btn-secondary">Edit Profile</a>
+            <a href="{% url 'password' %}" class="btn btn-lg btn-secondary">Change Password</a></p>
         {% endif %}
     </div>
 </div>
