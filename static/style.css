@@ -30,6 +30,12 @@ button, input[type="submit"]{
     height: 40px;
 }
 
+.events-list {
+  display: block;
+  height : 200px;
+  overflow-y : scroll;
+}
+
 a .title{
     font-size: 25px;
     color: #FFFFFF;
@@ -126,6 +132,23 @@ p.cover-text {
   overflow-x: hidden;
   padding-top: 60px;
   white-space: nowrap;
+}
+
+#sidebar div {
+  position: absolute; /* Position them relative to the browser window */
+  left: -80px; /* Position them outside of the screen */
+  transition: 0.3s; /* Add transition on hover */
+  padding: 15px; /* 15px padding */
+  width: 100px; /* Set a specific width */
+  z-index: 0;
+  text-decoration: none; /* Remove underline */
+  font-size: 20px; /* Increase font size */
+  color: rgb(185, 18, 163); /* White text color */
+  border-radius: 0 5px 5px 0; /* Rounded corners on the top right and bottom right side */
+}
+
+#sidebar div:hover {
+  left: 0; /* On mouse-over, make the elements appear as they should */
 }
 
 #mySidebar a {

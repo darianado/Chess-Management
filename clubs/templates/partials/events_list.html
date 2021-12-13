@@ -1,16 +1,16 @@
 {% if events|length > 0 %}
-  <table class="table table-sm">
-    <thead>
+  <table class="table table-sm table-bordered" style="width: max-content;">
+    <tbody class="events-list">
       <tr>
         <th>Action</th>
         <th>Club</th>
+        <th>Date</th>
       </tr>
-    </thead>
-    <tbody>
         {% for event in events %}
         <tr style="background-color: {{ event.getActionColour }}">
           <td>{{ event.getActionString }}</td>
           <td>{{ event.club.club_name }}</td>
+          <td>{{ event.date_created }}</td>
         </tr>
         {% endfor %}
     </tbody>
