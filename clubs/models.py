@@ -271,10 +271,10 @@ class Tournament(models.Model):
         )
 
     def scheduleMatches(self):
-        all_active_participants = list(self.participants.objects.filter(is_active=True))
+        all_active_participants = list(Participant.objects.filter(tournament=self, is_active=True))
         all_active_participants.reverse()
-        #assert that it is even here
-        for x in range(0, all_active_participants.count(), 2):
+
+        for x in range(0, len(all_active_participants) - 1, 2):
             playerA = all_active_participants[x]
             playerB = all_active_participants[x+1]
             Match.objects.create(
@@ -282,13 +282,6 @@ class Tournament(models.Model):
                 playerA=playerA,
                 playerB=playerB
             )
-
-    # level_number = models.IntegerField(
-    #     validators=[
-    #         MinValueValidator(1),
-    #         MaxValueValidator(6)
-    #     ]
-    # )
 
 class Participant(models.Model):
     class Meta:
@@ -339,17 +332,3 @@ class Match(models.Model):
 
     def getPlayerB(self):
         return self.playerB
-
-
-# class Group(models.Model):
-#     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
-#     players = JSONField()
-#     # playerA = models.ForeignKey(Participant, null=True, on_delete=models.CASCADE, related_name="playerA")
-#     # playerB = models.ForeignKey(Participant, null=True, on_delete=models.CASCADE, related_name="playerB")
-#     # playerC = models.ForeignKey(Participant, null=True, on_delete=models.CASCADE, related_name="playerC")
-#     # playerD = models.ForeignKey(Participant, null=True, on_delete=models.CASCADE, related_name="playerD")
-#     # playerE = models.ForeignKey(Participant, null=True, on_delete=models.CASCADE, related_name="playerE")
-#     # playerF = models.ForeignKey(Participant, null=True, on_delete=models.CASCADE, related_name="playerF")
-
-#     def allMatchesComplete(self):
-#         pass
