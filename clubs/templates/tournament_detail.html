@@ -1,36 +1,131 @@
 {% extends 'home.html' %}
 {% block card_content %}
-{% comment %} {% extends 'base_content.html' %} {% endcomment %}
-{% comment %} {% block content %} {% endcomment %}
+{% load static %}
 
-<div class="container">
-  <div class="row">
-    <div class="col-sm-12 col-md-6 offset-md-3">
-    <h1>{{tournament.name}}</h1>
-    <p><b>Description:</b> {{tournament.description}}<p>
-    <p><b>Deadline: </b>{{tournament.deadline}}<p>
-    <p><b>Capacity:</b>{{tournament.capacity}}</p>
-    <p><b>Organiser:</b></p>
-    <p>{{organiser.name}}</p>
-    <!-- {% for coorganiser in coorganisers %}
-    <p>{{coorganiser.name}}</p>
-    {% endfor %}
-    <p><b>Participant:</b></p>
-    {% for participant in participants %}
-    <p>{{participant.name}}</p>
-    {% endfor %} -->
-    {% if not is_participant %}
-    <a href="#">
-    <button type="button"> Attend </button>
-    </a>
-    {% endif %}
-    {% if is_participant %}
-    <a href="#">
-    <button type="button"> Leave </button>
-    </a>
-    {% endif %}
+{% comment %} part of this code is provided by https://bootstrapmade.com/selecao-bootstrap-template/, licensed by   {% endcomment %}
+  <!-- =======================================================
+  * Template Name: Selecao - v4.7.0
+  * Template URL: https://bootstrapmade.com/selecao-bootstrap-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
 
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static '/vendor/animate.css/animate.min.css' %}" rel="stylesheet">
+
+<div>
+  <section id="hero" class="d-flex flex-column justify-content-end align-items-center">
+    <div id="heroCarousel" data-bs-interval="5000" class="container carousel carousel-fade" data-bs-ride="carousel">
+
+      <div class="carousel-item active">
+        <div class="carousel-container">
+          <h2 class="animate__animated animate__fadeInDown">Play in</h2>
+          <h2 class="animate__animated animate__fadeInDown"><span>{{tournament.name}}</span></h2>
+           <div>
+              {% if not is_participant %}
+                <a href="#">
+                  <button type="button"> Attend </button>
+                </a>
+              {% endif %}
+              {% if is_participant %}
+                <a href="#">
+                  <button type="button"> Leave </button>
+                </a>
+              {% endif %}
+           </div>
+        </div>
+      </div>
+
+    </div>
+
+    <svg class="hero-waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28 " preserveAspectRatio="none">
+      <defs>
+        <path id="wave-path" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z">
+      </defs>
+      <g class="wave1">
+        <use xlink:href="#wave-path" x="50" y="3" fill="rgba(255,255,255, .1)">
+      </g>
+      <g class="wave2">
+        <use xlink:href="#wave-path" x="50" y="0" fill="rgba(255,255,255, .2)">
+      </g>
+      <g class="wave3">
+        <use xlink:href="#wave-path" x="50" y="9" fill="#fff">
+      </g>
+    </svg>
+
+</section>
+
+<section id="cta-description" class="cta-description">
+  <div class="container">
+    <div class="row">
+      <div class="col" style="text-align: center;">
+        <h3>Current Participants</h3>
+        <div class="row" style="margin-top: 30px;">
+          <div class="col">
+            <img src="{% static '/images/members.svg' %}" alt="" id ="Members-logo">
+           </div>
+        </div>
+        <div class="row" style="margin-top: 30px;">
+          <div class="col">
+          <div class="ps-3">
+            {% comment %} <h4>{{participants.size()}}</h4> {% endcomment %}
+          </div>
+        </div>
+        </div>
+      </div>
+      <div class = "col" style="text-align: center;">
+        <h3>Description</h3>
+        <div class = "row" style="margin-top: 30px;">
+          <div class="col">
+          <img src="{% static '/images/knight.svg' %}" alt="" id ="Knight-logo">
+          </div>
+        </div>
+        <div class = "row" style="margin-top: 30px;">
+          <div class="col">
+           <p class="profile-bio">
+               {{tournament.description}}
+           </p>
+          </div>
+        </div>
+      </div>
+      <div class = "col" style="text-align: center;">
+        <h3>Capacity</h3>
+        <div class = "row" style="margin-top: 30px;">
+          <div class="col">
+          <img src="{% static '/images/bishop.svg' %}" alt="" id ="Bishop-logo">
+        </div>
+        </div>
+        <div class = "row" style="margin-top: 30px;">
+          <div class="col">
+            <p class="profile-statistics">
+             <span>
+               <b> {{tournament.capacity}}</b>
+             </span>
+           </p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  </div>
+</section>
+
+    <section id="cta" class="cta">
+      <div class="container">
+            <h3>Organiser Information</h3>
+            <div class = "row">
+              <div class = "col-4" align-items-center>
+               <img src="{{ organiser.gravatar }}">
+               <h3 class=" fs-3 fw-bolder">{{organiser.get_full_name}}</h3>
+              </div>
+              <div class = "col-8">
+                 <p >{{organiser.bio}} </p>
+              </div>
+            </div>
+        </div>
+      </div>
+    </section>
+
 </div>
 {% endblock %}
+
