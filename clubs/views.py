@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from clubs.forms import LogInForm, SignUpForm, EditProfileForm, changePasswordForm, CreateClubForm, CreateTournamentForm, SetMatchResultForm
 from django.contrib.auth import authenticate, login, logout
-from clubs.models import Club, User, Membership, Events
+from clubs.models import Club, User, Membership, Events, Tournament, Participant
 from django.contrib import messages
 from django.db.models import Q
 from django.contrib.auth.hashers import check_password
@@ -197,12 +197,11 @@ def password(request):
 def create_tournament(request, club_id):
     current_user = request.user
     club = Club.objects.get(id=club_id)
-    current_member = Membership.objects.get(club=club, user=current_user)
     possible_coorganisers = Membership.objects.filter(Q(club=club) & (Q(role=2) | Q(role=1) )).exclude(user=current_user)
 
     if request.method == 'GET':
-        form = CreateTournamentForm()
-        return render(request, 'create_tournament.html', {'form': form, 'possible_coorganisers': possible_coorganisers, })
+        form = CreateTournamentForm(initial={"coorganisers": possible_coorganisers})
+        return render(request, 'create_tournament.html', {'form': form, "club_id": club.id})
     elif request.method == 'POST':
         if request.user.is_authenticated:
             form = CreateTournamentForm(request.POST)
@@ -210,14 +209,17 @@ def create_tournament(request, club_id):
                 name = form.cleaned_data.get('name')
                 description = form.cleaned_data.get('description')
                 deadline = form.cleaned_data.get('deadline')
+                coorganisers = form.cleaned_data.get('coorganisers')
 
                 #TODO take the checkbox-ed coorganisers and clean them
                 #  coorganisers=request.POST.getlist('possible_coorganisers')
+                logged_in_users_membership = Membership.objects.get(club=club, user=current_user)
                 coorganisers = form.cleaned_data.get('coorganisers')
-                tournament = Tournament.objects.create(name=name, description=description, deadline=deadline, organiser=current_user, )
-                return redirect('show_club')
+                tournament = Tournament.objects.create(name=name, description=description, deadline=deadline, organiser=logged_in_users_membership, club=club)
+                tournament.coorganisers.set(coorganisers)
+                return redirect('dashboard')
             else:
-                return render(request, 'create_tournament.html', {'form': form, 'possible_coorganisers': possible_coorganisers, })
+                return render(request, 'create_tournament.html', {'form': form, "club_id": club.id })
         else:
             return redirect('log_in')
     else:
@@ -385,4 +387,40 @@ def table(request):
         )
 
 def matches(request):
-    return render(request, 'tournament_matches.html')   
+    return render(request, 'tournament_matches.html')
+
+@login_required(redirect_field_name="")
+def tournament_list(request,club_id):
+    current_user=request.user
+    club = Club.objects.get(id=club_id)
+    tournaments = Tournament.objects.all().filter(club=club)
+    return render(request, "partials/tournaments_list_table.html", {"tournaments": tournaments})
+
+@login_required(redirect_field_name="")
+def show_tournament(request, tournament_id):
+    tournament = Tournament.objects.get(id=tournament_id)
+    club = tournament.club
+    user = request.user
+    member = Membership.objects.get(user=user,club=club)
+    organiser = tournament.organiser.user
+    #coorganisers = tournament.coorganisers.user
+    #participants = tournament.participants.user
+    # try:
+    #     participant_in_club = Participant.objects.get(member=member,tournament=tournament)
+    # except ObjectDoesNotExist:
+    #     if organiser==user:
+    #         is_organiser = True
+    #     else:
+    #         for coorganiser in tournament.coorganisers:
+    #             if coorganiser==user:
+    is_organiser = False
+    # else:
+    is_participant = False
+    return render(request,'tournament_detail.html',
+    {'is_participant': is_participant,
+    'tournament': tournament,
+    'organiser': organiser,
+    #'coorganisers': coorganisers,
+    'is_organiser': is_organiser,
+    #'participants': participants,
+    })

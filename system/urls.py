@@ -38,7 +38,7 @@ urlpatterns = [
     path('password/', views.password, name="password"),
 
     path('create_club/', views.create_club, name = 'create_club'),
-    path('create_tournament/', views.create_tournament, name = 'tournament'),
+    path('create_tournament/<int:club_id>', views.create_tournament, name = 'tournament'),
 
     path('club/<int:club_id>/roles', views.show_roles, name = 'show_roles'),
     path('officer_promote/<int:member_id>', views.officer_promote, name = 'officer_promote'),
@@ -55,6 +55,8 @@ urlpatterns = [
 
 
     path('table/', views.table, name="table"),
-    path('events/', views.events_list, name="events_list"), 
+    path('events/', views.events_list, name="events_list"),
     path('matches/', views.matches, name="matches"),
+    path('tournament/<int:tournament_id>', views.show_tournament, name="show_tournament"),
+    path('club/<int:club_id>/tournament', views.tournament_list, name = 'tournament_list'),
 ]

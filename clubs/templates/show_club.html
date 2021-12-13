@@ -43,6 +43,18 @@
     Http.send();
   }
 
+  function showTournament(){
+    const Http = new XMLHttpRequest();
+    const url="{% url 'tournament_list' club.id %}";
+    Http.open("GET", url);
+    Http.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>";
+        }
+    }
+    Http.send();
+  }
+
 </script>
 
 
@@ -53,6 +65,7 @@
     <div class="row m-0">
 
       {% if show_member %}
+        <div class="col-1 p-0" >
           {% include 'partials/side-bar.html' with show_role=show_role show_member=show_member show_applicants=show_applicants %}
       {% endif %}
 

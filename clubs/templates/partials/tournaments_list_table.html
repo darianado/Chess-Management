@@ -1,0 +1,14 @@
+{% for tournament in tournaments %}
+<div class="card border-secondary mb-3" style="max-width: 90rem;">
+  <div class="card-header"> {{tournament.name}}</div>
+      <div class="card-body text-secondary">
+
+        <p><b>Description:</b> {{tournament.description}}<p>
+        <p><b>Deadline: </b>{{tournament.deadline}}<p>
+        <p><b>Capacity:</b>{{tournament.capacity}}</p>
+        <a href="{% url 'show_tournament' tournament.id %}">
+          <button type="button"> More detail </button>
+        </a>
+      </div>
+  </div>
+{% endfor %}

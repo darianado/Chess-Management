@@ -1,5 +1,5 @@
 from django.contrib import admin
-from clubs.models import User, Club, Membership, Events
+from clubs.models import User, Club, Membership, Events, Tournament, Participant
 
 # Register your models here.
 @admin.register(User)
@@ -29,4 +29,12 @@ class EventAdmin(admin.ModelAdmin):
 
     list_display = [
         'club', 'user', 'action'
+    ]
+
+@admin.register(Tournament)
+class EventAdmin(admin.ModelAdmin):
+    """Configuration of the admin interface for events"""
+
+    list_display = [
+        'name', 'description', 'deadline', 'organiser', 'club', 'capacity'
     ]

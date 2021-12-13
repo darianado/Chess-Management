@@ -1,0 +1,35 @@
+{% extends 'base_content.html' %}
+{% block content %}
+{% include 'partials/main-nav-bar.html' %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12 col-md-6 offset-md-3">
+    <h1>{{tournament.name}}</h1>
+    <p><b>Description:</b> {{tournament.description}}<p>
+    <p><b>Deadline: </b>{{tournament.deadline}}<p>
+    <p><b>Capacity:</b>{{tournament.capacity}}</p>
+    <p><b>Organiser:</b></p>
+    <p>{{organiser.name}}</p>
+    <!-- {% for coorganiser in coorganisers %}
+    <p>{{coorganiser.name}}</p>
+    {% endfor %}
+    <p><b>Participant:</b></p>
+    {% for participant in participants %}
+    <p>{{participant.name}}</p>
+    {% endfor %} -->
+    {% if not is_participant %}
+    <a href="#">
+    <button type="button"> Attend </button>
+    </a>
+    {% endif %}
+    {% if is_participant %}
+    <a href="#">
+    <button type="button"> Leave </button>
+    </a>
+    {% endif %}
+
+  </div>
+  </div>
+</div>
+{% endblock %}
