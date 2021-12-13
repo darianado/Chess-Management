@@ -3,6 +3,7 @@ html,body {
   padding:0;
   height:100%;
   padding-bottom: 40px;
+  background: #2B2E4D;
 }
 button, input[type="submit"]{
   background: #D7A786;
@@ -472,7 +473,6 @@ p.cover-text {
 }
 
 #footer {
-  position: fixed;
   padding: 10px 10px 0px 10px;
   bottom: 0;
   width: 100%;
