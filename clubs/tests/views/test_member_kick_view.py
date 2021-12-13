@@ -22,7 +22,7 @@ class MemberKickTest(TestCase):
         self.member = Membership.objects.get(user=self.userMiki, club=self.club)
         self.member.role=3
         self.member.save()
-        
+
         self.url = reverse('member_kick', kwargs={'member_id': self.member.id})
 
 
@@ -45,7 +45,7 @@ class MemberKickTest(TestCase):
     def test_member_kick_when_logged_in_with_valid_member_id(self):
         self.client.login(email=self.user.email, password='Password123')
         self.assertEqual(Membership.get_member_role(self.userMiki, self.club), Role.MEMBER)
-        response = self.client.get(self.url)
+        response = self.client.post(self.url)
         redirect_url = reverse("show_club", kwargs={'club_id': self.club.id})
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
         self.assertEqual(Membership.get_member_role(self.userMiki, self.club), None)

@@ -24,3 +24,5 @@ class LogOutViewTestCase(TestCase, LogInTester):
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
         self.assertTemplateUsed(response, 'welcome.html')
         self.assertFalse(self._is_logged_in())
+        messages_list = list(response.context["messages"])
+        self.assertEqual(len(messages_list), 1)

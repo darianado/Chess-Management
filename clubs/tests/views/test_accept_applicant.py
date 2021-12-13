@@ -46,4 +46,3 @@ class AcceptApplicantTest(TestCase):
         redirect_url = reverse("show_club", kwargs={'club_id': self.club.id})
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
         self.assertEqual(Membership.get_member_role(self.userMiki, self.club), Role.MEMBER)
-
