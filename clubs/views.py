@@ -211,8 +211,6 @@ def create_club(request):
         else:
             messages.add_message(request, messages.ERROR, "You should log in first")
             return redirect('log_in')
-    """else:
-        return HttpResponseForbidden()"""
 
 
 @login_required(redirect_field_name="")
