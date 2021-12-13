@@ -285,7 +285,7 @@ def deny_applicant(request, member_id):
     member.denyApplicant()
 
     action = Events.objects.create(club=club, user=user, action = 3)
-    messages.success(request, "Applicant has denied")
+    messages.success(request, "Applicant has been denied")
     return redirect('show_club', club_id = c_id)
 
 
@@ -298,7 +298,7 @@ def accept_applicant(request,member_id):
     member.acceptApplicant()
 
     action = Events.objects.create(club=member.club, user=member.user, action = 1)
-    messages.success(request, "Applicant has accepted")
+    messages.success(request, "Applicant has been accepted")
     return redirect('show_club', club_id= c_id)
 
 @login_required(redirect_field_name="")
