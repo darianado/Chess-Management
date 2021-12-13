@@ -5,9 +5,10 @@ from django.apps import apps
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models.fields.json import JSONField
 
 from libgravatar import Gravatar
-from clubs.helpers import Role
+from clubs.helpers import Role, Status
 
 # Using a custom user manager because the default requires the username parameter.
 # This custom user manager is almost identical with the exception of the username requirement being removed.
@@ -165,6 +166,7 @@ class Membership(models.Model):
             return None
         else:
             return member.role
+
     def get_member_role_name(role):
         if role == 1:
             return ('Owner')
@@ -175,8 +177,9 @@ class Membership(models.Model):
         elif role == 4:
             return ('Applicant')
         elif role == None:
-            return ('User')
+            return ('User')    
         return ('')
+
 class Events(models.Model):
     date_created = models.DateTimeField(
         auto_now=False,
@@ -226,3 +229,124 @@ class Events(models.Model):
             return "red"
         elif self.action == 6:
             return "red"
+
+class Tournament(models.Model):
+
+    name = models.CharField(
+            max_length = 50,
+            unique = True,
+            blank = False
+    )
+
+    description = models.CharField(
+            unique=False,
+            max_length=260,
+            blank=True
+    )
+
+    deadline = models.DateTimeField(
+        auto_now=False,
+        auto_now_add=False
+    )
+
+    organiser = models.ForeignKey(Membership, on_delete=models.CASCADE, related_name="organiser")
+
+    coorganisers = models.ManyToManyField(Membership)
+
+    club = models.ForeignKey(Club, on_delete=models.CASCADE)
+
+    participants = models.ManyToManyField(Membership, through="Participant", related_name="participants")
+
+    capacity = models.IntegerField(
+            unique=False,
+            blank=False,
+            default=16,
+            validators=[
+                MinValueValidator(2),
+                MaxValueValidator(96)
+            ]
+        )
+
+    def scheduleMatches(self):
+        all_active_participants = list(self.participants.objects.filter(is_active=True))
+        all_active_participants.reverse()
+        #assert that it is even here
+        for x in range(0, all_active_participants.count(), 2):
+            playerA = all_active_participants[x]
+            playerB = all_active_participants[x+1]
+            Match.objects.create(
+                tournament=self,
+                playerA=playerA,
+                playerB=playerB
+            )
+
+    # level_number = models.IntegerField(
+    #     validators=[
+    #         MinValueValidator(1),
+    #         MaxValueValidator(6)
+    #     ]
+    # )
+
+class Participant(models.Model):
+    class Meta:
+        ordering=["-score"]
+
+    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
+
+    member = models.ForeignKey(Membership, on_delete=models.CASCADE)
+
+    score = models.FloatField(
+        unique=False,
+        blank=False,
+        default=0,
+        validators=[
+            MinValueValidator(0)
+        ]
+    )
+
+    is_active = models.BooleanField(
+        unique=False,
+        blank=False,
+        default=True
+    )
+
+class Match(models.Model):
+    class Meta:
+        constraints = [
+            models.CheckConstraint(check=~Q(playerA=models.F("playerB")), name='players_diff')
+        ]
+
+    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
+
+    playerA = models.ForeignKey(Participant, on_delete=models.CASCADE, related_name="playerA")
+
+    playerB = models.ForeignKey(Participant, on_delete=models.CASCADE, related_name="playerB")
+
+    match_status = models.IntegerField(
+            choices=Status.choices,
+            default=Status.NOT_PLAYED,
+            validators=[
+                MinValueValidator(1),
+                MaxValueValidator(4)
+            ]
+        )
+
+    def getPlayerA(self):
+        return self.playerA
+
+    def getPlayerB(self):
+        return self.playerB
+
+
+# class Group(models.Model):
+#     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
+#     players = JSONField()
+#     # playerA = models.ForeignKey(Participant, null=True, on_delete=models.CASCADE, related_name="playerA")
+#     # playerB = models.ForeignKey(Participant, null=True, on_delete=models.CASCADE, related_name="playerB")
+#     # playerC = models.ForeignKey(Participant, null=True, on_delete=models.CASCADE, related_name="playerC")
+#     # playerD = models.ForeignKey(Participant, null=True, on_delete=models.CASCADE, related_name="playerD")
+#     # playerE = models.ForeignKey(Participant, null=True, on_delete=models.CASCADE, related_name="playerE")
+#     # playerF = models.ForeignKey(Participant, null=True, on_delete=models.CASCADE, related_name="playerF")
+
+#     def allMatchesComplete(self):
+#         pass

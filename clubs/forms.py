@@ -1,5 +1,5 @@
 from django import forms
-from clubs.models import User
+from clubs.models import Match, User, Club, Membership, Tournament
 from clubs.models import Membership
 from clubs.models import Club
 from django.core.validators import RegexValidator
@@ -22,7 +22,6 @@ class changePasswordForm(forms.Form):
         ]
     )
 
-    #  password = forms.CharField(label='Current password', widget=forms.PasswordInput())
     new_password = forms.CharField(
         label="Password",
         widget=forms.PasswordInput(),
@@ -33,7 +32,6 @@ class changePasswordForm(forms.Form):
             )
         ]
     )
-    #  password_confirmation = forms.CharField(label='Password confirmation', widget=forms.PasswordInput())
 
     password_confirmation = forms.CharField(
         label="Password confirmation",
@@ -52,10 +50,6 @@ class changePasswordForm(forms.Form):
         old_password = self.cleaned_data.get("old_password")
         new_password = self.cleaned_data.get("new_password")
         password_confirmation = self.cleaned_data.get("password_confirmation")
-        #  if new_password != password_confirmation:
-            #  self.add_error('password_confirmation', 'Confirmation does not match password.')
-        #  if new_password == password:
-            #  self.add_error("new_password", "New password cannot match old password")
 
 
         if new_password == old_password:
@@ -111,3 +105,14 @@ class CreateClubForm(forms.ModelForm):
         model = Club
         fields = ['club_name', 'location', 'description']
         widgets = {'description': forms.Textarea()}
+
+class CreateTournamentForm(forms.ModelForm):
+    class Meta:
+        model = Tournament
+        fields = ['name', 'description', 'deadline', 'coorganisers', 'capacity']
+        widgets = {'description': forms.Textarea(), 'coorganisers' : forms.CheckboxSelectMultiple()}
+
+class SetMatchResultForm(forms.ModelForm):
+    class Meta:
+        model = Match
+        fields = ["match_status"]

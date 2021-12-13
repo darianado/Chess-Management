@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from clubs.forms import LogInForm, SignUpForm, EditProfileForm, changePasswordForm, CreateClubForm
+from clubs.forms import LogInForm, SignUpForm, EditProfileForm, changePasswordForm, CreateClubForm, CreateTournamentForm, SetMatchResultForm
 from django.contrib.auth import authenticate, login, logout
 from clubs.models import Club, User, Membership, Events
 from django.contrib import messages
@@ -194,6 +194,37 @@ def password(request):
         form = changePasswordForm()
     return render(request, 'password.html', {'form': form})
 
+def create_tournament(request, club_id):
+    current_user = request.user
+    club = Club.objects.get(id=club_id)
+    current_member = Membership.objects.get(club=club, user=current_user)
+    possible_coorganisers = Membership.objects.filter(Q(club=club) & (Q(role=2) | Q(role=1) )).exclude(user=current_user)
+
+    if request.method == 'GET':
+        form = CreateTournamentForm()
+        return render(request, 'create_tournament.html', {'form': form, 'possible_coorganisers': possible_coorganisers, })
+    elif request.method == 'POST':
+        if request.user.is_authenticated:
+            form = CreateTournamentForm(request.POST)
+            if form.is_valid():
+                name = form.cleaned_data.get('name')
+                description = form.cleaned_data.get('description')
+                deadline = form.cleaned_data.get('deadline')
+
+                #TODO take the checkbox-ed coorganisers and clean them
+                #  coorganisers=request.POST.getlist('possible_coorganisers')
+                coorganisers = form.cleaned_data.get('coorganisers')
+                tournament = Tournament.objects.create(name=name, description=description, deadline=deadline, organiser=current_user, )
+                return redirect('show_club')
+            else:
+                return render(request, 'create_tournament.html', {'form': form, 'possible_coorganisers': possible_coorganisers, })
+        else:
+            return redirect('log_in')
+    else:
+        return HttpResponseForbidden()
+
+
+
 def create_club(request):
     if request.method =='GET':
         form = CreateClubForm()
@@ -216,7 +247,6 @@ def create_club(request):
         else:
             messages.error(request, "You should log in first")
             return redirect('log_in')
-
 
 @login_required(redirect_field_name="")
 @another_role_required(role_required=Role.OWNER, redirect_location="club_list")
@@ -353,3 +383,6 @@ def table(request):
                 #  "myFilter" : myFilter,
             }
         )
+
+def matches(request):
+    return render(request, 'tournament_matches.html')   
