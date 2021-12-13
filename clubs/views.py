@@ -270,7 +270,7 @@ def member_kick(request,member_id):
     member.member_kick()
 
     action = Events.objects.create(club=club, user=user, action = 6)
-    messages.success(request, "Member kicked successful")
+    messages.success(request, "Member has been kicked successful")
     return redirect('show_club', club_id = c_id)
 
 
