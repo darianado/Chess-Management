@@ -39,18 +39,6 @@ seed:
 unseed:
 	python3 manage.py unseed
 
-club_seed:
-	python3 manage.py club_seed
-
-club_unseed:
-	python3 manage.py club_unseed
-
-member_seed:
-	python3 manage.py member_seed
-
-member_unseed:
-	python3 manage.py member_unseed
-
 html: 
 	coverage report
 	coverage html
