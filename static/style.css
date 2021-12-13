@@ -133,7 +133,7 @@ main .sidebar{
 
 
 /*--------------------------------------------------------------
-# Hero Section#2a2c39
+# Hero Section
 --------------------------------------------------------------*/
 #hero {
   width: 100%;
@@ -346,31 +346,27 @@ main .sidebar{
     background-attachment: scroll;
   }
 }
-/*--------------------------------------------------------------
-# Dashboard  
---------------------------------------------------------------*/
-/* .section-title  { */
-  /* text-align:left; */
-  /* padding-bottom: 20px; */
-/* } */
-/* .section-title h4 { */
-  /* font-size: 20px; */
-  /* font-weight: bold; */
-  /* text-transform: uppercase; */
-  /* position: relative; */
-/* } */
-/*  */
-/* *, ::after, ::before{ */
-  /* box-sizing : border-box; */
-/* } */
-/* .section-title h4::after { */
-  /* content: ""; */
-  /* position: absolute; */
-  /* display: block; */
-  /* width: 100px; */
-  /* height: 3px; */
-  /* background: #5846f9; */
-  /* bottom: 0; */
-  /* left: calc(50% - 25px); */
-/* } */
 
+/*
+ * Welcome page
+ */
+h1.cover-heading {
+  font-size: 3rem;
+}
+
+p.cover-text {
+  font-size: 1rem;
+}
+
+.cover-card {
+  background-color: rgba(245, 245, 245, 0.6);
+  max-width: 30rem;
+  padding-top: 30px;
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-bottom: 30px;
+  border-radius: 15%;
+}
+.cover-card-block {
+  opacity: 1
+}
