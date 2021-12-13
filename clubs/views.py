@@ -303,6 +303,7 @@ def events_list(request):
     events = Events.objects.filter(user=request.user)
     return render(request, 'partials/events_list.html', {'events': events})
 
+@login_required(redirect_field_name="")
 def apply_to_club(request, club_id ):
     club = Club.objects.get(id=club_id)
     user = request.user
@@ -318,16 +319,26 @@ def apply_to_club(request, club_id ):
     return redirect('show_club', club.id)
 
 
+@login_required(redirect_field_name="")
 def resend_application(request, club_id):
-    club = Club.objects.get(id=club_id)
-    user = request.user
-    member_in_club = Membership.get_member_role(user,club)
-    if request.method == 'GET':
-        return render(request, 'resend_application.html',
-                {'club': club, 'user':user})
-    messages.add_message(request, messages.SUCCESS, 'You have resend your application.')
-    return redirect('show_club', club.id)
+    try:
+        club = Club.objects.get(id=club_id)
+        user = request.user
+        member_in_club = Membership.get_member_role(user,club)
+        if request.method == 'GET':
+            print(member_in_club)
+            if member_in_club == 4: 
+                messages.add_message(request, messages.SUCCESS, 'You have resend your application.')
+                return render(request, 'resend_application.html',
+                        {'club': club, 'user':user})
+            else:
+                return redirect('dashboard')
 
+    except (Club.DoesNotExist, User.DoesNotExist, TypeError) : 
+        return redirect('dashboard')
+     
+
+@login_required(redirect_field_name="")
 def leave_a_club(request, club_id ):
     club = Club.objects.get(id=club_id)
     user = request.user
@@ -335,8 +346,6 @@ def leave_a_club(request, club_id ):
     if request.method == 'GET':
         messages.success(request,"You have left the club")
         Membership.objects.filter(club_id=club_id).get(user_id=user.id).delete()
-    messages.add_message(request, messages.SUCCESS, 'You have leave the club.')
-
     return redirect('show_club', club.id)
 
 @login_required(redirect_field_name="")
