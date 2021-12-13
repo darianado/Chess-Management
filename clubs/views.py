@@ -230,7 +230,7 @@ def officer_promote(request,member_id):
     member.promote()
 
     action = Events.objects.create(club=member.club, user=member.user, action = 4)
-    messages.success(request, "Officer pormoted successful")
+    messages.success(request, "Officer has been pormoted successful")
     return redirect('show_club', club_id = c_id)
 
 @login_required(redirect_field_name="")
@@ -242,7 +242,7 @@ def officer_demote(request,member_id):
     member.demote()
 
     action = Events.objects.create(club=member.club, user=member.user, action = 5)
-    messages.success(request, "Officer demoted successful")
+    messages.success(request, "Officer has been demoted successful")
     return redirect('show_club', club_id=c_id)
 
 
@@ -255,7 +255,7 @@ def member_promote(request,member_id):
     member.promote()
 
     action = Events.objects.create(club=member.club, user=member.user, action = 4)
-    messages.success(request, "Member pormoted successful")
+    messages.success(request, "Member has been pormoted successful")
     return redirect('show_club', club_id = c_id)
 
 
