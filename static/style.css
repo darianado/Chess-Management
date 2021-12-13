@@ -2,6 +2,7 @@ html,body {
   margin:0;
   padding:0;
   height:100%;
+  padding-bottom: 40px;
 }
 button, input[type="submit"]{
   background: #D7A786;
@@ -217,7 +218,7 @@ main .sidebar{
 
 .club_title_cover{
   background-image: url('https://images.indianexpress.com/2020/05/chess-fb.jpg');
-  background-size:     cover;       
+  background-size:     cover;
   background-repeat:   no-repeat;
   background-position: center center;
 }
@@ -468,4 +469,13 @@ p.cover-text {
 }
 .cover-card-block {
   opacity: 1
+}
+
+#footer {
+  position: fixed;
+  padding: 10px 10px 0px 10px;
+  bottom: 0;
+  width: 100%;
+  height: 40px;
+  background: grey;
 }
