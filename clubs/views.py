@@ -121,9 +121,14 @@ def show_roles(request,club_id):
 @login_required(redirect_field_name="")
 @minimum_role_required(role_required=Role.MEMBER, redirect_location="dashboard")
 def members(request, club_id):
+    user = request.user
     club = Club.objects.get(id=club_id)
+    is_officer=False
+    current_role = Membership.objects.get(user=user,club=club).role
+    if current_role==2 or current_role==1:
+        is_officer=True
     members = [member.user for member in Membership.objects.filter(club=club)]
-    return render(request, "partials/members_list_table.html", {"members": members})
+    return render(request, "partials/members_list_table.html", {"members": members, "is_officer": is_officer})
 
 @login_required
 def show_user(request, user_id=None):

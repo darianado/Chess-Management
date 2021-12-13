@@ -2,10 +2,10 @@
 
 
 <tr>
-    
-    <td>
+
+    <th scope="row">
         <img src="{{ applicant.user.mini_gravatar }}">
-    </td>
+    </th>
     <td>
         <p>{{ applicant.user.get_full_name }}</p>
     </td>
@@ -25,13 +25,12 @@
 
     <td>
         <form onsubmit="return confirm('You are about to deny ' + '{{ applicant.user.get_full_name }}' +'\'s application!');;" 
-        action="{% url 'deny_applicant' applicant.id  %}">
+          action="{% url 'deny_applicant' applicant.id  %}">
             <input type="submit" class="btn btn-secondary"  value="Deny"></input>
         </form>
-    <!-- </td>
-    <td> -->
+   
         <form onsubmit="return confirm('You are about to accept ' + '{{ applicant.user.get_full_name }}' +'\'s application!');;" 
-        action="{% url 'accept_applicant' applicant.id %}">
+              action="{% url 'accept_applicant' applicant.id %}">
             <input type="submit" class="btn btn-secondary" value="Accept"></input>
         </form>
 

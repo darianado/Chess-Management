@@ -1,13 +1,18 @@
 <tr>
-    <td>
+    <th scope="row">
         <img src="{{ user.mini_gravatar }}">
-    </td>
+    </th>
     <td>
         <p>{{ user.get_full_name }}</p>
     </td>
     <td>
         <p>{{ user.bio }}</p>
     </td>
+    {% if is_officer %}
+    <td>
+      <a href="{% url 'show_user' user.id %}">More detail</a>
+    </td>
+    {% endif %}
 
     {% block columns %}
     {% endblock columns %}
