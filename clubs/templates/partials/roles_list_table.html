@@ -60,9 +60,6 @@
             <a href="{% url 'show_user' officer.user.id %}">More details</a>
           </td>
           <td>
-           <form action= "{% url 'officer_promote' officer.id %}">
-              <button type="submit" id="promote"> promote </button>
-           </form> 
           <form onsubmit="return confirm('You are about to promote ' + '{{ officer.user.get_full_name }}' +' to be the new owner of the club. You will lose your current owner rights and be demoted to an officer!');;"
                 action="{% url 'officer_promote' officer.id %}">
                 <input type="submit" class="btn btn-secondary" value="Promote"> </input>
