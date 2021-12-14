@@ -76,6 +76,7 @@ def show_club(request, club_id):
         nr_member = Membership.objects.filter(club=club).exclude(role=4).count()
         show_role = False
         show_member = False
+        show_matches = False
         show_applicants = False
         create_tournament = False
         if member_in_club==1 :
@@ -97,6 +98,7 @@ def show_club(request, club_id):
                 'member_in_club': member_in_club,
                 'show_role':show_role,
                 'show_member':show_member,
+                'show_matches':show_matches,
                 'show_applicants':show_applicants,
                 'number_of_members':nr_member,
                 'owner_club' : owner_club,
@@ -197,6 +199,7 @@ def password(request):
         form = changePasswordForm()
     return render(request, 'password.html', {'form': form})
 
+
 def create_tournament(request, club_id):
     current_user = request.user
     club = Club.objects.get(id=club_id)
@@ -233,10 +236,6 @@ def create_tournament(request, club_id):
     else:
         return HttpResponseForbidden()
 
-def show_matches(request, tournament_id):
-    tournament = Tournament.objects.get(id=tournament_id)
-    matches = Match.objects.filter(tournament=tournament)
-    return render(request, "partial/matches.html", {"matches": matches})
 
 
 def create_club(request):
@@ -398,9 +397,6 @@ def table(request):
             }
         )
 
-def matches(request):
-    return render(request, 'tournament_matches.html')
-
 @login_required(redirect_field_name="")
 def tournament_list(request,club_id):
     current_user=request.user
@@ -411,8 +407,12 @@ def tournament_list(request,club_id):
     if member.role==2 or member.role==1:
         is_officer = True
     tournaments = Tournament.objects.all().filter(club=club)
-    print(is_officer)
     return render(request, "partials/tournaments_list_table.html", {"tournaments": tournaments, "is_officer": is_officer, "club": club})
+
+def matches(request, tournament_id):
+    tournament = Tournament.objects.get(id=tournament_id)
+    matches = Match.objects.filter(tournament=tournament)
+    return render(request, "partials/matches.html", {"matches": matches})
 
 @login_required(redirect_field_name="")
 def show_tournament(request, tournament_id):
@@ -421,6 +421,10 @@ def show_tournament(request, tournament_id):
     user = request.user
     member = Membership.objects.get(user=user,club=club)
     organiser = tournament.organiser.user
+    show_matches = True
+    show_role = False
+    show_applicants = False
+    show_member = True
     #coorganisers = tournament.coorganisers.user
     #participants = tournament.participants.user
     # try:
@@ -434,11 +438,15 @@ def show_tournament(request, tournament_id):
     is_organiser = False
     # else:
     is_participant = False
-    return render(request,'tournament_detail.html',
+    return render(request,'show_tournament.html',
     {'is_participant': is_participant,
     'tournament': tournament,
     'organiser': organiser,
     #'coorganisers': coorganisers,
     'is_organiser': is_organiser,
+    "show_matches": show_matches, 
+    "show_member": show_member, 
+    'show_role':show_role,
+    'show_applicants':show_applicants,
     #'participants': participants,
     })

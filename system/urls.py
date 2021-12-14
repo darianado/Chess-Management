@@ -27,9 +27,6 @@ urlpatterns = [
     path('home/dashboard', views.dashboard, name = 'dashboard'),
     path('home/clubs', views.club_list, name = 'club_list'),
 
-
-
-    # path('clubs/', views.club_list, name = 'club_list'),
     path('club/<int:club_id>', views.show_club, name = 'show_club'),
     path('club/<int:club_id>/members/', views.members, name = 'show_members'),
     path('user/<int:user_id>', views.show_user, name="show_user"),
@@ -56,7 +53,7 @@ urlpatterns = [
 
     path('table/', views.table, name="table"),
     path('events/', views.events_list, name="events_list"),
-    path('matches/', views.matches, name="matches"),
+    path('matches/<int:tournament_id>', views.matches, name="matches"),
     path('tournament/<int:tournament_id>', views.show_tournament, name="show_tournament"),
     path('club/<int:club_id>/tournament', views.tournament_list, name = 'tournament_list'),
 ]

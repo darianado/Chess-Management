@@ -1,78 +1,88 @@
-
 {% extends 'home.html' %}
 
 {% block card_content %}
 
-
-<script>
-
-  
-   function showClub(){
-    const Http = new XMLHttpRequest();
-    const url="{% url 'show_club' club.id %}";
-    Http.open("GET", url);
-
-    Http.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-          document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>";
-        }
-    }
-    Http.send();
-  }
-
-
-  function showMembers(){
-    const Http = new XMLHttpRequest();
-    const url="{% url 'show_members' club.id %}";
-    Http.open("GET", url);
-
-    Http.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-          document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>";
-        }
-    }
-    Http.send();
-  }
-
-  function showApplicants(){
-    const Http = new XMLHttpRequest();
-    const url="{% url 'show_applicants' club.id %}";
-    Http.open("GET", url);
-    Http.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-          document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>";
-        }
-    }
-    Http.send();
-  }
-
-  function showRoles(){
-    const Http = new XMLHttpRequest();
-    const url="{% url 'show_roles' club.id %}";
-    Http.open("GET", url);
-    Http.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-          document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>";
-        }
-    }
-    Http.send();
-  }
-
-  function showTournament(){
-    const Http = new XMLHttpRequest();
-    const url="{% url 'tournament_list' club.id %}";
-    Http.open("GET", url);
-    Http.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-          document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>";
-        }
-    }
-    Http.send();
-  }
-
-</script>
-
-
+{% comment %}  {% endcomment %}
+{% comment %} <script> {% endcomment %}
+{% comment %}  {% endcomment %}
+{% comment %}    {% endcomment %}
+   {% comment %} function showClub(){ {% endcomment %}
+    {% comment %} const Http = new XMLHttpRequest(); {% endcomment %}
+    {% comment %} const url="{% url 'show_club' club.id %}"; {% endcomment %}
+    {% comment %} Http.open("GET", url); {% endcomment %}
+    {% comment %} Http.onreadystatechange = function () { {% endcomment %}
+        {% comment %} if (this.readyState == 4 && this.status == 200) { {% endcomment %}
+          {% comment %} document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>"; {% endcomment %}
+        {% comment %} } {% endcomment %}
+    {% comment %} } {% endcomment %}
+    {% comment %} Http.send(); {% endcomment %}
+  {% comment %} } {% endcomment %}
+{% comment %}  {% endcomment %}
+  {% comment %} function showMathes(){ {% endcomment %}
+    {% comment %} const Http = new XMLHttpRequest(); {% endcomment %}
+    {% comment %} const url="{% url 'matches' club.id %}"; {% endcomment %}
+    {% comment %} Http.open("GET", url); {% endcomment %}
+    {% comment %} Http.onreadystatechange = function () { {% endcomment %}
+        {% comment %} if (this.readyState == 4 && this.status == 200) { {% endcomment %}
+          {% comment %} document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>"; {% endcomment %}
+        {% comment %} } {% endcomment %}
+    {% comment %} } {% endcomment %}
+    {% comment %} Http.send(); {% endcomment %}
+  {% comment %} } {% endcomment %}
+{% comment %}  {% endcomment %}
+{% comment %}  {% endcomment %}
+  {% comment %} function showMembers(){ {% endcomment %}
+    {% comment %} const Http = new XMLHttpRequest(); {% endcomment %}
+    {% comment %} const url="{% url 'show_members' club.id %}"; {% endcomment %}
+    {% comment %} Http.open("GET", url); {% endcomment %}
+{% comment %}  {% endcomment %}
+    {% comment %} Http.onreadystatechange = function () { {% endcomment %}
+        {% comment %} if (this.readyState == 4 && this.status == 200) { {% endcomment %}
+          {% comment %} document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>"; {% endcomment %}
+        {% comment %} } {% endcomment %}
+    {% comment %} } {% endcomment %}
+    {% comment %} Http.send(); {% endcomment %}
+  {% comment %} } {% endcomment %}
+{% comment %}  {% endcomment %}
+  {% comment %} function showApplicants(){ {% endcomment %}
+    {% comment %} const Http = new XMLHttpRequest(); {% endcomment %}
+    {% comment %} const url="{% url 'show_applicants' club.id %}"; {% endcomment %}
+    {% comment %} Http.open("GET", url); {% endcomment %}
+    {% comment %} Http.onreadystatechange = function () { {% endcomment %}
+        {% comment %} if (this.readyState == 4 && this.status == 200) { {% endcomment %}
+          {% comment %} document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>"; {% endcomment %}
+        {% comment %} } {% endcomment %}
+    {% comment %} } {% endcomment %}
+    {% comment %} Http.send(); {% endcomment %}
+  {% comment %} } {% endcomment %}
+{% comment %}  {% endcomment %}
+  {% comment %} function showRoles(){ {% endcomment %}
+    {% comment %} const Http = new XMLHttpRequest(); {% endcomment %}
+    {% comment %} const url="{% url 'show_roles' club.id %}"; {% endcomment %}
+    {% comment %} Http.open("GET", url); {% endcomment %}
+    {% comment %} Http.onreadystatechange = function () { {% endcomment %}
+        {% comment %} if (this.readyState == 4 && this.status == 200) { {% endcomment %}
+          {% comment %} document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>"; {% endcomment %}
+        {% comment %} } {% endcomment %}
+    {% comment %} } {% endcomment %}
+    {% comment %} Http.send(); {% endcomment %}
+  {% comment %} } {% endcomment %}
+{% comment %}  {% endcomment %}
+  {% comment %} function showTournament(){ {% endcomment %}
+    {% comment %} const Http = new XMLHttpRequest(); {% endcomment %}
+    {% comment %} const url="{% url 'tournament_list' club.id %}"; {% endcomment %}
+    {% comment %} Http.open("GET", url); {% endcomment %}
+    {% comment %} Http.onreadystatechange = function () { {% endcomment %}
+        {% comment %} if (this.readyState == 4 && this.status == 200) { {% endcomment %}
+          {% comment %} document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>"; {% endcomment %}
+        {% comment %} } {% endcomment %}
+    {% comment %} } {% endcomment %}
+    {% comment %} Http.send(); {% endcomment %}
+  {% comment %} } {% endcomment %}
+{% comment %}  {% endcomment %}
+{% comment %} </script> {% endcomment %}
+{% comment %}  {% endcomment %}
+{% comment %}  {% endcomment %}
 
 <div class="card-body">
 
@@ -80,7 +90,7 @@
     <div class="row m-0">
 
       {% if show_member %}
-          {% include 'partials/side-bar.html' with show_role=show_role show_member=show_member show_applicants=show_applicants %}
+          {% include 'partials/side-bar.html' with club=club tournament_id=9999 show_role=show_role show_member=show_member show_applicants=show_applicants show_matches=show_matches %}
       {% endif %}
 
 
