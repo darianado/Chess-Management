@@ -415,6 +415,27 @@ def matches(request, tournament_id):
     return render(request, "partials/matches.html", {"matches": matches})
 
 @login_required(redirect_field_name="")
+def apply_to_tournament(request, tournament_id ):
+    tournament = Tournament.objects.get(id=tournament_id)
+    club = tournament.club
+    user = request.user
+    member = Membership.objects.get(user=user,club=club)
+    member_in_club = Membership.get_member_role(user,club)
+    if tournament.participants.count() < tournament.capacity:
+        if request.method == 'GET':
+            Participant.objects.create(
+                    tournament = tournament,
+                    member = member,
+            )
+        else:
+            return redirect('show_tournament', tournament.id)
+
+    else:
+        print("capacity is full")
+ 
+    return redirect('show_tournament', tournament.id)
+
+@login_required(redirect_field_name="")
 def show_tournament(request, tournament_id):
     tournament = Tournament.objects.get(id=tournament_id)
     club = tournament.club
