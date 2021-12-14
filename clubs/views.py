@@ -252,7 +252,7 @@ def create_club(request):
                 description = form.cleaned_data.get('description')
                 club = Club.objects.create(club_name=club_name, location=location, description=description)
                 member = Membership.objects.create(club=club, user=current_user, role=1)
-                messages.success(request, "Club created successful!")
+                messages.success(request, "Club created successfully!")
                 return redirect('club_list')
             else:
                 messages.error(request, "The credentials provided were invalid!")

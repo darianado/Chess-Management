@@ -3,6 +3,7 @@ html,body {
   padding:0;
   height:100%;
   padding-bottom: 40px;
+  background: #2B2E4D;
 }
 button, input[type="submit"]{
   background: #D7A786;
@@ -31,10 +32,11 @@ button, input[type="submit"]{
     height: 40px;
 }
 
-.events-list {
+.events-list { 
   display: block;
-  height : 200px;
-  overflow-y : scroll;
+  height: 150px;
+  overflow-y: scroll; 
+  overflow-x: auto; 
 }
 
 a .title{
@@ -107,12 +109,12 @@ body{
 }
 
 p.cover-text {
-  font-size: 1.7rem;
+  font-size: 2rem;
 }
 
 .cover-card {
   background-color: rgba(245, 245, 245, 0.6);
-  max-width: 30rem;
+  /* max-width: 30rem; */
   padding-top: 30px;
   padding-left: 50px;
   padding-right: 50px;
@@ -130,6 +132,8 @@ p.cover-text {
 #membersListDiv {
   background-color: #FFFFFF;
   z-index: 3;
+  min-height: 400px;
+
 }
 
 #sidebar button {
@@ -141,6 +145,25 @@ p.cover-text {
   height: 50px;
   z-index: 0;
   transition: 0.4s;
+}
+
+#sidebar a {
+  position: absolute;
+  left: -50px;
+  text-align: left;
+  border-radius: 0 5px 5px 0;
+  width: 190px;
+  height: 50px;
+  z-index: 0;
+  transition: 0.4s;
+  background-color: #D7A786;
+  color: black;
+  text-decoration: none;
+  line-height: 50px;
+  border-style: outset;
+  border-width: 2px;
+  border-color: #5d5d66;
+  padding-left: 5px;
 }
 
 #matches {
@@ -165,7 +188,7 @@ p.cover-text {
 }
 
 
-#sidebar button:hover {
+#sidebar button:hover, #sidebar a:hover {
   left: -180px;
 }
 
@@ -481,11 +504,11 @@ p.cover-text {
   opacity: 1
 }
 
-#footer {
+/* #footer {
   position: fixed;
   padding: 10px 10px 0px 10px;
   bottom: 0;
   width: 100%;
   height: 40px;
   background: grey;
-}
+} */
