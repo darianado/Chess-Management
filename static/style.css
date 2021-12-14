@@ -132,7 +132,8 @@ p.cover-text {
 #membersListDiv {
   background-color: #FFFFFF;
   z-index: 3;
-  height: 400px;
+  min-height: 400px;
+
 }
 
 #sidebar button {
@@ -161,7 +162,7 @@ p.cover-text {
   line-height: 50px;
   border-style: outset;
   border-width: 2px;
-  border-color: white;
+  border-color: #5d5d66;
   padding-left: 5px;
 }
 

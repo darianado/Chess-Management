@@ -4,40 +4,25 @@
 {% block content %}
 
 <div id="cover-image">
-  <div class="container-fluid vh-100">
-    <div class="row justify-content-center h-100">
-      
-      <div class="col-lg-8 col-md-10 col-sm-12 ">
-
-        <div class="d-flex justify-content-center ">
-        <div class="card cover-card mt-5 p-5">
-          
-           <h1 class="cover-heading" >EmuGambit</h1>
+  <div class="container vh-100">
+    <div class="row h-100">
+      <div class="col-8 my-auto">
+        <div class="card cover-card offset-sm-2 offset-md-4 offset-lg-5">
+          <h1 class="cover-heading" >EmuGambit</h1>
            <p class="cover-text">The place for your own gambits.</p>
-          
-
-          <div style="overflow: auto; ">
-            <div style="float: left; ">
-
-                <form action= "{% url 'sign_up' %}">
-                    <button type="submit" id="promote"> Sign up </button>
-                </form>
-            </div> 
-          
-            <div style="float: right; ">
-
-                  <form action= "{% url 'log_in' %}" class="mr-3">
-                      <button type="submit" style="margin-right: 12px ; " id="promote"> Log in </button>
-                  </form> 
-
+          <div class='row'>
+            <div class="col">
+               <form action= "{% url 'sign_up' %}">
+                  <button type="submit" id="promote"> Sign up </button>
+               </form> 
             </div>
-          </div>
-
-          </div>
-          </div>
-
+            <div class="col">
+           <form action= "{% url 'log_in' %}">
+              <button type="submit" id="promote"> Log in </button>
+           </form> 
+            </div>
+          </p>
         </div>
-
       </div>
     </div>
   </div>
