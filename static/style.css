@@ -3,6 +3,7 @@ html,body {
   padding:0;
   height:100%;
   padding-bottom: 40px;
+  background: #2B2E4D;
 }
 button, input[type="submit"]{
   background: #D7A786;
@@ -31,10 +32,11 @@ button, input[type="submit"]{
     height: 40px;
 }
 
-.events-list {
+.events-list { 
   display: block;
-  height : 200px;
-  overflow-y : scroll;
+  height: 150px;
+  overflow-y: scroll; 
+  overflow-x: auto; 
 }
 
 a .title{
@@ -107,12 +109,12 @@ body{
 }
 
 p.cover-text {
-  font-size: 1.7rem;
+  font-size: 2rem;
 }
 
 .cover-card {
   background-color: rgba(245, 245, 245, 0.6);
-  max-width: 30rem;
+  /* max-width: 30rem; */
   padding-top: 30px;
   padding-left: 50px;
   padding-right: 50px;
@@ -130,6 +132,7 @@ p.cover-text {
 #membersListDiv {
   background-color: #FFFFFF;
   z-index: 3;
+  height: 400px;
 }
 
 #sidebar button {
@@ -500,11 +503,11 @@ p.cover-text {
   opacity: 1
 }
 
-#footer {
+/* #footer {
   position: fixed;
   padding: 10px 10px 0px 10px;
   bottom: 0;
   width: 100%;
   height: 40px;
   background: grey;
-}
+} */
