@@ -130,6 +130,7 @@ p.cover-text {
 #membersListDiv {
   background-color: #FFFFFF;
   z-index: 3;
+  height: 400px;
 }
 
 #sidebar button {
