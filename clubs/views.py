@@ -414,9 +414,30 @@ def matches(request, tournament_id):
     matches = Match.objects.filter(tournament=tournament)
     return render(request, "partials/matches.html", {"matches": matches})
 
-#  def play_match(request, match_id):
-    #  match = Match.objects.get(id=match_id)
-    #  return render(request, "set_match_result.html", {"matches": matches})
+def checkWinner(request, tournament,matches, match_round):
+    for match in matches:
+        if match.match_status == 4:
+            match.playerA.is_active = False
+        else:
+            match.playerB.is_active = False
+
+def haveDrawn(request,tournament,matches, match_round):
+    drawn_round = matches.objects.filter(Q(match_status=2))
+    if len(drawnRound) > 0:
+        print("set drawn matches again")
+        return False
+    else:
+        return True
+
+
+def playRounds(request, tournament, match_round):
+    matches = Match.objects.filter(tournament=tournament).filter(match_round=match_round)
+    if tournament.isRoundPlayed(tournament,match_round):
+        if not haveDrawn(tournament, match, match_round):
+            checkWinner(tournament, matches, match_round)
+            scheduleMatches()
+
+
 
 def set_match_result(request, match_id):
     try:

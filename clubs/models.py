@@ -282,6 +282,22 @@ class Tournament(models.Model):
                 playerA=playerA,
                 playerB=playerB
             )
+    def isRoundPlayed(self, match_round):
+        matches = Match.objects.filter(match_round=match_round).filter(tournament=self)
+        for match in matches:
+            if match.match_status == 1:
+                return False
+        return True
+
+
+    def getRoundTournament(self):
+        matches = Match.objects.filter(tournament=self)
+        return max(matches.match_round)
+        
+        
+        
+
+
 
 class Participant(models.Model):
     class Meta:
@@ -326,6 +342,7 @@ class Match(models.Model):
                 MaxValueValidator(4)
             ]
         )
+    match_round = models.IntegerField
 
     def getMatchStatusString(self):
         if self.match_status == 1:
