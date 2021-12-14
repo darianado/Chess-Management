@@ -83,9 +83,9 @@
 
 <div id="sidebar">
   {% if show_matches or show_member %}
-  <button id="theclub" type="button" class="sidebarbutton" onclick="showClub()">
-  <i class="material-icons">home</i>Club
-  </button>
+  <a id="theclub" href="{% url 'show_club' club.id %}">
+    <i class="material-icons">home</i>Club
+  </a>
   {% endif %}
   {% if show_matches %}
   <button id="matches" type="button" class="sidebarbutton" onclick="showMatches()">
