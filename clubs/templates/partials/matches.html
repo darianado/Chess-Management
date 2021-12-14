@@ -1,18 +1,31 @@
-<table>
+<div>
+  {% if matches|length > 0 %}
+<table class="table table-hover">
     <thead>
         <tr>
-            <td>Player A</td>
-            <td>Player B</td>
-            <td>Status</td>
+            <th scope="col">Player A</th>
+            <th scope="col">Player B</th>
+            <th scope="col">Status</th>
+            <th scope="col">Set result</th>
         </tr>
     </thead>
     <tbody>
         {% for match in matches %}
             <tr>
-                <td>match.playerA</td>
-                <td>match.playerB</td>
-                <td>match.match_status</td>
+              <td>{{match.playerA.member.user.get_full_name}}</td>
+              <td>{{match.playerB.member.user.get_full_name}}</td>
+              <td>{{match.match_status}}</td>
+              <td>
+                <form action="{% url 'set_match_result' match.id %}">
+                  <input type="submit" class="btn btn-secondary" value="Set"> </input>
+                </form>
+              </td>
             </tr>
         {% endfor %}
     </tbody>
 </table>
+</div>
+ {% else %}
+      <h5 align-items-center>There are no current matches</h5>
+  {% endif %}
+</div>

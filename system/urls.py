@@ -55,7 +55,10 @@ urlpatterns = [
 
     path('table/', views.table, name="table"),
     path('events/', views.events_list, name="events_list"),
+
     path('matches/<int:tournament_id>', views.matches, name="matches"),
+    path('set_match_result/<int:match_id>', views.set_match_result, name="set_match_result"),
+
     path('tournament/<int:tournament_id>', views.show_tournament, name="show_tournament"),
     path('club/<int:club_id>/tournament', views.tournament_list, name = 'tournament_list'),
 ]

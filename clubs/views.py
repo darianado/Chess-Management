@@ -414,6 +414,38 @@ def matches(request, tournament_id):
     matches = Match.objects.filter(tournament=tournament)
     return render(request, "partials/matches.html", {"matches": matches})
 
+#  def play_match(request, match_id):
+    #  match = Match.objects.get(id=match_id)
+    #  return render(request, "set_match_result.html", {"matches": matches})
+
+def set_match_result(request, match_id):
+    try:
+        tournament = Tournament.objects.get(id=match_id.tournament.id)
+        matches = Match.objects.filter(tournament=tournament)
+        # depending on status in helpers.py
+        possible_results = list(range(1,4+1))
+        if request.method == 'GET':
+            print("im here")
+            form = SetMatchResultForm(initial={"match_status": possible_results})
+            return render(request, 'set_match_result.html', {'form': form, "match_id" : match_id})
+        elif request.method == 'POST':
+            if request.user.is_authenticated:
+                form = SetMatchResultForm(request.POST, possible_results)
+                if form.is_valid():
+                    match_status = form.cleaned_data.get('match_status')
+                    match = Tournament.objects.get(id=match_id)
+                    match.match_status.set(match_status)
+                    return redirect('dashboard')
+                else:
+                    return render(request, 'set_match_result.html', {'form': form, "match_id" : match_id})
+            else:
+                return redirect('log_in')
+        else:
+            return HttpResponseForbidden()
+    except:
+            pass
+
+
 @login_required(redirect_field_name="")
 def apply_to_tournament(request, tournament_id ):
     tournament = Tournament.objects.get(id=tournament_id)
@@ -423,6 +455,7 @@ def apply_to_tournament(request, tournament_id ):
     member_in_club = Membership.get_member_role(user,club)
     if tournament.participants.count() < tournament.capacity:
         if request.method == 'GET':
+            print("baby one more time____participant")
             Participant.objects.create(
                     tournament = tournament,
                     member = member,
