@@ -8,7 +8,6 @@ from django.contrib.auth.hashers import check_password
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseForbidden, request
 from django.contrib.auth.decorators import login_required
-#  from .filters import OrderFilter
 from clubs.helpers import Role, Status
 from clubs.decorators import login_prohibited, minimum_role_required
 
@@ -411,7 +410,8 @@ def matches(request, tournament_id):
     can_set_match = is_organiser or is_coorganiser
     
     match_round = tournament.getRoundTournament()
-    return render(request, "partials/matches.html", {"matches": list(zip(matches, labels)), "can_set_match": can_set_match, "match_round" : match_round, "rounds" : range(1,5)})
+    winner = getWinner(request,tournament,match_round)
+    return render(request, "partials/matches.html", {"matches": list(zip(matches, labels)), "can_set_match": can_set_match, "match_round" : match_round, "rounds" : range(1,5), "winner" : winner})
 
 def updateActiveParticipants(request, tournament,matches, match_round):
     for match in matches:
@@ -430,13 +430,19 @@ def haveDrawn(request,tournament,matches, match_round):
     else:
         return True
 
+def getWinner(request, tournament, match_round):
+    winner = Participant.objects.filter(tournament=tournament, is_active=True)
+    if match_round+1 == 5 and len(winner)==1:
+        return winner[0]
+    return None
+     
+
 def abs(request, tournament, match_round):
     matches = Match.objects.filter(tournament=tournament).filter(match_round=match_round)
     if tournament.isRoundFinished(tournament,match_round):
         updateActiveParticipants(request, tournament, matches, match_round)
         tournament.scheduleMatches(match_round+1)
     elif not haveDrawn(request,tournament,matches, match_round):
-        #TODO add message here
         print("set drawn matches again")
 
 

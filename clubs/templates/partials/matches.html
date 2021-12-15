@@ -1,3 +1,4 @@
+{%load static%}
 <div>
   {% if matches|length > 0 and match_round > 0 %}
       {% for round in rounds %}
@@ -16,18 +17,20 @@
                       </thead>
                       <tbody>
                                   {% for match, match_status_label in matches %}
+                                    {% if match.match_round == round %}
                                       <tr>
                                         <td>{{match.playerA.member.user.get_full_name}}</td>
                                         <td>{{match.playerB.member.user.get_full_name}}</td>
                                         <td>{{match.match_status}}</td>
                                         <td>
-                                        {% if can_set_match %}
+                                        {% if can_set_match and match.match_round == match_round and winner == None%}
                                           <form action="{% url 'set_match_result' match.id %}">
                                             <input type="submit" class="btn btn-secondary" value="Set"> </input>
                                           </form>
                                         {% endif %}
                                         </td>
                                       </tr>
+                                      {% endif %}
                                   {% endfor %}
                             {% else %}
                               <h5 align-items-center>There are no current matches in round {{round}}</h5>
@@ -36,6 +39,16 @@
                       </tbody>
               </table>
       {% endfor %}
+      {% if match_round|add:"1" == 5 and winner != None %}
+        <div class ="row">
+          <div class ="col" align-left>
+              <img src="{% static '/images/winner.svg' %}" alt="" id ="winner-logo">
+          </div>
+          <div class ="col align-left">
+              <h3>Winner is {{winner.member.user.get_full_name}}</h3>
+          </div>
+        </div>
+      {% endif %}
   {% else %}
       <h5 align-items-center>There are no current matches</h5>
   {% endif %}

@@ -109,6 +109,7 @@ class MatchModelTest(TestCase):
         self.matchOne.match_status = 5
         self._assert_match_is_invalid()
 
+
     def _assert_match_is_valid(self):
         try:
             self.matchOne.full_clean()
