@@ -120,7 +120,7 @@ def members(request, club_id):
     current_role = Membership.objects.get(user=user,club=club).role
     if current_role==2 or current_role==1:
         is_officer=True
-    members = [member.user for member in Membership.objects.filter(club=club, role_lte=Role.MEMBER)]
+    members = [member.user for member in Membership.objects.filter(club=club, role__lte=Role.MEMBER)]
     return render(request, "partials/members_list_table.html", {"members": members, "is_officer": is_officer})
 
 @login_required
