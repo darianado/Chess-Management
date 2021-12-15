@@ -113,7 +113,7 @@ class TournamentModelTest(TestCase):
         self.tournamentYetti.capacity = 97
         self._assert_tournament_is_invalid()
 
-
+    
 
     def _assert_tournament_is_valid(self):
         try:
