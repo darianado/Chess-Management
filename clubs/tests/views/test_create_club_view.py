@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 from clubs.models import Club, User, Membership, Events
 
-class NewPostTest(TestCase):
+class CreateClubTest(TestCase):
 
     fixtures = [
         'clubs/tests/fixtures/default_user_john.json',

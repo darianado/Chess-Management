@@ -23,6 +23,7 @@ class ShowClubTest(TestCase):
         self.userJohn = User.objects.get(email='johndoe@example.org')
         self.userCharlie = User.objects.get(email='charliedoe@example.org')
         self.userVictor = User.objects.get(email='victordoe@example.org')
+        self.userMiki = User.objects.get(email='mikidoe@example.org')
         self.clubHame = Club.objects.get(club_name="Hame Chess Club")
         self.tournament = Tournament.objects.get(name='Yetti')
         self.participant = Participant.objects.get(id=3)
@@ -54,7 +55,7 @@ class ShowClubTest(TestCase):
 
 
     def test_correct_organiser_information_shown(self):
-        self.client.login(email=self.user.email, password="Password123")
+        self.client.login(email=self.userMiki.email, password="Password123")
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Mark')
