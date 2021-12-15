@@ -442,16 +442,22 @@ def playRounds(request, tournament, match_round):
 @login_required(redirect_field_name="")
 def set_match_result(request, match_id):
     match = Match.objects.get(id=match_id)
+
+    players = [
+        match.getPlayerA().member.user.get_full_name(),
+        match.getPlayerB().member.user.get_full_name()
+    ]
+
     if request.method == 'GET':
         form = SetMatchResultForm(initial={"match_status": match.match_status})
-        return render(request, 'set_match_result.html', {'form': form, "match_id" : match_id})
+        return render(request, 'set_match_result.html', {'form': form, "match_id" : match_id, "players": players})
     elif request.method == 'POST':
         form = SetMatchResultForm(request.POST, instance=match)
         if form.is_valid():
             form.save()
             return redirect('show_club', club_id=match.tournament.club.id)
         else:
-            return render(request, 'set_match_result.html', {'form': form, "match_id" : match_id})
+            return render(request, 'set_match_result.html', {'form': form, "match_id" : match_id, "players": players})
     else:
         return HttpResponseForbidden()
 
