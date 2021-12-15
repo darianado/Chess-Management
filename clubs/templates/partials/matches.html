@@ -15,7 +15,6 @@
                                   </tr>
                       </thead>
                       <tbody>
-                                  {% for round in matches %}
                                   {% for match, match_status_label in matches %}
                                       <tr>
                                         <td>{{match.playerA.member.user.get_full_name}}</td>
