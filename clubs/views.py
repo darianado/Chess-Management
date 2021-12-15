@@ -421,22 +421,23 @@ def matches(request, tournament_id):
     if request.user in [x.user for x in tournament.coorganisers.all()]:
         is_coorganiser = True
     can_set_match = is_organiser or is_coorganiser
-
+    
     match_round = tournament.getRoundTournament()
-    return render(request, "partials/matches.html", {"matches": list(zip(matches, labels)), "can_set_match": can_set_match})
-# from nicoles algo for rounds 
-    #  return render(request, "partials/matches.html", {"matches": matches, "match_round" : match_round, "rounds" : range(1,5)})
+    return render(request, "partials/matches.html", {"matches": list(zip(matches, labels)), "can_set_match": can_set_match, "match_round" : match_round, "rounds" : range(1,5)})
 
 def updateActiveParticipants(request, tournament,matches, match_round):
     for match in matches:
         if match.match_status == 4:
             match.playerA.is_active = False
-        else:
+            match.playerA.save()
+        elif match.match_status == 3:
             match.playerB.is_active = False
+            match.playerB.save()
+            
 
 def haveDrawn(request,tournament,matches, match_round):
-    drawn_round = matches.objects.filter(Q(match_status=2))
-    if len(drawnRound) > 0:
+    drawn_round =  Match.objects.filter(tournament=tournament).filter(match_round=match_round).filter(Q(match_status=2))
+    if len(drawn_round) > 0:
         return False
     else:
         return True
@@ -444,9 +445,14 @@ def haveDrawn(request,tournament,matches, match_round):
 def abs(request, tournament, match_round):
     matches = Match.objects.filter(tournament=tournament).filter(match_round=match_round)
     if tournament.isRoundFinished(tournament,match_round):
-        updateActiveParticipants(tournament, matches, match_round)
-        tournament.scheduleMatches(match_round+1)
-    elif not haveDrawn(tournament,matches, match_round):
+        updateActiveParticipants(request, tournament, matches, match_round)
+        if (match_round+1) == 4:
+            all_active_participants = list(Participant.objects.filter(tournament=self, is_active=True))
+            print("the winner is " + all_active_participants)
+        else:
+            tournament.scheduleMatches(match_round+1)
+    elif not haveDrawn(request,tournament,matches, match_round):
+        #TODO add message here
         print("set drawn matches again")
 
 
@@ -466,7 +472,10 @@ def set_match_result(request, match_id):
         form = SetMatchResultForm(request.POST, instance=match)
         if form.is_valid():
             form.save()
-            return redirect('show_club', club_id=match.tournament.club.id)
+            abs(request, match.tournament, match.match_round)
+            # TODO remore the commented line -> now it returns to the tournament page
+            #  return redirect('show_club', club_id=match.tournament.club.id)
+            return show_tournament(request,match.tournament.id)
         else:
             return render(request, 'set_match_result.html', {'form': form, "match_id" : match_id, "players": players})
     else:
@@ -482,7 +491,6 @@ def apply_to_tournament(request, tournament_id ):
     member_in_club = Membership.get_member_role(user,club)
     if tournament.participants.count() < tournament.capacity:
         if request.method == 'GET':
-            print("baby one more time____participant")
             Participant.objects.create(
                     tournament = tournament,
                     member = member,
@@ -491,6 +499,7 @@ def apply_to_tournament(request, tournament_id ):
             return redirect('show_tournament', tournament.id)
 
     else:
+        # TODO add messages
         print("capacity is full")
 
     return redirect('show_tournament', tournament.id)

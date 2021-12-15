@@ -1,41 +1,42 @@
 <div>
   {% if matches|length > 0 and match_round > 0 %}
-  {% for round in rounds %}
-      <table class="table table-hover">
-          <thead>
-            <h2>Round {{round}}</h2>
-            {% if round <= match_round %}
-              <tr>
-                  <th scope="col">Player A</th>
-                  <th scope="col">Player B</th>
-                  <th scope="col">Status</th>
-                  {% if can_set_match %}
-                    <th scope="col">Set result</th>
-                  {% endif %}
-              </tr>
-          </thead>
-          <tbody>
-              {% for match, match_status_label in matches %}
-                  <tr>
-                    <td>{{match.playerA.member.user.get_full_name}}</td>
-                    <td>{{match.playerB.member.user.get_full_name}}</td>
-                    <td>{{match.match_status}}</td>
-                    <td>
-                    {% if can_set_match %}
-                      <form action="{% url 'set_match_result' match.id %}">
-                        <input type="submit" class="btn btn-secondary" value="Set"> </input>
-                      </form>
-                    {% endif %}
-                    </td>
-                  </tr>
-              {% endfor %}
-            {% else %}
-            <h5 align-items-center>There are no current matches in round {{round}}</h5>
-            <h5 align-items-center>Set results in {{round|add:"-1"}} to see the tournament final result</h5>
-            {% endif %}
-          </tbody>
-      </table>
-  {% endfor %}
+      {% for round in rounds %}
+              <table class="table table-hover">
+                      <thead>
+                        <h2>Round {{round}}</h2>
+                            {% if round <= match_round %}
+                                  <tr>
+                                      <th scope="col">Player A</th>
+                                      <th scope="col">Player B</th>
+                                      <th scope="col">Status</th>
+                                      {% if can_set_match %}
+                                        <th scope="col">Set result</th>
+                                      {% endif %}
+                                  </tr>
+                      </thead>
+                      <tbody>
+                                  {% for round in matches %}
+                                  {% for match, match_status_label in matches %}
+                                      <tr>
+                                        <td>{{match.playerA.member.user.get_full_name}}</td>
+                                        <td>{{match.playerB.member.user.get_full_name}}</td>
+                                        <td>{{match.match_status}}</td>
+                                        <td>
+                                        {% if can_set_match %}
+                                          <form action="{% url 'set_match_result' match.id %}">
+                                            <input type="submit" class="btn btn-secondary" value="Set"> </input>
+                                          </form>
+                                        {% endif %}
+                                        </td>
+                                      </tr>
+                                  {% endfor %}
+                            {% else %}
+                              <h5 align-items-center>There are no current matches in round {{round}}</h5>
+                              <h5 align-items-center>Set results in {{round|add:"-1"}} to see the tournament final result</h5>
+                            {% endif %}
+                      </tbody>
+              </table>
+      {% endfor %}
   {% else %}
       <h5 align-items-center>There are no current matches</h5>
   {% endif %}

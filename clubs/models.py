@@ -273,6 +273,7 @@ class Tournament(models.Model):
 
     def scheduleMatches(self, match_round):
         all_active_participants = list(Participant.objects.filter(tournament=self, is_active=True))
+        print(len(all_active_participants))
         all_active_participants.reverse()
 
         for x in range(0, len(all_active_participants) - 1, 2):
@@ -285,8 +286,9 @@ class Tournament(models.Model):
                 match_round=match_round
             )
 
-    def isRoundFinished(self, match_round):
-        matches = Match.objects.filter(match_round=match_round).filter(tournament=self)
+    def isRoundFinished(self,tournament, match_round):
+
+        matches = Match.objects.filter(match_round=match_round).filter(tournament=tournament)
         for match in matches:
             if match.match_status == 1 or match.match_status==2:
                 return False
