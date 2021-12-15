@@ -465,7 +465,7 @@ def set_match_result(request, match_id):
         form = SetMatchResultForm(request.POST, instance=match)
         if form.is_valid():
             form.save()
-            return redirect('show_tournament', club_id=match.tournament.id)
+            return redirect('show_tournament', tournament_id=match.tournament.id)
         else:
             return render(request, 'set_match_result.html', {'form': form, "match_id" : match_id, "players": players})
     else:
