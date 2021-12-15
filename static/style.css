@@ -147,13 +147,15 @@ p.cover-text {
   transition: 0.4s;
 }
 
-#matches {
-  top: 100px;
-}
 #theclub {
   top: 50px;
 }
+
 #members {
+  top: 100px;
+}
+
+#matches {
   top: 100px;
 }
 
@@ -161,37 +163,24 @@ p.cover-text {
   top: 150px;
 }
 
+#participant {
+  top: 150px;
+}
+
 #roles {
   top: 200px;
 }
+
 #tournament {
+  top: 200px;
+}
+
+#tournaments {
   top: 250px;
 }
 
-
 #sidebar button:hover {
   left: -180px;
-}
-
-#sidebar div {
-  position: absolute; /* Position them relative to the browser window */
-  left: -80px; /* Position them outside of the screen */
-  transition: 0.3s; /* Add transition on hover */
-  padding: 15px; /* 15px padding */
-  width: 100px; /* Set a specific width */
-  z-index: 0;
-  text-decoration: none; /* Remove underline */
-  font-size: 20px; /* Increase font size */
-  color: rgb(185, 18, 163); /* White text color */
-  border-radius: 0 5px 5px 0; /* Rounded corners on the top right and bottom right side */
-}
-
-main .sidebar{
-  position: absolute;
-  top: 0;
-  right: 20px;
-  font-size: 36px;
-  margin-left: 20px;
 }
 
 .material-icons,

@@ -29,7 +29,7 @@
                 </form>
               {% endif %}
 
-              {% if is_participant and not is_organiser and not is_coorganiser %}
+              {% if is_participant %}
               <form onsubmit="return confirm('You are about to leave the ' + '{{tournament.name}}' +'!');;"
                 action="{% url 'leave_tournament' tournament.id %}">
                 <input type="submit" class="btn btn-secondary" value="Leave"> </input>

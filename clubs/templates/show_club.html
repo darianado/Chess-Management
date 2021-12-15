@@ -1,108 +1,22 @@
 {% extends 'home.html' %}
-
 {% block card_content %}
 
-{% comment %}  {% endcomment %}
-{% comment %} <script> {% endcomment %}
-{% comment %}  {% endcomment %}
-{% comment %}    {% endcomment %}
-   {% comment %} function showClub(){ {% endcomment %}
-    {% comment %} const Http = new XMLHttpRequest(); {% endcomment %}
-    {% comment %} const url="{% url 'show_club' club.id %}"; {% endcomment %}
-    {% comment %} Http.open("GET", url); {% endcomment %}
-    {% comment %} Http.onreadystatechange = function () { {% endcomment %}
-        {% comment %} if (this.readyState == 4 && this.status == 200) { {% endcomment %}
-          {% comment %} document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>"; {% endcomment %}
-        {% comment %} } {% endcomment %}
-    {% comment %} } {% endcomment %}
-    {% comment %} Http.send(); {% endcomment %}
-  {% comment %} } {% endcomment %}
-{% comment %}  {% endcomment %}
-  {% comment %} function showMathes(){ {% endcomment %}
-    {% comment %} const Http = new XMLHttpRequest(); {% endcomment %}
-    {% comment %} const url="{% url 'matches' club.id %}"; {% endcomment %}
-    {% comment %} Http.open("GET", url); {% endcomment %}
-    {% comment %} Http.onreadystatechange = function () { {% endcomment %}
-        {% comment %} if (this.readyState == 4 && this.status == 200) { {% endcomment %}
-          {% comment %} document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>"; {% endcomment %}
-        {% comment %} } {% endcomment %}
-    {% comment %} } {% endcomment %}
-    {% comment %} Http.send(); {% endcomment %}
-  {% comment %} } {% endcomment %}
-{% comment %}  {% endcomment %}
-{% comment %}  {% endcomment %}
-  {% comment %} function showMembers(){ {% endcomment %}
-    {% comment %} const Http = new XMLHttpRequest(); {% endcomment %}
-    {% comment %} const url="{% url 'show_members' club.id %}"; {% endcomment %}
-    {% comment %} Http.open("GET", url); {% endcomment %}
-{% comment %}  {% endcomment %}
-    {% comment %} Http.onreadystatechange = function () { {% endcomment %}
-        {% comment %} if (this.readyState == 4 && this.status == 200) { {% endcomment %}
-          {% comment %} document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>"; {% endcomment %}
-        {% comment %} } {% endcomment %}
-    {% comment %} } {% endcomment %}
-    {% comment %} Http.send(); {% endcomment %}
-  {% comment %} } {% endcomment %}
-{% comment %}  {% endcomment %}
-  {% comment %} function showApplicants(){ {% endcomment %}
-    {% comment %} const Http = new XMLHttpRequest(); {% endcomment %}
-    {% comment %} const url="{% url 'show_applicants' club.id %}"; {% endcomment %}
-    {% comment %} Http.open("GET", url); {% endcomment %}
-    {% comment %} Http.onreadystatechange = function () { {% endcomment %}
-        {% comment %} if (this.readyState == 4 && this.status == 200) { {% endcomment %}
-          {% comment %} document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>"; {% endcomment %}
-        {% comment %} } {% endcomment %}
-    {% comment %} } {% endcomment %}
-    {% comment %} Http.send(); {% endcomment %}
-  {% comment %} } {% endcomment %}
-{% comment %}  {% endcomment %}
-  {% comment %} function showRoles(){ {% endcomment %}
-    {% comment %} const Http = new XMLHttpRequest(); {% endcomment %}
-    {% comment %} const url="{% url 'show_roles' club.id %}"; {% endcomment %}
-    {% comment %} Http.open("GET", url); {% endcomment %}
-    {% comment %} Http.onreadystatechange = function () { {% endcomment %}
-        {% comment %} if (this.readyState == 4 && this.status == 200) { {% endcomment %}
-          {% comment %} document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>"; {% endcomment %}
-        {% comment %} } {% endcomment %}
-    {% comment %} } {% endcomment %}
-    {% comment %} Http.send(); {% endcomment %}
-  {% comment %} } {% endcomment %}
-{% comment %}  {% endcomment %}
-  {% comment %} function showTournament(){ {% endcomment %}
-    {% comment %} const Http = new XMLHttpRequest(); {% endcomment %}
-    {% comment %} const url="{% url 'tournament_list' club.id %}"; {% endcomment %}
-    {% comment %} Http.open("GET", url); {% endcomment %}
-    {% comment %} Http.onreadystatechange = function () { {% endcomment %}
-        {% comment %} if (this.readyState == 4 && this.status == 200) { {% endcomment %}
-          {% comment %} document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>"; {% endcomment %}
-        {% comment %} } {% endcomment %}
-    {% comment %} } {% endcomment %}
-    {% comment %} Http.send(); {% endcomment %}
-  {% comment %} } {% endcomment %}
-{% comment %}  {% endcomment %}
-{% comment %} </script> {% endcomment %}
-{% comment %}  {% endcomment %}
-{% comment %}  {% endcomment %}
-
 <div class="card-body">
-
   <div class="container p-0">
     <div class="row m-0">
 
       {% if show_member %}
-          {% include 'partials/side-bar.html' with club=club tournament_id=9999 show_role=show_role show_member=show_member show_applicants=show_applicants show_matches=show_matches %}
+          {% include 'partials/side-bar.html' with club=club show_role=show_role show_member=show_member show_applicants=show_applicants %}
       {% endif %}
-
 
       <div id="membersListDiv" class="col p-0">
         <div id="membersList">
-          {% include 'partials/club_profile.html' %}
+          {% include 'partials/club_profile.html' with number_of_members=number_of_members member_in_club=member_in_club owner_club=owner_club%}
         </div>
       </div>
 
     </div>
   </div>
 </div>
-
 
 {% endblock %}

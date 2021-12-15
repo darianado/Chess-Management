@@ -72,37 +72,26 @@ def show_club(request, club_id):
         club = Club.objects.get(id=club_id)
         user = request.user
         member_in_club = Membership.get_member_role(user,club)
-        owner_club = Membership.objects.filter(club=club).get(role=1)
+        owner_club = Membership.objects.get(club=club, role=1)
         nr_member = Membership.objects.filter(club=club).exclude(role=4).count()
-        show_role = False
-        show_member = False
-        show_matches = False
-        show_applicants = False
-        create_tournament = False
-        if member_in_club==1 :
-            show_role = True
-            show_member = True
-            show_applicants = True
-        elif member_in_club==2 :
-            show_member = True
-            show_applicants = True
-            create_tournament = True
-        elif member_in_club==3 :
-            show_member = True
+        show_role = member_in_club == 1
+        show_applicants = member_in_club in [1, 2]
+        show_member = member_in_club in [1, 2, 3]
 
     except ObjectDoesNotExist:
             return redirect('club_list')
     else:
         return render(request,'show_club.html',
-                {'club': club,
+        {
+                'club': club,
                 'member_in_club': member_in_club,
                 'show_role':show_role,
                 'show_member':show_member,
-                'show_matches':show_matches,
                 'show_applicants':show_applicants,
                 'number_of_members':nr_member,
                 'owner_club' : owner_club,
-                'create_tournament' : create_tournament})
+            }
+        )
 
 @login_required(redirect_field_name="")
 @minimum_role_required(role_required=Role.OFFICER, redirect_location='club_list')
@@ -399,7 +388,6 @@ def table(request):
 
 @login_required(redirect_field_name="")
 def tournament_list(request,club_id):
-    current_user=request.user
     user = request.user
     club = Club.objects.get(id=club_id)
     member = Membership.objects.get(user=user,club=club)
@@ -516,44 +504,27 @@ def show_tournament(request, tournament_id):
         tournament = Tournament.objects.get(id=tournament_id)
         club = tournament.club
         user = request.user
-        member = Membership.objects.get(user=user,club=club)
         organiser = tournament.organiser.user
         participants = tournament.participants.all()
         coorganisers = tournament.coorganisers.all()
         count_participants = tournament.participants.all().count()
-        show_matches = True
-        show_role = False
-        show_applicants = False
-        show_participant = True
-        show_member = True
-        is_organiser = False
-        if user == organiser:
-            is_organiser = True
-        is_coorganiser = False
-        for coorganiser in coorganisers:
-            if user == coorganiser.user:
-                is_coorganiser = True
-        is_participant = False
-        for participant in participants:
-            if user == participant.user:
-                is_participant = True
+        is_organiser = user == organiser
+        is_coorganiser = user in [coorganiser.user for coorganiser in coorganisers]
+        is_participant = user in [participant.user for participant in participants]
     except ObjectDoesNotExist:
             return redirect('club_list')
     return render(request,'show_tournament.html',
-    {'is_participant': is_participant,
-    'tournament': tournament,
-    'organiser': organiser,
-    'coorganisers': coorganisers,
-    'participants': participants,
-    'count_participants': count_participants,
-    'is_organiser': is_organiser,
-    'is_coorganiser': is_coorganiser,
-    "show_matches": show_matches,
-    "show_member": show_member,
-    'show_role':show_role,
-    'show_applicants':show_applicants,
-    'show_participant': show_participant,
-    })
+        {
+            'club': club,
+            'is_participant': is_participant,
+            'tournament': tournament,
+            'organiser': organiser,
+            'coorganisers': coorganisers,
+            'count_participants': count_participants,
+            'is_organiser': is_organiser,
+            'is_coorganiser': is_coorganiser,
+        }
+    )
 
 @login_required(redirect_field_name="")
 def participant_list(request, tournament_id):

@@ -5,21 +5,16 @@
 
 
 <div class="card-body">
-
   <div class="container p-0">
     <div class="row m-0">
 
-      {% if show_member %}
-          {% include 'partials/side-bar.html' with club=tournament.club tournament_id=tournament.id show_role=show_role show_member=show_member show_applicants=show_applicants show_matches=show_matches%}
-      {% endif %}
-
+      {% include 'partials/side-bar.html' with tournament_id=tournament.id club=club %}
 
       <div id="membersListDiv" class="col p-0">
         <div id="membersList">
-          {% include 'tournament_detail.html' with is_participant=is_participant tournament=tournament organiser=organiser is_organiser=is_organiser show_matches=show_matches %}
+          {% include 'tournament_detail.html' with is_participant=is_participant tournament=tournament organiser=organiser is_organiser=is_organiser count_participants=count_participants %}
         </div>
       </div>
-
     </div>
   </div>
 </div>
