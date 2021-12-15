@@ -101,16 +101,16 @@ class TournamentModelTest(TestCase):
         self.tournamentYetti.capacity = 2
         self._assert_tournament_is_valid()
 
-    def test_capacity_can_be_96(self):
-        self.tournamentYetti.capacity = 96
+    def test_capacity_can_be_16(self):
+        self.tournamentYetti.capacity = 16
         self._assert_tournament_is_valid()
 
     def test_capacity_cannot_be_1(self):
         self.tournamentYetti.capacity = 1
         self._assert_tournament_is_invalid()
 
-    def test_capacity_cannot_be_97(self):
-        self.tournamentYetti.capacity = 97
+    def test_capacity_cannot_be_17(self):
+        self.tournamentYetti.capacity = 17
         self._assert_tournament_is_invalid()
 
 

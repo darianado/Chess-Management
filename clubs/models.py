@@ -266,7 +266,7 @@ class Tournament(models.Model):
             default=16,
             validators=[
                 MinValueValidator(2),
-                MaxValueValidator(96)
+                MaxValueValidator(16)
             ]
         )
 
