@@ -195,10 +195,7 @@ def password(request):
     return render(request, 'password.html', {'form': form})
 
 def create_club(request):
-    if request.method =='GET':
-        form = CreateClubForm()
-        return render(request, 'create_club.html', {'form': form})
-    elif request.method == 'POST':
+    if request.method == 'POST':
         if request.user.is_authenticated:
             current_user=request.user
             form = CreateClubForm(request.POST)
@@ -216,6 +213,9 @@ def create_club(request):
         else:
             messages.error(request, "You should log in first")
             return redirect('log_in')
+    else:
+        form = CreateClubForm()
+        return render(request, 'create_club.html', {'form': form})
 
 
 @login_required(redirect_field_name="")

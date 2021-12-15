@@ -1,5 +1,5 @@
 from django.test import TestCase, override_settings
-from clubs.models import User
+from clubs.models import User, CustomUserManager
 from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import SimpleUploadedFile
 
@@ -13,7 +13,7 @@ class UserModelTest(TestCase):
     def setUp(self):
         self.userJohn = User.objects.get(email="johndoe@example.org")
         self.userJane = User.objects.get(email="janedoe@example.org")
-    
+
     def test_valid_user(self):
         self._assert_user_is_valid()
 
@@ -126,7 +126,7 @@ class UserModelTest(TestCase):
 
 
 # personal statement tests
-    
+
     def test_ps_may_be_blank(self):
         self.userJohn.personal_statement = ''
         self._assert_user_is_valid()
