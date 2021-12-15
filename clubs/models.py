@@ -287,7 +287,6 @@ class Tournament(models.Model):
             )
 
     def isRoundFinished(self,tournament, match_round):
-
         matches = Match.objects.filter(match_round=match_round).filter(tournament=tournament)
         for match in matches:
             if match.match_status == 1 or match.match_status==2:
