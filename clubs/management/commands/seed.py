@@ -115,12 +115,12 @@ class Command(BaseCommand):
     def create_participants(self):
         self._create_required_participants()
 
-        participants = Membership.objects.filter(club=self.kerbal).exclude(id=self.tournamentKerbal2.organiser.id)
+        participants = Membership.objects.filter(club=self.kerbal, role__lte=Role.MEMBER).exclude(id=self.tournamentKerbal2.organiser.id)
         participants = participants.difference(self.tournamentKerbal2.coorganisers.all())[:16]
         for participant in participants:
             self._create_participant(self.tournamentKerbal2, participant)
 
-        participants = Membership.objects.filter(club=self.kerbal).exclude(id=self.tournamentKerbal3.organiser.id)
+        participants = Membership.objects.filter(club=self.kerbal, role__lte=Role.MEMBER).exclude(id=self.tournamentKerbal3.organiser.id)
         participants = participants.difference(self.tournamentKerbal3.coorganisers.all())[:16]
         for participant in participants:
             self._create_participant(self.tournamentKerbal3, participant)
