@@ -270,7 +270,8 @@ class Tournament(models.Model):
             ]
         )
 
-    def scheduleMatches(self):
+
+    def scheduleMatches(self, match_round):
         all_active_participants = list(Participant.objects.filter(tournament=self, is_active=True))
         all_active_participants.reverse()
 
@@ -280,24 +281,23 @@ class Tournament(models.Model):
             Match.objects.create(
                 tournament=self,
                 playerA=playerA,
-                playerB=playerB
+                playerB=playerB,
+                match_round=match_round
             )
-    def isRoundPlayed(self, match_round):
+
+    def isRoundFinished(self, match_round):
         matches = Match.objects.filter(match_round=match_round).filter(tournament=self)
         for match in matches:
-            if match.match_status == 1:
+            if match.match_status == 1 or match.match_status==2:
                 return False
         return True
 
-
     def getRoundTournament(self):
         matches = Match.objects.filter(tournament=self)
-        return max(matches.match_round)
+        result_match_round = [match.match_round for match in matches]
+        #check if it is 0 when you call it
+        return max(result_match_round, default = 0)
         
-        
-        
-
-
 
 class Participant(models.Model):
     class Meta:
@@ -342,7 +342,14 @@ class Match(models.Model):
                 MaxValueValidator(4)
             ]
         )
-    match_round = models.IntegerField
+    match_round = models.IntegerField(
+            default=0,
+            validators=[
+                MinValueValidator(0),
+                MaxValueValidator(4)
+            ]
+        )
+
 
     def getMatchStatusString(self):
         if self.match_status == 1:

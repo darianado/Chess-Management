@@ -128,7 +128,7 @@ class Command(BaseCommand):
         print("Participant seeding complete")
 
     def create_matches(self):
-        self.tournamentKerbal3.scheduleMatches()
+        self.tournamentKerbal3.scheduleMatches(1)
         print("Matches seeding complete")
 
     def _create_user(self):

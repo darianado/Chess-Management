@@ -409,10 +409,10 @@ def tournament_list(request,club_id):
     tournaments = Tournament.objects.all().filter(club=club)
     return render(request, "partials/tournaments_list_table.html", {"tournaments": tournaments, "is_officer": is_officer, "club": club})
 
+# TODO check if the matches contain the officer -> they do 
 def matches(request, tournament_id):
     tournament = Tournament.objects.get(id=tournament_id)
     matches = Match.objects.filter(tournament=tournament)
-
     labels = [Status(match.match_status).label for match in matches]
 
     is_organiser, is_coorganiser = False, False
@@ -422,9 +422,12 @@ def matches(request, tournament_id):
         is_coorganiser = True
     can_set_match = is_organiser or is_coorganiser
 
+    match_round = tournament.getRoundTournament()
     return render(request, "partials/matches.html", {"matches": list(zip(matches, labels)), "can_set_match": can_set_match})
+# from nicoles algo for rounds 
+    #  return render(request, "partials/matches.html", {"matches": matches, "match_round" : match_round, "rounds" : range(1,5)})
 
-def checkWinner(request, tournament,matches, match_round):
+def updateActiveParticipants(request, tournament,matches, match_round):
     for match in matches:
         if match.match_status == 4:
             match.playerA.is_active = False
@@ -434,19 +437,17 @@ def checkWinner(request, tournament,matches, match_round):
 def haveDrawn(request,tournament,matches, match_round):
     drawn_round = matches.objects.filter(Q(match_status=2))
     if len(drawnRound) > 0:
-        print("set drawn matches again")
         return False
     else:
         return True
 
-
-def playRounds(request, tournament, match_round):
+def abs(request, tournament, match_round):
     matches = Match.objects.filter(tournament=tournament).filter(match_round=match_round)
-    if tournament.isRoundPlayed(tournament,match_round):
-        if not haveDrawn(tournament, match, match_round):
-            checkWinner(tournament, matches, match_round)
-            scheduleMatches()
-
+    if tournament.isRoundFinished(tournament,match_round):
+        updateActiveParticipants(tournament, matches, match_round)
+        tournament.scheduleMatches(match_round+1)
+    elif not haveDrawn(tournament,matches, match_round):
+        print("set drawn matches again")
 
 
 @login_required(redirect_field_name="")
