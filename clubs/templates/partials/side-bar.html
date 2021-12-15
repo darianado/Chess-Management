@@ -2,7 +2,7 @@
 
 <script>
 
-  
+
    function showClub(){
     const Http = new XMLHttpRequest();
     const url="{% url 'show_club' club.id %}";
@@ -77,6 +77,18 @@
     Http.send();
   }
 
+  function showParticipants(){
+    const Http = new XMLHttpRequest();
+    const url="{% url 'participant_list' tournament_id %}";
+    Http.open("GET", url);
+    Http.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>";
+        }
+    }
+    Http.send();
+  }
+
 </script>
 
 
@@ -90,6 +102,11 @@
   {% if show_matches %}
   <button id="matches" type="button" class="sidebarbutton" onclick="showMatches()">
   <i class="material-icons">emoji_events</i>matches
+  </button>
+  {% endif %}
+  {% if show_participant %}
+  <button id="participant" type="button" class="sidebarbutton" onclick="showParticipants()">
+  <i class="material-icons">groups</i>Participants
   </button>
   {% endif %}
   {% if show_member and show_matches == False %}
@@ -115,4 +132,3 @@
   </button>
   {% endif %}
 </div>
-

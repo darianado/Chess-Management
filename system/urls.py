@@ -52,6 +52,7 @@ urlpatterns = [
 
 
     path('apply_to_tournament/<int:tournament_id>', views.apply_to_tournament, name = 'apply_to_tournament'),
+    path('leave_tournament/<int:tournament_id>', views.leave_tournament, name = 'leave_tournament'),
 
     path('table/', views.table, name="table"),
     path('events/', views.events_list, name="events_list"),
@@ -61,4 +62,5 @@ urlpatterns = [
 
     path('tournament/<int:tournament_id>', views.show_tournament, name="show_tournament"),
     path('club/<int:club_id>/tournament', views.tournament_list, name = 'tournament_list'),
+    path('participant/<int:tournament_id>', views.participant_list, name = 'participant_list'),
 ]

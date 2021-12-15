@@ -465,42 +465,75 @@ def apply_to_tournament(request, tournament_id ):
 
     else:
         print("capacity is full")
- 
+
     return redirect('show_tournament', tournament.id)
 
 @login_required(redirect_field_name="")
-def show_tournament(request, tournament_id):
+def leave_tournament(request, tournament_id ):
     tournament = Tournament.objects.get(id=tournament_id)
     club = tournament.club
     user = request.user
     member = Membership.objects.get(user=user,club=club)
-    organiser = tournament.organiser.user
-    show_matches = True
-    show_role = False
-    show_applicants = False
-    show_member = True
-    #coorganisers = tournament.coorganisers.user
-    #participants = tournament.participants.user
-    # try:
-    #     participant_in_club = Participant.objects.get(member=member,tournament=tournament)
-    # except ObjectDoesNotExist:
-    #     if organiser==user:
-    #         is_organiser = True
-    #     else:
-    #         for coorganiser in tournament.coorganisers:
-    #             if coorganiser==user:
-    is_organiser = False
-    # else:
-    is_participant = False
+    participant = Participant.objects.get(tournament = tournament, member = member)
+    participant.delete()
+    return redirect('show_tournament', tournament.id)
+
+@login_required(redirect_field_name="")
+def show_tournament(request, tournament_id):
+    try:
+        tournament = Tournament.objects.get(id=tournament_id)
+        club = tournament.club
+        user = request.user
+        member = Membership.objects.get(user=user,club=club)
+        organiser = tournament.organiser.user
+        participants = tournament.participants.all()
+        coorganisers = tournament.coorganisers.all()
+        count_participants = tournament.participants.all().count()
+        show_matches = True
+        show_role = False
+        show_applicants = False
+        show_participant = True
+        show_member = True
+        is_organiser = False
+        if user == organiser:
+            is_organiser = True
+        is_coorganiser = False
+        for coorganiser in coorganisers:
+            if user == coorganiser.user:
+                is_coorganiser = True
+        is_participant = False
+        for participant in participants:
+            if user == participant.user:
+                is_participant = True
+    except ObjectDoesNotExist:
+            return redirect('club_list')
     return render(request,'show_tournament.html',
     {'is_participant': is_participant,
     'tournament': tournament,
     'organiser': organiser,
-    #'coorganisers': coorganisers,
+    'coorganisers': coorganisers,
+    'participants': participants,
+    'count_participants': count_participants,
     'is_organiser': is_organiser,
-    "show_matches": show_matches, 
-    "show_member": show_member, 
+    'is_coorganiser': is_coorganiser,
+    "show_matches": show_matches,
+    "show_member": show_member,
     'show_role':show_role,
     'show_applicants':show_applicants,
-    #'participants': participants,
+    'show_participant': show_participant,
+    })
+
+@login_required(redirect_field_name="")
+def participant_list(request, tournament_id):
+    tournament = Tournament.objects.get(id=tournament_id)
+    participants = tournament.participants.all()
+    club = tournament.club
+    user = request.user
+    member = Membership.objects.get(user=user,club=club)
+    is_officer = False
+    if member.role == 2 or member.role == 1:
+        is_officer = True
+    return render(request,"partials/participant_list_table.html",
+    {'is_officer': is_officer,
+    'participants': participants,
     })
