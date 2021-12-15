@@ -318,7 +318,7 @@ def apply_to_club(request, club_id ):
                 club = club,
                 role = 4,
         )
-    messages.success(request, 'You have apply the club.')
+        messages.success(request, 'You have applied the club.')
     return redirect('show_club', club.id)
 
 
@@ -328,8 +328,8 @@ def leave_a_club(request, club_id ):
     user = request.user
     member_in_club = Membership.get_member_role(user,club)
     if request.method == 'GET':
-        messages.success(request,"You have left the club")
         Membership.objects.filter(club_id=club_id).get(user_id=user.id).delete()
+        messages.success(request, 'You have left the club.')
     return redirect('show_club', club.id)
 
 @login_required(redirect_field_name="")
