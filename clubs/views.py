@@ -10,7 +10,7 @@ from django.http import HttpResponseForbidden, request
 from django.contrib.auth.decorators import login_required
 #  from .filters import OrderFilter
 from clubs.helpers import Role
-from clubs.decorators import login_prohibited, minimum_role_required, exact_role_required, another_role_required
+from clubs.decorators import login_prohibited, minimum_role_required
 
 @login_prohibited(redirect_location="dashboard")
 def welcome(request):
@@ -208,7 +208,7 @@ def create_club(request):
                 description = form.cleaned_data.get('description')
                 club = Club.objects.create(club_name=club_name, location=location, description=description)
                 member = Membership.objects.create(club=club, user=current_user, role=1)
-                messages.success(request, "Club created successful!")
+                messages.success(request, "Club created successfully!")
                 return redirect('club_list')
             else:
                 messages.error(request, "The credentials provided were invalid!")
@@ -219,7 +219,7 @@ def create_club(request):
 
 
 @login_required(redirect_field_name="")
-@another_role_required(role_required=Role.OWNER, redirect_location="club_list")
+@minimum_role_required(role_required=Role.OWNER, redirect_location="club_list")
 def officer_promote(request,member_id):
     member = Membership.objects.get(id=member_id)
     c_id = member.club.id
@@ -230,11 +230,11 @@ def officer_promote(request,member_id):
     member.promote()
 
     action = Events.objects.create(club=member.club, user=member.user, action = 4)
-    messages.success(request, "Officer has been promoted successful")
+    messages.success(request, "Officer has been promoted successfully")
     return redirect('show_club', club_id = c_id)
 
 @login_required(redirect_field_name="")
-@another_role_required(role_required=Role.OWNER, redirect_location="club_list")
+@minimum_role_required(role_required=Role.OWNER, redirect_location="club_list")
 def officer_demote(request,member_id):
     member = Membership.objects.get(id=member_id)
     c_id = member.club.id
@@ -242,12 +242,12 @@ def officer_demote(request,member_id):
     member.demote()
 
     action = Events.objects.create(club=member.club, user=member.user, action = 5)
-    messages.success(request, "Officer has been demoted successful")
+    messages.success(request, "Officer has been demoted successfully")
     return redirect('show_club', club_id=c_id)
 
 
 @login_required(redirect_field_name="")
-@another_role_required(role_required=Role.OWNER, redirect_location="club_list")
+@minimum_role_required(role_required=Role.OWNER, redirect_location="club_list")
 def member_promote(request,member_id):
     member = Membership.objects.get(id=member_id)
     c_id = member.club.id
@@ -255,12 +255,12 @@ def member_promote(request,member_id):
     member.promote()
 
     action = Events.objects.create(club=member.club, user=member.user, action = 4)
-    messages.success(request, "Member has been promoted successful")
+    messages.success(request, "Member has been promoted successfully")
     return redirect('show_club', club_id = c_id)
 
 
 @login_required(redirect_field_name="")
-@another_role_required(role_required=Role.OWNER, redirect_location="club_list")
+@minimum_role_required(role_required=Role.OWNER, redirect_location="club_list")
 def member_kick(request,member_id):
     member = Membership.objects.get(id=member_id)
     c_id = member.club.id
@@ -270,12 +270,12 @@ def member_kick(request,member_id):
     member.member_kick()
 
     action = Events.objects.create(club=club, user=user, action = 6)
-    messages.success(request, "Member has been kicked successful")
+    messages.success(request, "Member has been kicked successfully")
     return redirect('show_club', club_id = c_id)
 
 
 @login_required(redirect_field_name="")
-@another_role_required(role_required=Role.OFFICER, redirect_location="club_list")
+@minimum_role_required(role_required=Role.OFFICER, redirect_location="club_list")
 def deny_applicant(request, member_id):
     member = Membership.objects.get(id=member_id)
     c_id = member.club.id
@@ -290,7 +290,7 @@ def deny_applicant(request, member_id):
 
 
 @login_required(redirect_field_name="")
-@another_role_required(role_required=Role.OFFICER, redirect_location="club_list")
+@minimum_role_required(role_required=Role.OFFICER, redirect_location="club_list")
 def accept_applicant(request,member_id):
     member = Membership.objects.get(id=member_id)
     c_id = member.club.id
@@ -318,7 +318,11 @@ def apply_to_club(request, club_id ):
                 club = club,
                 role = 4,
         )
+<<<<<<< HEAD
         messages.success(request, 'You have applied the club.')
+=======
+    messages.success(request, 'You have applied to the club.')
+>>>>>>> main
     return redirect('show_club', club.id)
 
 
