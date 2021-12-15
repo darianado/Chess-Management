@@ -1,16 +1,13 @@
 {% load static %}
 
 <script>
-
-
-   function showClub(){
+   function loadContent(url){
     const Http = new XMLHttpRequest();
-    const url="{% url 'show_club' club.id %}";
     Http.open("GET", url);
     Http.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-          document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>";
-        }
+      if (this.readyState == 4 && this.status == 200) {
+        document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>";
+      }
     }
     Http.send();
   }
@@ -91,16 +88,16 @@
 
 </script>
 
-
-
 <div id="sidebar">
   {% if show_matches or show_member %}
-  <a id="theclub" href="{% url 'show_club' club.id %}">
+  <a href="{% url 'show_club' club.id %}">
+    <button id="theclub">
     <i class="material-icons">home</i>Club
+    </button>
   </a>
   {% endif %}
   {% if show_matches %}
-  <button id="matches" type="button" class="sidebarbutton" onclick="showMatches()">
+  <button id="matches" type="button" class="sidebarbutton" onclick="loadContent('{% url 'matches' tournament_id %}')">
   <i class="material-icons">emoji_events</i>matches
   </button>
   {% endif %}
@@ -110,24 +107,24 @@
   </button>
   {% endif %}
   {% if show_member and show_matches == False %}
-   <button id="members" type="button" class="sidebarbutton" onclick="showMembers()">
+   <button id="members" type="button" class="sidebarbutton" onclick="loadContent('{% url 'show_members' club.id %}')">
   <i class="material-icons">accessibility_new</i>Members
   </button>
   <br>
   {% endif %}
   {% if show_applicants %}
-  <button id="applications" type="button" class="sidebarbutton" onclick="showApplicants()">
+  <button id="applications" type="button" class="sidebarbutton" onclick="loadContent('{% url 'show_applicants' club.id %}')">
   <i class="material-icons">sticky_note_2</i>Applications
   </button>
   <br>
   {% endif %}
   {% if show_role %}
-  <button id="roles" type="button" class="sidebarbutton" onclick="showRoles()">
+  <button id="roles" type="button" class="sidebarbutton" onclick="loadContent('{% url 'show_roles' club.id %}')">
   <i class="material-icons">swap_vert</i>Roles
   </button>
   {% endif %}
   {% if show_member %}
-  <button id="tournament" type="button" class="sidebarbutton" onclick="showTournament()">
+  <button id="tournament" type="button" class="sidebarbutton" onclick="loadContent('{% url 'tournament_list' club.id %}')">
   <i class="material-icons">content_paste</i>Tournaments
   </button>
   {% endif %}

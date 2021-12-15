@@ -9,7 +9,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseForbidden, request
 from django.contrib.auth.decorators import login_required
 #  from .filters import OrderFilter
-from clubs.helpers import Role
+from clubs.helpers import Role, Status
 from clubs.decorators import login_prohibited, minimum_role_required, exact_role_required, another_role_required
 
 @login_prohibited(redirect_location="dashboard")
@@ -252,7 +252,7 @@ def create_club(request):
                 description = form.cleaned_data.get('description')
                 club = Club.objects.create(club_name=club_name, location=location, description=description)
                 member = Membership.objects.create(club=club, user=current_user, role=1)
-                messages.success(request, "Club created successful!")
+                messages.success(request, "Club created successfully!")
                 return redirect('club_list')
             else:
                 messages.error(request, "The credentials provided were invalid!")
@@ -412,38 +412,64 @@ def tournament_list(request,club_id):
 def matches(request, tournament_id):
     tournament = Tournament.objects.get(id=tournament_id)
     matches = Match.objects.filter(tournament=tournament)
-    return render(request, "partials/matches.html", {"matches": matches})
 
-#  def play_match(request, match_id):
-    #  match = Match.objects.get(id=match_id)
-    #  return render(request, "set_match_result.html", {"matches": matches})
+    labels = [Status(match.match_status).label for match in matches]
 
-def set_match_result(request, match_id):
-    try:
-        tournament = Tournament.objects.get(id=match_id.tournament.id)
-        matches = Match.objects.filter(tournament=tournament)
-        # depending on status in helpers.py
-        possible_results = list(range(1,4+1))
-        if request.method == 'GET':
-            print("im here")
-            form = SetMatchResultForm(initial={"match_status": possible_results})
-            return render(request, 'set_match_result.html', {'form': form, "match_id" : match_id})
-        elif request.method == 'POST':
-            if request.user.is_authenticated:
-                form = SetMatchResultForm(request.POST, possible_results)
-                if form.is_valid():
-                    match_status = form.cleaned_data.get('match_status')
-                    match = Tournament.objects.get(id=match_id)
-                    match.match_status.set(match_status)
-                    return redirect('dashboard')
-                else:
-                    return render(request, 'set_match_result.html', {'form': form, "match_id" : match_id})
-            else:
-                return redirect('log_in')
+    is_organiser, is_coorganiser = False, False
+    if request.user == tournament.organiser.user:
+        is_organiser = True
+    if request.user in [x.user for x in tournament.coorganisers.all()]:
+        is_coorganiser = True
+    can_set_match = is_organiser or is_coorganiser
+
+    return render(request, "partials/matches.html", {"matches": list(zip(matches, labels)), "can_set_match": can_set_match})
+
+def checkWinner(request, tournament,matches, match_round):
+    for match in matches:
+        if match.match_status == 4:
+            match.playerA.is_active = False
         else:
-            return HttpResponseForbidden()
-    except:
-            pass
+            match.playerB.is_active = False
+
+def haveDrawn(request,tournament,matches, match_round):
+    drawn_round = matches.objects.filter(Q(match_status=2))
+    if len(drawnRound) > 0:
+        print("set drawn matches again")
+        return False
+    else:
+        return True
+
+
+def playRounds(request, tournament, match_round):
+    matches = Match.objects.filter(tournament=tournament).filter(match_round=match_round)
+    if tournament.isRoundPlayed(tournament,match_round):
+        if not haveDrawn(tournament, match, match_round):
+            checkWinner(tournament, matches, match_round)
+            scheduleMatches()
+
+
+
+@login_required(redirect_field_name="")
+def set_match_result(request, match_id):
+    match = Match.objects.get(id=match_id)
+
+    players = [
+        match.getPlayerA().member.user.get_full_name(),
+        match.getPlayerB().member.user.get_full_name()
+    ]
+
+    if request.method == 'GET':
+        form = SetMatchResultForm(initial={"match_status": match.match_status})
+        return render(request, 'set_match_result.html', {'form': form, "match_id" : match_id, "players": players})
+    elif request.method == 'POST':
+        form = SetMatchResultForm(request.POST, instance=match)
+        if form.is_valid():
+            form.save()
+            return redirect('show_club', club_id=match.tournament.club.id)
+        else:
+            return render(request, 'set_match_result.html', {'form': form, "match_id" : match_id, "players": players})
+    else:
+        return HttpResponseForbidden()
 
 
 @login_required(redirect_field_name="")

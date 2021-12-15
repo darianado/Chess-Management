@@ -6,19 +6,23 @@
             <th scope="col">Player A</th>
             <th scope="col">Player B</th>
             <th scope="col">Status</th>
-            <th scope="col">Set result</th>
+            {% if can_set_match %}
+              <th scope="col">Set result</th>
+            {% endif %}
         </tr>
     </thead>
     <tbody>
-        {% for match in matches %}
+        {% for match, match_status_label in matches %}
             <tr>
               <td>{{match.playerA.member.user.get_full_name}}</td>
               <td>{{match.playerB.member.user.get_full_name}}</td>
-              <td>{{match.match_status}}</td>
+              <td>{{match_status_label}}</td>
               <td>
+              {% if can_set_match %}
                 <form action="{% url 'set_match_result' match.id %}">
                   <input type="submit" class="btn btn-secondary" value="Set"> </input>
                 </form>
+              {% endif %}
               </td>
             </tr>
         {% endfor %}

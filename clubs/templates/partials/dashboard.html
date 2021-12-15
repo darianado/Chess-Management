@@ -8,29 +8,43 @@
 </script>
 
 <div class="card-body">
-  <h3 class="card-title"><b> Hi, {{user.first_name}}</b></h3>
+    <h3 class="card-title"><b> Hi, {{user.first_name}}</b></h3>
 
     <h2> <br></h2>
 
-    <div class="row">
-      <div class = "col-7" align-items-left>
-      {% comment %} <div class ="section-title" > {% endcomment %}
-        <h4>Monthly brainteazer</h4>
-        <p>Do you want a challenge? Try to solve this endgame!</p>
-        <p>Who will win - the white or the black?</p>
-        <h2> <br></h2>
+    <!-- <div class="row"> -->
+      <!-- <div class = "col-7" align-items-left> -->
+      <div style="overflow: auto; margin-left: 5%; margin-right: 5%;">
+        <div style="float: right; ">
+          <img src="{% static '/images/endgame.png' %}" class="mb-2" alt="" id ="endgame" >
+        </div>
+        <div  style="float: left; margin-top: 3%;">
+                  <h4>Monthly brainteazer</h4>
+                <p>Do you want a challenge? <br>Try to solve this endgame!</p>
+                <p>Who will win - the white or the black?</p>
+                <h2> <br></h2>
+                <h4>Events</h4>
+                <div id="my_events"></div>
+        </div>
+        
+      </div>
+      <!-- </div> 
+      <div class = "col-5" align-items-center > -->
+        
+      
+<!-- 
+      <div>
         <h4>Events</h4>
         <div id="my_events"></div>
-       </div> 
-      <div class = "col-5" align-items-center >
-        <img src="{% static '/images/endgame.png' %}" alt="" id ="endgame">
-      </div>
-    </div>
-    <h2> <br></h2>
-    <div class="row" align-items-center>
-      <h4>My Clubs</h4>
+      </div> -->
+      <!-- </div> -->
+    <!-- </div> -->
+
+
+    <!-- <div class="row" align-items-center> -->
+      <h4 class="mt-4">My Clubs</h4>
       <div id="my_clubs"></div>
-    </div>
+    <!-- </div> -->
 </div>
 
    
