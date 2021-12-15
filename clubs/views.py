@@ -446,11 +446,7 @@ def abs(request, tournament, match_round):
     matches = Match.objects.filter(tournament=tournament).filter(match_round=match_round)
     if tournament.isRoundFinished(tournament,match_round):
         updateActiveParticipants(request, tournament, matches, match_round)
-        if (match_round+1) == 4:
-            all_active_participants = list(Participant.objects.filter(tournament=self, is_active=True))
-            print("the winner is " + all_active_participants)
-        else:
-            tournament.scheduleMatches(match_round+1)
+        tournament.scheduleMatches(match_round+1)
     elif not haveDrawn(request,tournament,matches, match_round):
         #TODO add message here
         print("set drawn matches again")
