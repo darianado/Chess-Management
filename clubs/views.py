@@ -9,7 +9,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseForbidden, request
 from django.contrib.auth.decorators import login_required
 #  from .filters import OrderFilter
-from clubs.helpers import Role
+from clubs.helpers import Role, Status
 from clubs.decorators import login_prohibited, minimum_role_required, exact_role_required, another_role_required
 
 @login_prohibited(redirect_location="dashboard")
@@ -412,7 +412,8 @@ def tournament_list(request,club_id):
 def matches(request, tournament_id):
     tournament = Tournament.objects.get(id=tournament_id)
     matches = Match.objects.filter(tournament=tournament)
-    return render(request, "partials/matches.html", {"matches": matches})
+    labels = [Status(match.match_status).label for match in matches]
+    return render(request, "partials/matches.html", {"matches": list(zip(matches, labels))})
 
 def checkWinner(request, tournament,matches, match_round):
     for match in matches:

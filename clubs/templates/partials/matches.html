@@ -10,11 +10,11 @@
         </tr>
     </thead>
     <tbody>
-        {% for match in matches %}
+        {% for match, match_status_label in matches %}
             <tr>
               <td>{{match.playerA.member.user.get_full_name}}</td>
               <td>{{match.playerB.member.user.get_full_name}}</td>
-              <td>{{match.match_status}}</td>
+              <td>{{match_status_label}}</td>
               <td>
                 <form action="{% url 'set_match_result' match.id %}">
                   <input type="submit" class="btn btn-secondary" value="Set"> </input>
