@@ -147,25 +147,6 @@ p.cover-text {
   transition: 0.4s;
 }
 
-#sidebar a {
-  position: absolute;
-  left: -50px;
-  text-align: left;
-  border-radius: 0 5px 5px 0;
-  width: 190px;
-  height: 50px;
-  z-index: 0;
-  transition: 0.4s;
-  background-color: #D7A786;
-  color: black;
-  text-decoration: none;
-  line-height: 50px;
-  border-style: outset;
-  border-width: 2px;
-  border-color: #5d5d66;
-  padding-left: 5px;
-}
-
 #matches {
   top: 100px;
 }
@@ -188,21 +169,8 @@ p.cover-text {
 }
 
 
-#sidebar button:hover, #sidebar a:hover {
+#sidebar button:hover {
   left: -180px;
-}
-
-#mySidebar {
-  height: 100%;
-  width: 8%;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  background: #D7A786;
-  transition: 0.5s;
-  overflow-x: hidden;
-  padding-top: 60px;
-  white-space: nowrap;
 }
 
 #sidebar div {
@@ -216,19 +184,6 @@ p.cover-text {
   font-size: 20px; /* Increase font size */
   color: rgb(185, 18, 163); /* White text color */
   border-radius: 0 5px 5px 0; /* Rounded corners on the top right and bottom right side */
-}
-
-#sidebar div:hover {
-  left: 0; /* On mouse-over, make the elements appear as they should */
-}
-
-#mySidebar a {
-  padding: 4px 4px 4px 20px;
-  text-decoration: none;
-  font-size: 25px;
-  color: #f1f1f1 ;
-  display: block;
-  cursor: pointer;
 }
 
 main .sidebar{

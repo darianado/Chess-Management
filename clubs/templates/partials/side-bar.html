@@ -15,8 +15,10 @@
 
 <div id="sidebar">
   {% if show_matches or show_member %}
-  <a id="theclub" href="{% url 'show_club' club.id %}">
+  <a href="{% url 'show_club' club.id %}">
+    <button id="theclub">
     <i class="material-icons">home</i>Club
+    </button>
   </a>
   {% endif %}
   {% if show_matches %}
