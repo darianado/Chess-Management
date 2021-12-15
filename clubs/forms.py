@@ -119,12 +119,6 @@ class CreateTournamentForm(forms.ModelForm):
         widgets = {"description": forms.Textarea()}
 
 class SetMatchResultForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        if (kwargs.get("initial")):
-            self.fields["match_status"].queryset = kwargs.get("initial")["match_status"]
-
-
     class Meta:
         model = Match
         fields = [ "match_status"]

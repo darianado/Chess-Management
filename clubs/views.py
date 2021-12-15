@@ -439,32 +439,21 @@ def playRounds(request, tournament, match_round):
 
 
 
+@login_required(redirect_field_name="")
 def set_match_result(request, match_id):
-    try:
-        tournament = Tournament.objects.get(id=match_id.tournament.id)
-        matches = Match.objects.filter(tournament=tournament)
-        # depending on status in helpers.py
-        possible_results = list(range(1,4+1))
-        if request.method == 'GET':
-            print("im here")
-            form = SetMatchResultForm(initial={"match_status": possible_results})
-            return render(request, 'set_match_result.html', {'form': form, "match_id" : match_id})
-        elif request.method == 'POST':
-            if request.user.is_authenticated:
-                form = SetMatchResultForm(request.POST, possible_results)
-                if form.is_valid():
-                    match_status = form.cleaned_data.get('match_status')
-                    match = Tournament.objects.get(id=match_id)
-                    match.match_status.set(match_status)
-                    return redirect('dashboard')
-                else:
-                    return render(request, 'set_match_result.html', {'form': form, "match_id" : match_id})
-            else:
-                return redirect('log_in')
+    match = Match.objects.get(id=match_id)
+    if request.method == 'GET':
+        form = SetMatchResultForm(initial={"match_status": match.match_status})
+        return render(request, 'set_match_result.html', {'form': form, "match_id" : match_id})
+    elif request.method == 'POST':
+        form = SetMatchResultForm(request.POST, instance=match)
+        if form.is_valid():
+            form.save()
+            return redirect('show_club', club_id=match.tournament.club.id)
         else:
-            return HttpResponseForbidden()
-    except:
-            pass
+            return render(request, 'set_match_result.html', {'form': form, "match_id" : match_id})
+    else:
+        return HttpResponseForbidden()
 
 
 @login_required(redirect_field_name="")
