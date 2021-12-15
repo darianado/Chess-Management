@@ -188,22 +188,18 @@ def password(request):
     return render(request, 'password.html', {'form': form})
 
 
+@login_required(redirect_field_name="log_in")
 def create_tournament(request, club_id):
     current_user = request.user
     club = Club.objects.get(id=club_id)
     possible_coorganisers = Membership.objects.filter(Q(club=club) & (Q(role=2) | Q(role=1) )).exclude(user=current_user)
-    coo = []
-    for i in possible_coorganisers:
-        coo.append(i.user.first_name)
-    print(coo)
-
 
     if request.method == 'GET':
         form = CreateTournamentForm(initial={"coorganisers": possible_coorganisers})
         return render(request, 'create_tournament.html', {'form': form, "club_id": club.id})
+
     elif request.method == 'POST':
         if request.user.is_authenticated:
-            #  form = CreateTournamentForm(request.POST,coo)
             form = CreateTournamentForm(request.POST,enumerate(possible_coorganisers))
             if form.is_valid():
                 name = form.cleaned_data.get('name')
@@ -211,13 +207,14 @@ def create_tournament(request, club_id):
                 deadline = form.cleaned_data.get('deadline')
                 coorganisers = form.cleaned_data.get('coorganisers')
 
-                #TODO take the checkbox-ed coorganisers and clean them
                 logged_in_users_membership = Membership.objects.get(club=club, user=current_user)
                 coorganisers = form.cleaned_data.get('coorganisers')
                 tournament = Tournament.objects.create(name=name, description=description, deadline=deadline, organiser=logged_in_users_membership, club=club)
                 tournament.coorganisers.set(coorganisers)
                 return redirect('dashboard')
             else:
+                #added this line because it breaks coorganisers and shows every possible one if there is  a mistake in the form
+                form = CreateTournamentForm(initial={"coorganisers": possible_coorganisers})
                 return render(request, 'create_tournament.html', {'form': form, "club_id": club.id })
         else:
             return redirect('log_in')
