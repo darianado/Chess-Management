@@ -409,10 +409,10 @@ def tournament_list(request,club_id):
     tournaments = Tournament.objects.all().filter(club=club)
     return render(request, "partials/tournaments_list_table.html", {"tournaments": tournaments, "is_officer": is_officer, "club": club})
 
+# TODO check if the matches contain the officer -> they do 
 def matches(request, tournament_id):
     tournament = Tournament.objects.get(id=tournament_id)
     matches = Match.objects.filter(tournament=tournament)
-
     labels = [Status(match.match_status).label for match in matches]
 
     is_organiser, is_coorganiser = False, False
@@ -421,32 +421,35 @@ def matches(request, tournament_id):
     if request.user in [x.user for x in tournament.coorganisers.all()]:
         is_coorganiser = True
     can_set_match = is_organiser or is_coorganiser
+    
+    match_round = tournament.getRoundTournament()
+    return render(request, "partials/matches.html", {"matches": list(zip(matches, labels)), "can_set_match": can_set_match, "match_round" : match_round, "rounds" : range(1,5)})
 
-    return render(request, "partials/matches.html", {"matches": list(zip(matches, labels)), "can_set_match": can_set_match})
-
-def checkWinner(request, tournament,matches, match_round):
+def updateActiveParticipants(request, tournament,matches, match_round):
     for match in matches:
         if match.match_status == 4:
             match.playerA.is_active = False
-        else:
+            match.playerA.save()
+        elif match.match_status == 3:
             match.playerB.is_active = False
+            match.playerB.save()
+            
 
 def haveDrawn(request,tournament,matches, match_round):
-    drawn_round = matches.objects.filter(Q(match_status=2))
-    if len(drawnRound) > 0:
-        print("set drawn matches again")
+    drawn_round =  Match.objects.filter(tournament=tournament).filter(match_round=match_round).filter(Q(match_status=2))
+    if len(drawn_round) > 0:
         return False
     else:
         return True
 
-
-def playRounds(request, tournament, match_round):
+def abs(request, tournament, match_round):
     matches = Match.objects.filter(tournament=tournament).filter(match_round=match_round)
-    if tournament.isRoundPlayed(tournament,match_round):
-        if not haveDrawn(tournament, match, match_round):
-            checkWinner(tournament, matches, match_round)
-            scheduleMatches()
-
+    if tournament.isRoundFinished(tournament,match_round):
+        updateActiveParticipants(request, tournament, matches, match_round)
+        tournament.scheduleMatches(match_round+1)
+    elif not haveDrawn(request,tournament,matches, match_round):
+        #TODO add message here
+        print("set drawn matches again")
 
 
 @login_required(redirect_field_name="")
@@ -465,7 +468,10 @@ def set_match_result(request, match_id):
         form = SetMatchResultForm(request.POST, instance=match)
         if form.is_valid():
             form.save()
-            return redirect('show_tournament', tournament_id=match.tournament.id)
+            abs(request, match.tournament, match.match_round)
+            # TODO remore the commented line -> now it returns to the tournament page
+            #  return redirect('show_club', club_id=match.tournament.club.id)
+            return show_tournament(request,match.tournament.id)
         else:
             return render(request, 'set_match_result.html', {'form': form, "match_id" : match_id, "players": players})
     else:
@@ -481,7 +487,6 @@ def apply_to_tournament(request, tournament_id ):
     member_in_club = Membership.get_member_role(user,club)
     if tournament.participants.count() < tournament.capacity:
         if request.method == 'GET':
-            print("baby one more time____participant")
             Participant.objects.create(
                     tournament = tournament,
                     member = member,
@@ -490,6 +495,7 @@ def apply_to_tournament(request, tournament_id ):
             return redirect('show_tournament', tournament.id)
 
     else:
+        # TODO add messages
         print("capacity is full")
 
     return redirect('show_tournament', tournament.id)

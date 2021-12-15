@@ -1,0 +1,264 @@
+diff --git a/clubs/admin.py b/clubs/admin.py
+index 2d54422..cef53ca 100644
+--- a/clubs/admin.py
++++ b/clubs/admin.py
+@@ -52,6 +52,6 @@ class MatchAdmin(admin.ModelAdmin):
+     """Configuration of the admin interface for events"""
+ 
+     list_display = [
+-        'tournament', 'playerA', 'playerB', 'match_status'  
++        'tournament', 'playerA', 'playerB', 'match_status', 'match_round'  
+         ]
+ 
+diff --git a/clubs/management/commands/seed.py b/clubs/management/commands/seed.py
+index 88f2537..66bfcbd 100644
+--- a/clubs/management/commands/seed.py
++++ b/clubs/management/commands/seed.py
+@@ -128,7 +128,7 @@ class Command(BaseCommand):
+         print("Participant seeding complete")
+ 
+     def create_matches(self):
+-        self.tournamentKerbal3.scheduleMatches()
++        self.tournamentKerbal3.scheduleMatches(1)
+         print("Matches seeding complete")
+ 
+     def _create_user(self):
+diff --git a/clubs/models.py b/clubs/models.py
+index 0305b14..653ecdf 100644
+--- a/clubs/models.py
++++ b/clubs/models.py
+@@ -270,7 +270,8 @@ class Tournament(models.Model):
+             ]
+         )
+ 
+-    def scheduleMatches(self):
++
++    def scheduleMatches(self, match_round):
+         all_active_participants = list(Participant.objects.filter(tournament=self, is_active=True))
+         all_active_participants.reverse()
+ 
+@@ -280,24 +281,23 @@ class Tournament(models.Model):
+             Match.objects.create(
+                 tournament=self,
+                 playerA=playerA,
+-                playerB=playerB
++                playerB=playerB,
++                match_round=match_round
+             )
+-    def isRoundPlayed(self, match_round):
++
++    def isRoundFinished(self, match_round):
+         matches = Match.objects.filter(match_round=match_round).filter(tournament=self)
+         for match in matches:
+-            if match.match_status == 1:
++            if match.match_status == 1 or match.match_status==2:
+                 return False
+         return True
+ 
+-
+     def getRoundTournament(self):
+         matches = Match.objects.filter(tournament=self)
+-        return max(matches.match_round)
++        result_match_round = [match.match_round for match in matches]
++        #check if it is 0 when you call it
++        return max(result_match_round, default = 0)
+         
+-        
+-        
+-
+-
+ 
+ class Participant(models.Model):
+     class Meta:
+@@ -342,7 +342,14 @@ class Match(models.Model):
+                 MaxValueValidator(4)
+             ]
+         )
+-    match_round = models.IntegerField
++    match_round = models.IntegerField(
++            default=0,
++            validators=[
++                MinValueValidator(0),
++                MaxValueValidator(4)
++            ]
++        )
++
+ 
+     def getMatchStatusString(self):
+         if self.match_status == 1:
+diff --git a/clubs/templates/partials/matches.html b/clubs/templates/partials/matches.html
+index 6e9361d..780249f 100644
+--- a/clubs/templates/partials/matches.html
++++ b/clubs/templates/partials/matches.html
+@@ -1,31 +1,38 @@
+ <div>
+-  {% if matches|length > 0 %}
+-<table class="table table-hover">
+-    <thead>
+-        <tr>
+-            <th scope="col">Player A</th>
+-            <th scope="col">Player B</th>
+-            <th scope="col">Status</th>
+-            <th scope="col">Set result</th>
+-        </tr>
+-    </thead>
+-    <tbody>
+-        {% for match in matches %}
+-            <tr>
+-              <td>{{match.playerA.member.user.get_full_name}}</td>
+-              <td>{{match.playerB.member.user.get_full_name}}</td>
+-              <td>{{match.match_status}}</td>
+-              <td>
+-                <form action="{% url 'set_match_result' match.id %}">
+-                  <input type="submit" class="btn btn-secondary" value="Set"> </input>
+-                </form>
+-              </td>
+-            </tr>
+-        {% endfor %}
+-    </tbody>
+-</table>
+-</div>
+- {% else %}
++  {% if matches|length > 0 and match_round > 0 %}
++  {% for round in rounds %}
++      <table class="table table-hover">
++          <thead>
++            <h2>Round {{round}}</h2>
++            {% if round <= match_round %}
++              <tr>
++                  <th scope="col">Player A</th>
++                  <th scope="col">Player B</th>
++                  <th scope="col">Status</th>
++                  <th scope="col">Set result</th>
++              </tr>
++          </thead>
++          <tbody>
++              {% for match in matches%}
++                  <tr>
++                    <td>{{match.playerA.member.user.get_full_name}}</td>
++                    <td>{{match.playerB.member.user.get_full_name}}</td>
++                    <td>{{match.match_status}}</td>
++                    <td>
++                      <form action="{% url 'set_match_result' match.id %}">
++                        <input type="submit" class="btn btn-secondary" value="Set"> </input>
++                      </form>
++                    </td>
++                  </tr>
++              {% endfor %}
++            {% else %}
++            <h5 align-items-center>There are no current matches in round {{round}}</h5>
++            <h5 align-items-center>Set results in {{round|add:"-1"}} to see the tournament final result</h5>
++            {% endif %}
++          </tbody>
++      </table>
++  {% endfor %}
++  {% else %}
+       <h5 align-items-center>There are no current matches</h5>
+   {% endif %}
+ </div>
+diff --git a/clubs/tests/models/test_match_model.py b/clubs/tests/models/test_match_model.py
+index 85250ec..5a31161 100644
+--- a/clubs/tests/models/test_match_model.py
++++ b/clubs/tests/models/test_match_model.py
+@@ -41,6 +41,9 @@ class MatchModelTest(TestCase):
+         self.matchOne.match_status = None
+         self._assert_match_is_invalid()
+ 
++    def test_match_round_cannot_be_empty(self):
++        self.matchOne.match_round = None
++        self._assert_match_is_invalid()
+ 
+ 
+     def test_tournament_need_not_be_unique(self):
+@@ -59,6 +62,9 @@ class MatchModelTest(TestCase):
+         self.matchOne.match_status = self.matchTwo.match_status
+         self._assert_match_is_valid()
+ 
++    def test_match_round_need_not_be_unique(self):
++        self.matchOne.match_round = self.matchTwo.match_round
++        self._assert_match_is_valid()
+ 
+ 
+     def test_playerA_and_playerB_cannot_be_the_same(self):
+@@ -77,16 +83,33 @@ class MatchModelTest(TestCase):
+         self.matchOne.match_status = 4
+         self._assert_match_is_valid()
+ 
++    def test_match_round_can_be_1_2_3_4(self):
++        self.matchOne.match_round = 1
++        self._assert_match_is_valid()
++        self.matchOne.match_round = 2
++        self._assert_match_is_valid()
++        self.matchOne.match_round  = 3
++        self._assert_match_is_valid()
++        self.matchOne.match_round = 0
++        self._assert_match_is_valid()
++
+     def test_match_status_cannot_be_0(self):
+         self.matchOne.match_status = 0
+         self._assert_match_is_invalid()
+ 
++    def test_match_round_can_be_0(self):
++        self.matchOne.match_round = 0
++        self._assert_match_is_valid()
++
++    def test_match_round_cannot_be_5(self):
++        self.matchOne.match_round = 5
++        self._assert_match_is_invalid()
++
+     def test_match_status_cannot_be_5(self):
+         self.matchOne.match_status = 5
+         self._assert_match_is_invalid()
+ 
+ 
+-
+     def _assert_match_is_valid(self):
+         try:
+             self.matchOne.full_clean()
+diff --git a/clubs/views.py b/clubs/views.py
+index 5d8954f..e0cedf5 100644
+--- a/clubs/views.py
++++ b/clubs/views.py
+@@ -409,12 +409,14 @@ def tournament_list(request,club_id):
+     tournaments = Tournament.objects.all().filter(club=club)
+     return render(request, "partials/tournaments_list_table.html", {"tournaments": tournaments, "is_officer": is_officer, "club": club})
+ 
++# TODO check if the matches contain the officer -> they do 
+ def matches(request, tournament_id):
+     tournament = Tournament.objects.get(id=tournament_id)
+     matches = Match.objects.filter(tournament=tournament)
+-    return render(request, "partials/matches.html", {"matches": matches})
++    match_round = tournament.getRoundTournament()
++    return render(request, "partials/matches.html", {"matches": matches, "match_round" : match_round, "rounds" : range(1,5)})
+ 
+-def checkWinner(request, tournament,matches, match_round):
++def updateActiveParticipants(request, tournament,matches, match_round):
+     for match in matches:
+         if match.match_status == 4:
+             match.playerA.is_active = False
+@@ -424,19 +426,17 @@ def checkWinner(request, tournament,matches, match_round):
+ def haveDrawn(request,tournament,matches, match_round):
+     drawn_round = matches.objects.filter(Q(match_status=2))
+     if len(drawnRound) > 0:
+-        print("set drawn matches again")
+         return False
+     else:
+         return True
+ 
+-
+-def playRounds(request, tournament, match_round):
++def abs(request, tournament, match_round):
+     matches = Match.objects.filter(tournament=tournament).filter(match_round=match_round)
+-    if tournament.isRoundPlayed(tournament,match_round):
+-        if not haveDrawn(tournament, match, match_round):
+-            checkWinner(tournament, matches, match_round)
+-            scheduleMatches()
+-
++    if tournament.isRoundFinished(tournament,match_round):
++        updateActiveParticipants(tournament, matches, match_round)
++        tournament.scheduleMatches(match_round+1)
++    elif not haveDrawn(tournament,matches, match_round):
++        print("set drawn matches again")
+ 
+ 
+ def set_match_result(request, match_id):

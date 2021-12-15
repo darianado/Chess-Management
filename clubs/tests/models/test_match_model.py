@@ -41,6 +41,9 @@ class MatchModelTest(TestCase):
         self.matchOne.match_status = None
         self._assert_match_is_invalid()
 
+    def test_match_round_cannot_be_empty(self):
+        self.matchOne.match_round = None
+        self._assert_match_is_invalid()
 
 
     def test_tournament_need_not_be_unique(self):
@@ -59,6 +62,9 @@ class MatchModelTest(TestCase):
         self.matchOne.match_status = self.matchTwo.match_status
         self._assert_match_is_valid()
 
+    def test_match_round_need_not_be_unique(self):
+        self.matchOne.match_round = self.matchTwo.match_round
+        self._assert_match_is_valid()
 
 
     def test_playerA_and_playerB_cannot_be_the_same(self):
@@ -77,15 +83,31 @@ class MatchModelTest(TestCase):
         self.matchOne.match_status = 4
         self._assert_match_is_valid()
 
+    def test_match_round_can_be_1_2_3_4(self):
+        self.matchOne.match_round = 1
+        self._assert_match_is_valid()
+        self.matchOne.match_round = 2
+        self._assert_match_is_valid()
+        self.matchOne.match_round  = 3
+        self._assert_match_is_valid()
+        self.matchOne.match_round = 0
+        self._assert_match_is_valid()
+
     def test_match_status_cannot_be_0(self):
         self.matchOne.match_status = 0
+        self._assert_match_is_invalid()
+
+    def test_match_round_can_be_0(self):
+        self.matchOne.match_round = 0
+        self._assert_match_is_valid()
+
+    def test_match_round_cannot_be_5(self):
+        self.matchOne.match_round = 5
         self._assert_match_is_invalid()
 
     def test_match_status_cannot_be_5(self):
         self.matchOne.match_status = 5
         self._assert_match_is_invalid()
-
-
 
     def _assert_match_is_valid(self):
         try:
