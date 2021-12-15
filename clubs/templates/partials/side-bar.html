@@ -11,81 +11,6 @@
     }
     Http.send();
   }
-
-  function showMatches(){
-    const Http = new XMLHttpRequest();
-    const url="{% url 'matches' tournament_id %}";
-    Http.open("GET", url);
-    Http.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-          document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>";
-        }
-    }
-    Http.send();
-  }
-
-
-  function showMembers(){
-    const Http = new XMLHttpRequest();
-    const url="{% url 'show_members' club.id %}";
-    Http.open("GET", url);
-
-    Http.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-          document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>";
-        }
-    }
-    Http.send();
-  }
-
-  function showApplicants(){
-    const Http = new XMLHttpRequest();
-    const url="{% url 'show_applicants' club.id %}";
-    Http.open("GET", url);
-    Http.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-          document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>";
-        }
-    }
-    Http.send();
-  }
-
-  function showRoles(){
-    const Http = new XMLHttpRequest();
-    const url="{% url 'show_roles' club.id %}";
-    Http.open("GET", url);
-    Http.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-          document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>";
-        }
-    }
-    Http.send();
-  }
-
-  function showTournament(){
-    const Http = new XMLHttpRequest();
-    const url="{% url 'tournament_list' club.id %}";
-    Http.open("GET", url);
-    Http.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-          document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>";
-        }
-    }
-    Http.send();
-  }
-
-  function showParticipants(){
-    const Http = new XMLHttpRequest();
-    const url="{% url 'participant_list' tournament_id %}";
-    Http.open("GET", url);
-    Http.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-          document.getElementById('membersList').innerHTML ="<div>"+Http.responseText+"</div>";
-        }
-    }
-    Http.send();
-  }
-
 </script>
 
 <div id="sidebar">
@@ -102,7 +27,7 @@
   </button>
   {% endif %}
   {% if show_participant %}
-  <button id="participant" type="button" class="sidebarbutton" onclick="showParticipants()">
+  <button id="participant" type="button" class="sidebarbutton" onclick="loadContent('{% url 'participant_list' tournament_id %}')">
   <i class="material-icons">groups</i>Participants
   </button>
   {% endif %}
