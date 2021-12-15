@@ -412,8 +412,17 @@ def tournament_list(request,club_id):
 def matches(request, tournament_id):
     tournament = Tournament.objects.get(id=tournament_id)
     matches = Match.objects.filter(tournament=tournament)
+
     labels = [Status(match.match_status).label for match in matches]
-    return render(request, "partials/matches.html", {"matches": list(zip(matches, labels))})
+
+    is_organiser, is_coorganiser = False, False
+    if request.user == tournament.organiser.user:
+        is_organiser = True
+    if request.user in [x.user for x in tournament.coorganisers.all()]:
+        is_coorganiser = True
+    can_set_match = is_organiser or is_coorganiser
+
+    return render(request, "partials/matches.html", {"matches": list(zip(matches, labels)), "can_set_match": can_set_match})
 
 def checkWinner(request, tournament,matches, match_round):
     for match in matches:
