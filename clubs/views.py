@@ -318,11 +318,7 @@ def apply_to_club(request, club_id ):
                 club = club,
                 role = 4,
         )
-<<<<<<< HEAD
         messages.success(request, 'You have applied the club.')
-=======
-    messages.success(request, 'You have applied to the club.')
->>>>>>> main
     return redirect('show_club', club.id)
 
 
