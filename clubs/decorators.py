@@ -15,13 +15,18 @@ def login_prohibited(redirect_location):
 
 def minimum_role_required(role_required, redirect_location):
     def minimum_role_required_redirector(view_function):
-        def wrapper(request, club_id):
+        def wrapper(request, *, club_id=None, member_id=None):
             try:
-                club = Club.objects.get(id=club_id)
+                if member_id is None:
+                    club = Club.objects.get(id=club_id)
+                else:
+                    club = Membership.objects.get(id=member_id).club
+
+                id = club_id or member_id
                 member = Membership.objects.get(user=request.user, club=club)
 
                 if member.role <= role_required:
-                    return view_function(request, club_id)
+                    return view_function(request, id)
                 else:
                     return redirect(redirect_location)
             except ObjectDoesNotExist:
@@ -48,20 +53,3 @@ def exact_role_required(role_required, redirect_location):
         return wrapper
 
     return exact_role_required_redirector
-
-def another_role_required(role_required, redirect_location):
-    def another_role_required_redirector(view_function):
-        def wrapper(request, member_id):
-            try:
-                member = Membership.objects.get(id=member_id)
-                logged_in_member = Membership.objects.get(club=member.club, user=request.user)
-                if logged_in_member.role <= role_required:
-                    return view_function(request, member_id)
-                else:
-                    return redirect(redirect_location)
-            except Membership.DoesNotExist:
-                return redirect(redirect_location)
-
-        return wrapper
-
-    return another_role_required_redirector

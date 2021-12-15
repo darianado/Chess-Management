@@ -10,7 +10,7 @@ from django.http import HttpResponseForbidden, request
 from django.contrib.auth.decorators import login_required
 #  from .filters import OrderFilter
 from clubs.helpers import Role, Status
-from clubs.decorators import login_prohibited, minimum_role_required, exact_role_required, another_role_required
+from clubs.decorators import login_prohibited, minimum_role_required
 
 @login_prohibited(redirect_location="dashboard")
 def welcome(request):
@@ -262,7 +262,7 @@ def create_club(request):
             return redirect('log_in')
 
 @login_required(redirect_field_name="")
-@another_role_required(role_required=Role.OWNER, redirect_location="club_list")
+@minimum_role_required(role_required=Role.OWNER, redirect_location="club_list")
 def officer_promote(request,member_id):
     member = Membership.objects.get(id=member_id)
     c_id = member.club.id
@@ -277,7 +277,7 @@ def officer_promote(request,member_id):
     return redirect('show_club', club_id = c_id)
 
 @login_required(redirect_field_name="")
-@another_role_required(role_required=Role.OWNER, redirect_location="club_list")
+@minimum_role_required(role_required=Role.OWNER, redirect_location="club_list")
 def officer_demote(request,member_id):
     member = Membership.objects.get(id=member_id)
     c_id = member.club.id
@@ -290,7 +290,7 @@ def officer_demote(request,member_id):
 
 
 @login_required(redirect_field_name="")
-@another_role_required(role_required=Role.OWNER, redirect_location="club_list")
+@minimum_role_required(role_required=Role.OWNER, redirect_location="club_list")
 def member_promote(request,member_id):
     member = Membership.objects.get(id=member_id)
     c_id = member.club.id
@@ -303,7 +303,7 @@ def member_promote(request,member_id):
 
 
 @login_required(redirect_field_name="")
-@another_role_required(role_required=Role.OWNER, redirect_location="club_list")
+@minimum_role_required(role_required=Role.OWNER, redirect_location="club_list")
 def member_kick(request,member_id):
     member = Membership.objects.get(id=member_id)
     c_id = member.club.id
@@ -318,7 +318,7 @@ def member_kick(request,member_id):
 
 
 @login_required(redirect_field_name="")
-@another_role_required(role_required=Role.OFFICER, redirect_location="club_list")
+@minimum_role_required(role_required=Role.OFFICER, redirect_location="club_list")
 def deny_applicant(request, member_id):
     member = Membership.objects.get(id=member_id)
     c_id = member.club.id
@@ -333,7 +333,7 @@ def deny_applicant(request, member_id):
 
 
 @login_required(redirect_field_name="")
-@another_role_required(role_required=Role.OFFICER, redirect_location="club_list")
+@minimum_role_required(role_required=Role.OFFICER, redirect_location="club_list")
 def accept_applicant(request,member_id):
     member = Membership.objects.get(id=member_id)
     c_id = member.club.id
