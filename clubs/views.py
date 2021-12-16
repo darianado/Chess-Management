@@ -9,6 +9,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from clubs.helpers import Role, Status
 from clubs.decorators import login_prohibited, minimum_role_required
+from datetime import datetime
+from django.utils import timezone
 
 @login_prohibited(redirect_location="dashboard")
 def welcome(request):
@@ -429,9 +431,8 @@ def set_match_result(request, match_id):
     try:
         match = Match.objects.get(id=match_id)
         tournament = match.tournament
-        coorganisers = [coorganiser.user for coorganiser in tournament.coorganisers.all()]
-        organisers = [tournament.organiser.user]
-        organisers.extend(coorganisers)
+        organisers = [coorganiser.user for coorganiser in tournament.coorganisers.all()]
+        organisers.append(tournament.organiser.user)
         if request.user not in organisers:
             return redirect("show_tournament", tournament.id)
     except ObjectDoesNotExist:
@@ -454,6 +455,27 @@ def set_match_result(request, match_id):
             return redirect('show_tournament', tournament.id)
         else:
             return render(request, 'set_match_result.html', {'form': form, "match_id" : match_id, "players": players})
+
+@login_required(redirect_field_name="")
+def create_initial_matches(request, tournament_id):
+    try:
+        tournament = Tournament.objects.get(id=tournament_id)
+        organisers = [coorganiser.user for coorganiser in tournament.coorganisers.all()]
+        organisers.append(tournament.organiser.user)
+
+        if request.user not in organisers:
+            return redirect("show_tournament", tournament.id)
+    except ObjectDoesNotExist:
+        return redirect("dashboard")
+
+    if tournament.deadline > datetime.now(tz=timezone.utc):
+        return redirect("show_tournament", tournament.id)
+
+    if tournament.participants.count() < 2:
+        messages.error(request, "Tournament didn't reach at least 2 participants before the deadline so it is now deleted")
+        tournament.delete()
+
+    tournament.scheduleMatches(1)
 
 @login_required(redirect_field_name="")
 def apply_to_tournament(request, tournament_id ):
