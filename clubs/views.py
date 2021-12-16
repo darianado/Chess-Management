@@ -431,7 +431,7 @@ def haveDrawn(tournament,matches, match_round):
 def getWinner(tournament, match_round):
     winner = Participant.objects.filter(tournament=tournament, is_active=True)
     # TODO check the maximum matches possible
-    if match_round+1 == 5 and len(winner)==1:
+    if match_round == tournament.getNumberOfRounds() and len(winner)==1:
         return winner[0]
     return None
      
@@ -441,7 +441,7 @@ def abs(request, tournament, match_round):
     if tournament.isRoundFinished(tournament,match_round):
         updateActiveParticipants(tournament, matches, match_round)
         tournament.scheduleMatches(match_round+1)
-    elif not haveDrawn(request,tournament,matches, match_round):
+    elif not haveDrawn(tournament,matches, match_round):
         messages.error(request, "Set drawn matches again")
 
     
