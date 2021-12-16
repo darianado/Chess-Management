@@ -436,7 +436,7 @@ def getWinner(tournament, match_round):
     return None
 
 
-def abs(tournament, match_round):
+def abs(request, tournament, match_round):
     matches = Match.objects.filter(tournament=tournament).filter(match_round=match_round)
     if tournament.isRoundFinished(tournament,match_round):
         updateActiveParticipants(tournament, matches, match_round)
