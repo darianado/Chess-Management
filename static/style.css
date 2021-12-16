@@ -37,7 +37,7 @@ button, input[type="submit"]{
 .events-list { 
   display: block;
   height: 150px;
-  overflow-y: scroll; 
+  overflow-y: auto; 
   overflow-x: auto; 
 }
 
