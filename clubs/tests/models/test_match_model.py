@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
-
+from django.db.utils import IntegrityError
 from clubs.models import Match, Tournament
 
 class MatchModelTest(TestCase):
@@ -67,9 +67,11 @@ class MatchModelTest(TestCase):
         self._assert_match_is_valid()
 
 
+
     def test_playerA_and_playerB_cannot_be_the_same(self):
-        self.matchOne.playerA = self.matchOne.playerB
-        self._assert_match_is_invalid()
+        with self.assertRaises(IntegrityError):
+            self.matchOne.playerA = self.matchOne.playerB
+            self.matchOne.save()
 
 
 
@@ -108,6 +110,7 @@ class MatchModelTest(TestCase):
     def test_match_status_cannot_be_5(self):
         self.matchOne.match_status = 5
         self._assert_match_is_invalid()
+
 
     def _assert_match_is_valid(self):
         try:

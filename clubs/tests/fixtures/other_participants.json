@@ -6,5 +6,109 @@
             "tournament": 1,
             "member": 3
         }
+    },
+    {
+        "model": "clubs.participant",
+        "pk": 4,
+        "fields" :{
+            "tournament": 1,
+            "member": 9
+        }
+    },
+    {
+        "model": "clubs.participant",
+        "pk": 5,
+        "fields" :{
+            "tournament": 1,
+            "member": 10
+        }
+    },
+    {
+        "model": "clubs.participant",
+        "pk": 6,
+        "fields" :{
+            "tournament": 1,
+            "member": 11
+        }
+    },
+    {
+        "model": "clubs.participant",
+        "pk": 7,
+        "fields" :{
+            "tournament": 1,
+            "member": 12
+        }
+    },
+    {
+        "model": "clubs.participant",
+        "pk": 8,
+        "fields" :{
+            "tournament": 1,
+            "member": 13
+        }
+    },
+    {
+        "model": "clubs.participant",
+        "pk": 9,
+        "fields" :{
+            "tournament": 1,
+            "member": 14
+        }
+    },
+    {
+        "model": "clubs.participant",
+        "pk": 10,
+        "fields" :{
+            "tournament": 1,
+            "member": 15
+        }
+    },
+    {
+        "model": "clubs.participant",
+        "pk": 11,
+        "fields" :{
+            "tournament": 1,
+            "member": 16
+        }
+    },
+    {
+        "model": "clubs.participant",
+        "pk": 12,
+        "fields" :{
+            "tournament": 1,
+            "member": 17
+        }
+    },
+    {
+        "model": "clubs.participant",
+        "pk": 13,
+        "fields" :{
+            "tournament": 1,
+            "member": 18
+        }
+    },
+    {
+        "model": "clubs.participant",
+        "pk": 14,
+        "fields" :{
+            "tournament": 1,
+            "member": 19
+        }
+    },
+    {
+        "model": "clubs.participant",
+        "pk": 15,
+        "fields" :{
+            "tournament": 1,
+            "member": 20
+        }
+    },
+    {
+        "model": "clubs.participant",
+        "pk": 16,
+        "fields" :{
+            "tournament": 1,
+            "member": 21
+        }
     }
 ]

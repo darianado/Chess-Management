@@ -1,20 +1,38 @@
-<div class="card border-secondary mb-3" style="max-width: 90rem;">
-{% for tournament in tournaments %}
-  <div class="card-header"> {{tournament.name}}</div>
-      <div class="card-body text-secondary">
+<div class="mb-3" style="max-width: 90rem;">
+{% if tournaments|length > 0 %}
+  {% for tournament in tournaments %}
+    <div class="card-header"> {{tournament.name}}</div>
+        <div class="card-body text-secondary">
 
-        <p><b>Description:</b> {{tournament.description}}<p>
-        <p><b>Deadline: </b>{{tournament.deadline}}<p>
-        <p><b>Capacity:</b>{{tournament.capacity}}</p>
-        <a href="{% url 'show_tournament' tournament.id %}">
-          <button type="button"> More detail </button>
-        </a>
+          <div class="d-flex justify-content-between">
+            <div class="">
+              <p><b>Description:</b> {{tournament.description}}<p>
+              <p><b>Deadline: </b>{{tournament.deadline}}<p>
+              <p><b>Capacity:</b>{{tournament.capacity}}</p>
+            </div>
+            <div class="">
+              <a href="{% url 'show_tournament' tournament.id %}" >
+                <button type="button"> 
+                  More detail 
+                  <i class="bi bi-caret-right"></i>
+                </button>
+              </a>
+            </div>
+          </div>
 
-      </div>
-{% endfor %}
+        </div>
+  {% endfor %}
+{% else %}
+    <h5 align-items-center>There are no current tournaments. </h5>
+{% endif %}
 {% if is_officer %}
-<a href="{% url 'tournament' club.id %}">
-  <button type="button"> Create tournament </button>
-</a>
+<div class="d-flex flex-row-reverse pt-3">
+  <a href="{% url 'tournament' club.id %}">
+    <button type="button"> 
+      <i class="bi bi-patch-plus"></i>
+      Create tournament 
+    </button>
+  </a>
+</div>
 {% endif %}
 </div>

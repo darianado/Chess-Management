@@ -34,5 +34,131 @@
             "user": 6,
             "role": 4
         }
+    },
+    {
+        "model": "clubs.membership",
+        "pk": 8,
+        "fields": {
+            "club": 2,
+            "user": 8,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.membership",
+        "pk": 9,
+        "fields": {
+            "club": 2,
+            "user": 9,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.membership",
+        "pk": 10,
+        "fields": {
+            "club": 2,
+            "user": 10,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.membership",
+        "pk": 11,
+        "fields": {
+            "club": 2,
+            "user": 11,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.membership",
+        "pk": 12,
+        "fields": {
+            "club": 2,
+            "user": 12,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.membership",
+        "pk": 13,
+        "fields": {
+            "club": 2,
+            "user": 13,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.membership",
+        "pk": 14,
+        "fields": {
+            "club": 2,
+            "user": 14,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.membership",
+        "pk": 15,
+        "fields": {
+            "club": 2,
+            "user": 15,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.membership",
+        "pk": 16,
+        "fields": {
+            "club": 2,
+            "user": 16,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.membership",
+        "pk": 17,
+        "fields": {
+            "club": 2,
+            "user": 17,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.membership",
+        "pk": 18,
+        "fields": {
+            "club": 2,
+            "user": 18,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.membership",
+        "pk": 19,
+        "fields": {
+            "club": 2,
+            "user": 19,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.membership",
+        "pk": 20,
+        "fields": {
+            "club": 2,
+            "user": 20,
+            "role": 3
+        }
+    },
+    {
+        "model": "clubs.membership",
+        "pk": 21,
+        "fields": {
+            "club": 2,
+            "user": 21,
+            "role": 3
+        }
     }
 ]

@@ -266,7 +266,7 @@ class Tournament(models.Model):
             default=16,
             validators=[
                 MinValueValidator(2),
-                MaxValueValidator(96)
+                MaxValueValidator(16)
             ]
         )
 
@@ -287,7 +287,6 @@ class Tournament(models.Model):
             )
 
     def isRoundFinished(self,tournament, match_round):
-
         matches = Match.objects.filter(match_round=match_round).filter(tournament=tournament)
         for match in matches:
             if match.match_status == 1 or match.match_status==2:
@@ -304,6 +303,11 @@ class Tournament(models.Model):
 class Participant(models.Model):
     class Meta:
         ordering=["-score"]
+        constraints=[
+            models.UniqueConstraint(fields=["tournament", "member"], name="Participant of a tournament only once"),
+            # models.UniqueConstraint(fields=["member"], condition=Q(club__id=tournament__club__id), name="Member of the club of the tournament"),
+            models.CheckConstraint(check=Q( tournament__club__id=models.F("member__club__id") ), name='Member of the club of the tournament')
+        ]
 
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
 
@@ -327,7 +331,10 @@ class Participant(models.Model):
 class Match(models.Model):
     class Meta:
         constraints = [
-            models.CheckConstraint(check=~Q(playerA=models.F("playerB")), name='players_diff')
+            models.CheckConstraint(
+                check=~Q(playerA=models.F("playerB")),
+                name='players_diff'
+            )
         ]
 
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
