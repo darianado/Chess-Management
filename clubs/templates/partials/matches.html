@@ -53,6 +53,13 @@
 
       {% endif %}
   {% else %}
+  {% if is_before_deadline %}
       <h5 align-items-center>There are no current matches</h5>
+  {% else %}
+      <form onsubmit="return confirm('You are about to schedule the matches of ' + '{{matches[0].tournament}}' +'!');;"
+          action="{% url 'apply_to_tournament' tournament.id %}">
+          <input type="submit" class="btn btn-secondary" value="Attend"> </input>
+      </form>
+
   {% endif %}
 </div>

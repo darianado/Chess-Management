@@ -22,14 +22,14 @@
           <h2 class="animate__animated animate__fadeInDown">Play in</h2>
           <h2 class="animate__animated animate__fadeInDown"><span>{{tournament.name}}</span></h2>
            <div>
-              {% if not is_participant and not is_organiser and not is_coorganiser %}
+              {% if not is_participant and not is_organiser and not is_coorganiser and is_before_deadline%}
                 <form onsubmit="return confirm('You are about to attend the ' + '{{tournament.name}}' +'!');;"
                   action="{% url 'apply_to_tournament' tournament.id %}">
                   <input type="submit" class="btn btn-secondary" value="Attend"> </input>
                 </form>
               {% endif %}
 
-              {% if is_participant %}
+              {% if is_participant and is_before_deadline %}
               <form onsubmit="return confirm('You are about to leave the ' + '{{tournament.name}}' +'!');;"
                 action="{% url 'leave_tournament' tournament.id %}">
                 <input type="submit" class="btn btn-secondary" value="Leave"> </input>

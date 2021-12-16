@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 from clubs.helpers import Role, Status
 from clubs.decorators import login_prohibited, minimum_role_required
 from datetime import datetime, time, timedelta
+from django.utils import timezone
 
 @login_prohibited(redirect_location="dashboard")
 def welcome(request):
@@ -366,7 +367,6 @@ def leave_a_club(request, club_id ):
 def table(request):
     user = request.user
     user_id = user.id
-    #  myFilter = OrderFilter()
     filtered_clubs = []
     filtered_clubs = [member.club for member in Membership.objects.filter(Q(user=user) )]
     list_data = []
@@ -380,7 +380,6 @@ def table(request):
             "table.html",
             {
                 "list_data": list_data,
-                #  "myFilter" : myFilter,
             }
         )
 
@@ -445,6 +444,7 @@ def abs(request, tournament, match_round):
     elif not haveDrawn(request,tournament,matches, match_round):
         messages.error(request, "Set drawn matches again")
 
+    
 
 @login_required
 def set_match_result(request, match_id):
@@ -526,6 +526,10 @@ def show_tournament(request, tournament_id):
         is_participant = user in [participant.user for participant in participants]
         on_matches = request.session.get("on_matches")
         request.session["on_matches"] = False
+
+        is_before_deadline = datetime.now(tz=timezone.utc) < tournament.deadline
+            
+
     except ObjectDoesNotExist:
             return redirect('club_list')
     return render(request,'show_tournament.html',
@@ -538,7 +542,8 @@ def show_tournament(request, tournament_id):
             'count_participants': count_participants,
             'is_organiser': is_organiser,
             'is_coorganiser': is_coorganiser,
-            'on_matches': on_matches
+            'on_matches': on_matches,
+            'is_before_deadline': is_before_deadline
         }
     )
 
