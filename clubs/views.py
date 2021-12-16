@@ -232,7 +232,6 @@ def create_club(request):
             messages.success(request, "Club created successfully!")
             return redirect('club_list')
         else:
-            messages.error(request, "The credentials provided were invalid!")
             return render(request, 'create_club.html', {'form': form})
     else:
         form = CreateClubForm()

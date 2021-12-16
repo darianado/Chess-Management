@@ -56,7 +56,7 @@ class CreateClubTest(TestCase):
         self.assertEqual(club_count_after, club_count_before)
         self.assertTemplateUsed(response, 'create_club.html')
         messages_list = list(response.context["messages"])
-        self.assertEqual(len(messages_list), 1)
+        self.assertEqual(len(messages_list), 0)
 
     def test_unsuccessful_create_club_with_blank_location(self):
         self.client.login(email='johndoe@example.org', password='Password123')

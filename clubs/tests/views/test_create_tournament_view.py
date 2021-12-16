@@ -67,7 +67,7 @@ class CreateTournamentViewTestTestCase(TestCase):
         self.assertEqual(Tournament_count_after, Tournament_count_before)
         self.assertTemplateUsed(response, 'create_tournament.html')
         messages_list = list(response.context["messages"])
-        self.assertEqual(len(messages_list), 1)
+        self.assertEqual(len(messages_list), 0)
 
     def test_unsuccessful_create_tounament_with_blank_deadline(self):
         self.client.login(email=self.user.email, password='Password123')
