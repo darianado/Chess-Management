@@ -293,6 +293,11 @@ class Tournament(models.Model):
                 return False
         return True
 
+    def getNumberOfRounds(self):
+        pass
+
+
+    """Get the current maximum round in the particular tournament """
     def getRoundTournament(self):
         matches = Match.objects.filter(tournament=self)
         result_match_round = [match.match_round for match in matches]
