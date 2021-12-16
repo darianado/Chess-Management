@@ -6,6 +6,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models.fields.json import JSONField
+from math import ceil, log 
 
 from libgravatar import Gravatar
 from clubs.helpers import Role, Status
@@ -245,7 +246,7 @@ class Tournament(models.Model):
     description = models.CharField(
             unique=False,
             max_length=260,
-            blank=True
+            blank=False
     )
 
     deadline = models.DateTimeField(
@@ -255,7 +256,7 @@ class Tournament(models.Model):
 
     organiser = models.ForeignKey(Membership, on_delete=models.CASCADE, related_name="organiser")
 
-    coorganisers = models.ManyToManyField(Membership)
+    coorganisers = models.ManyToManyField(Membership, blank=True)
 
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
 
@@ -293,7 +294,14 @@ class Tournament(models.Model):
                 return False
         return True
 
+    def getNumberOfRounds(self):
+        number_participants = Participant.objects.filter(tournament=self).count()
+        if number_participants > 0:
+            return ceil(log(number_participants,2))
+        return 0
+
     def getRoundTournament(self):
+        """Get the current maximum round in the particular tournament """
         matches = Match.objects.filter(tournament=self)
         result_match_round = [match.match_round for match in matches]
         #check if it is 0 when you call it
@@ -302,7 +310,6 @@ class Tournament(models.Model):
 
 class Participant(models.Model):
     class Meta:
-        ordering=["-score"]
         constraints=[
             models.UniqueConstraint(fields=["tournament", "member"], name="Participant of a tournament only once"),
         ]
@@ -310,15 +317,6 @@ class Participant(models.Model):
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
 
     member = models.ForeignKey(Membership, on_delete=models.CASCADE)
-
-    score = models.FloatField(
-        unique=False,
-        blank=False,
-        default=0,
-        validators=[
-            MinValueValidator(0)
-        ]
-    )
 
     is_active = models.BooleanField(
         unique=False,

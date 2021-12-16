@@ -27,9 +27,6 @@ class TournamentModelTest(TestCase):
 
     def setUp(self):
         self.tournamentYetti = Tournament.objects.get(name="Yetti")
-        # self.partiJane = Participant.objects.get(id=2)
-        # self.partiJohn = Participant.objects.get(id=1)
-        # self.part
         self.tournamentAlaska = Tournament.objects.get(name="Alaska")
 
     def test_name_cannot_be_empty(self):
@@ -64,9 +61,9 @@ class TournamentModelTest(TestCase):
         self.tournamentYetti.capacity = None
         self._assert_tournament_is_invalid()
 
-    def test_description_can_be_empty(self):
+    def test_description_can_not_be_empty(self):
         self.tournamentYetti.description = None
-        self._assert_tournament_is_valid()
+        self._assert_tournament_is_invalid()
 
     def test_description_may_contain_260_characters(self):
         self.tournamentYetti.description = "a" * 260
@@ -124,6 +121,19 @@ class TournamentModelTest(TestCase):
         self.tournamentYetti.capacity = 17
         self._assert_tournament_is_invalid()
 
+
+
+    def test_get_round_number_returns_correctly(self):
+        number_rounds = self.tournamentYetti.getNumberOfRounds()
+        self.assertEqual(number_rounds, 1)
+
+    def test_get_round_number_returns_incorrectly(self):
+        number_rounds = self.tournamentYetti.getNumberOfRounds()
+        self.assertNotEqual(number_rounds, 9000000)
+
+    def test_get_round_number_returns_0(self):
+        number_rounds = self.tournamentAlaska.getNumberOfRounds()
+        self.assertEqual(number_rounds,0)
     
 
     def test_schedule_matches(self):
@@ -132,7 +142,6 @@ class TournamentModelTest(TestCase):
 
     def test_round_not_finish(self):
         Tournament.scheduleMatches(self.tournamentYetti,1)
-        # Match.objects.get(id=1).match_status=2
         self.assertEqual(Tournament.isRoundFinished(self.tournamentYetti,self.tournamentYetti,1), False)
 
     def test_round_finish(self):
@@ -151,3 +160,4 @@ class TournamentModelTest(TestCase):
     def _assert_tournament_is_invalid(self):
         with self.assertRaises(ValidationError):
             self.tournamentYetti.full_clean()
+

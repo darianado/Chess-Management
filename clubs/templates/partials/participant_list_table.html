@@ -1,28 +1,33 @@
 <div>
-<table class="table table-striped">
-  <thead>
+{% if participants|length > 0  %}
+  <table class="table table-striped">
+    <thead>
+          <tr>
+              <th scope="col">Profile Picture</th>
+              <th scope="col">Full Name</th>
+              <th scope="col">Bio</th>
+              {% if is_officer %}
+              <th scope="col">More detail</th>
+              {% endif %}
+          </tr>
+      </thead>
+      <tbody>
+          {% for participant in participants %}
         <tr>
-            <th scope="col">Profile Picture</th>
-            <th scope="col">Full Name</th>
-            <th scope="col">Bio</th>
-            {% if is_officer %}
-            <th scope="col">More detail</th>
-            {% endif %}
+        <th scope="row"> <img src="{{ participant.user.mini_gravatar }}"> </th>
+        <td> <p>{{ participant.user.get_full_name }}</p> </td>
+        <td> <p>{{ participant.user.bio }}</p> </td>
+        {% if is_officer %}
+        <td>
+          <a href="{% url 'show_user' user.id %}">More detail</a>
+        </td>
+        {% endif %}
         </tr>
-    </thead>
-    <tbody>
-        {% for participant in participants %}
-      <tr>
-      <th scope="row"> <img src="{{ participant.user.mini_gravatar }}"> </th>
-      <td> <p>{{ participant.user.get_full_name }}</p> </td>
-      <td> <p>{{ participant.user.bio }}</p> </td>
-      {% if is_officer %}
-      <td>
-        <a href="{% url 'show_user' user.id %}">More detail</a>
-      </td>
-      {% endif %}
-      </tr>
-        {% endfor %}
-    </tbody>
-</table>
+          {% endfor %}
+      </tbody>
+  </table>
+{% else %}
+    <h5 align-items-center>There are no participants in the tournament.</h5>
+{% endif %}
+
 </div>

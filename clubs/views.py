@@ -9,6 +9,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from clubs.helpers import Role, Status
 from clubs.decorators import login_prohibited, minimum_role_required
+from datetime import datetime
+from django.utils import timezone
 
 
 @login_prohibited(redirect_location="dashboard")
@@ -407,7 +409,8 @@ def matches(request, tournament_id):
         "matches": list(zip(matches, labels)),
         "can_set_match": can_set_match,
         "match_round": match_round,
-        "rounds" : range(1,5),
+        "max_rounds" : tournament.getNumberOfRounds(),
+        "rounds" : range(1,tournament.getNumberOfRounds()+1),
         "winner" : winner
         }
     )
@@ -430,7 +433,7 @@ def haveDrawn(tournament, match_round):
 def getWinner(tournament, match_round):
     winner = Participant.objects.filter(tournament=tournament, is_active=True)
     # TODO check the maximum matches possible
-    if match_round+1 == 5 and len(winner)==1:
+    if match_round == tournament.getNumberOfRounds() and len(winner)==1:
         return winner[0]
     return None
 
@@ -449,9 +452,8 @@ def set_match_result(request, match_id):
     try:
         match = Match.objects.get(id=match_id)
         tournament = match.tournament
-        coorganisers = [coorganiser.user for coorganiser in tournament.coorganisers.all()]
-        organisers = [tournament.organiser.user]
-        organisers.extend(coorganisers)
+        organisers = [coorganiser.user for coorganiser in tournament.coorganisers.all()]
+        organisers.append(tournament.organiser.user)
         if request.user not in organisers:
             return redirect("show_tournament", tournament.id)
     except ObjectDoesNotExist:
@@ -476,23 +478,55 @@ def set_match_result(request, match_id):
             return render(request, 'set_match_result.html', {'form': form, "match_id" : match_id, "players": players})
 
 @login_required(redirect_field_name="")
+def create_initial_matches(request, tournament_id):
+    try:
+        tournament = Tournament.objects.get(id=tournament_id)
+        organisers = [coorganiser.user for coorganiser in tournament.coorganisers.all()]
+        organisers.append(tournament.organiser.user)
+
+        if request.user not in organisers:
+            return redirect("show_tournament", tournament.id)
+    except ObjectDoesNotExist:
+        return redirect("dashboard")
+
+    if tournament.deadline > datetime.now(tz=timezone.utc):
+        return redirect("show_tournament", tournament.id)
+
+    if tournament.participants.count() < 2:
+        messages.error(request, "Tournament didn't reach at least 2 participants before the deadline so it is now deleted")
+        club = tournament.club
+        tournament.delete()
+        return redirect("show_club", club.id)
+
+    if Match.objects.filter(tournament=tournament).exists():
+        return redirect("show_tournament", tournament.id)
+
+    tournament.scheduleMatches(1)
+    request.session["on_matches"] = True
+    return redirect('show_tournament', tournament.id)
+
+@login_required(redirect_field_name="")
 def apply_to_tournament(request, tournament_id ):
     '''Function for the user to apply the tournament.'''
     tournament = Tournament.objects.get(id=tournament_id)
     club = tournament.club
     user = request.user
     member = Membership.objects.get(user=user,club=club)
-    if tournament.participants.count() < tournament.capacity:
-        if request.method == 'GET':
-            Participant.objects.create(
-                    tournament = tournament,
-                    member = member,
-            )
-        else:
-            return redirect('show_tournament', tournament.id)
+    member_in_club = Membership.get_member_role(user,club)
+    if datetime.now(tz=timezone.utc) < tournament.deadline:
+        if tournament.participants.count() < tournament.capacity:
+            if request.method == 'GET':
+                Participant.objects.create(
+                        tournament = tournament,
+                        member = member,
+                )
+            else:
+                return redirect('show_tournament', tournament.id)
 
+        else:
+            messages.error(request, "Sorry! The capacity for this tournament reached its limit.")
     else:
-        messages.error(request, "Sorry! The capacity for this tournament reached its limit.")
+        messages.error(request, "Sorry! The deadline has passed")
 
     return redirect('show_tournament', tournament.id)
 
@@ -523,6 +557,10 @@ def show_tournament(request, tournament_id):
         is_participant = user in [participant.user for participant in participants]
         on_matches = request.session.get("on_matches")
         request.session["on_matches"] = False
+
+        is_before_deadline = datetime.now(tz=timezone.utc) < tournament.deadline
+            
+
     except ObjectDoesNotExist:
             return redirect('club_list')
     return render(request,'show_tournament.html',
@@ -535,7 +573,8 @@ def show_tournament(request, tournament_id):
             'count_participants': count_participants,
             'is_organiser': is_organiser,
             'is_coorganiser': is_coorganiser,
-            'on_matches': on_matches
+            'on_matches': on_matches,
+            'is_before_deadline': is_before_deadline
         }
     )
 
