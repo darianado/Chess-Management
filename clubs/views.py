@@ -423,10 +423,7 @@ def updateActiveParticipants(tournament,matches, match_round):
 
 def haveDrawn(tournament,matches, match_round):
     drawn_round =  Match.objects.filter(tournament=tournament).filter(match_round=match_round).filter(Q(match_status=2))
-    if len(drawn_round) > 0:
-        return False
-    else:
-        return True
+    return len(drawn_round) > 0
 
 def getWinner(tournament, match_round):
     winner = Participant.objects.filter(tournament=tournament, is_active=True)
@@ -441,7 +438,7 @@ def abs(request, tournament, match_round):
     if tournament.isRoundFinished(tournament,match_round):
         updateActiveParticipants(tournament, matches, match_round)
         tournament.scheduleMatches(match_round+1)
-    elif not haveDrawn(tournament,matches, match_round):
+    elif haveDrawn(tournament,matches, match_round):
         messages.error(request, "Set drawn matches again")
         #  print("set drawn matches again")
 
