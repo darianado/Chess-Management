@@ -224,10 +224,7 @@ def create_tournament(request, club_id):
 
 
 def create_club(request):
-    if request.method =='GET':
-        form = CreateClubForm()
-        return render(request, 'create_club.html', {'form': form})
-    elif request.method == 'POST':
+    if request.method == 'POST':
         if request.user.is_authenticated:
             current_user=request.user
             form = CreateClubForm(request.POST)
@@ -245,6 +242,9 @@ def create_club(request):
         else:
             messages.error(request, "You should log in first")
             return redirect('log_in')
+    else:
+        form = CreateClubForm()
+        return render(request, 'create_club.html', {'form': form})
 
 @login_required(redirect_field_name="")
 @minimum_role_required(role_required=Role.OWNER, redirect_location="club_list")
@@ -346,7 +346,7 @@ def apply_to_club(request, club_id ):
                 club = club,
                 role = 4,
         )
-    messages.success(request, 'You have applied to the club.')
+        messages.success(request, 'You have applied the club.')
     return redirect('show_club', club.id)
 
 
@@ -356,8 +356,8 @@ def leave_a_club(request, club_id ):
     user = request.user
     member_in_club = Membership.get_member_role(user,club)
     if request.method == 'GET':
-        messages.success(request,"You have left the club")
         Membership.objects.filter(club_id=club_id).get(user_id=user.id).delete()
+        messages.success(request, 'You have left the club.')
     return redirect('show_club', club.id)
 
 @login_required(redirect_field_name="")

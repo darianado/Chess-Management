@@ -10,11 +10,14 @@ class ShowMemberListTest(TestCase):
         "clubs/tests/fixtures/default_user_jane.json",
         "clubs/tests/fixtures/default_club_hame.json",
         "clubs/tests/fixtures/default_membership_john_hame.json",
+        "clubs/tests/fixtures/other_users.json",
+        "clubs/tests/fixtures/other_memberships.json",
     ]
 
     def setUp(self):
         self.userJohn = User.objects.get(email="johndoe@example.org")
         self.userJane = User.objects.get(email="janedoe@example.org")
+        self.userGreta = User.objects.get(email="greatdoe@example.org")
         self.clubHame = Club.objects.get(club_name="Hame Chess Club")
 
         self.urlHame = reverse('show_members', kwargs={'club_id': self.clubHame.id})
@@ -40,3 +43,13 @@ class ShowMemberListTest(TestCase):
         self.assertTemplateUsed(response, "partials/members_list_table.html")
         self.assertContains(response, self.userJohn.get_full_name())
         self.assertNotContains(response, self.userJane.get_full_name())
+        self.assertContains(response, self.userGreta.get_full_name())
+
+    def test_get_club_Hame_members_when_logged_in_as_an_officer(self):
+        self.client.login(email=self.userGreta.email, password="Password123")
+        response = self.client.get(self.urlHame)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "partials/members_list_table.html")
+        self.assertContains(response, self.userJohn.get_full_name())
+        self.assertNotContains(response, self.userJane.get_full_name())
+        self.assertContains(response, self.userGreta.get_full_name())

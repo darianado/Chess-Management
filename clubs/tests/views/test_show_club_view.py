@@ -19,6 +19,7 @@ class ShowClubTest(TestCase):
         self.user = User.objects.get(email='janedoe@example.org') #owner
         self.userCharlie = User.objects.get(email='charliedoe@example.org') #owner
         self.userVictor = User.objects.get(email='victordoe@example.org') #owner
+        self.userMiki = User.objects.get(email='mikidoe@example.org') #member
         self.clubHame = Club.objects.get(club_name="Hame Chess Club")
         self.clubHamersmith = Club.objects.get(club_name="Hamersmith Chess Club")
 
@@ -46,7 +47,7 @@ class ShowClubTest(TestCase):
         response_url = reverse('club_list')
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
         self.assertTemplateUsed(response, 'club_list.html')
-        
+
 
     def test_correct_owner_information_shown(self):
         self.client.login(email=self.user.email, password="Password123")
@@ -64,4 +65,9 @@ class ShowClubTest(TestCase):
         self.client.login(email=self.userVictor.email, password="Password123")
         response = self.client.get(self.urlHame)
 
-
+    def test_get_show_club_with_valid_id_when_user_is_member(self):
+        self.client.login(email=self.userMiki.email, password='Password123')
+        response = self.client.get(self.urlHame)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'show_club.html')
+        self.assertContains(response, "Hame Chess Club")

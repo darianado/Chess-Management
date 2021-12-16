@@ -2,6 +2,7 @@ from django.test import TestCase
 from clubs.models import Club, Membership, User, Events
 from django.core.exceptions import ValidationError
 from django.db.utils import IntegrityError
+from django.db import transaction
 
 class EventsModelTest(TestCase):
 
@@ -60,3 +61,52 @@ class EventsModelTest(TestCase):
     def _assert_event_is_invalid(self):
         with self.assertRaises(ValidationError):
             self.event.full_clean()
+
+    def test_action_string_is_accepted_and_colour_is_green_when_action_is_1(self):
+        self.event.action = 1
+        string = self.event.getActionString()
+        colour = self.event.getActionColour()
+        self.assertEqual(string, "Accepted")
+        self.assertEqual(colour, "green")
+
+    def test_action_string_is_applied_and_colour_is_yellow_when_action_is_2(self):
+        self.event.action = 2
+        string = self.event.getActionString()
+        colour = self.event.getActionColour()
+        self.assertEqual(string, "Applied")
+        self.assertEqual(colour, "yellow")
+
+    def test_action_string_is_rejected_and_colour_is_red_when_action_is_3(self):
+        self.event.action = 3
+        string = self.event.getActionString()
+        colour = self.event.getActionColour()
+        self.assertEqual(string, "Rejected")
+        self.assertEqual(colour, "red")
+
+    def test_action_string_is_promoted_and_colour_is_green_when_action_is_4(self):
+        self.event.action = 4
+        string = self.event.getActionString()
+        colour = self.event.getActionColour()
+        self.assertEqual(string, "Promoted")
+        self.assertEqual(colour, "green")
+
+    def test_action_string_is_demoted_and_colour_is_red_when_action_is_5(self):
+        self.event.action = 5
+        string = self.event.getActionString()
+        colour = self.event.getActionColour()
+        self.assertEqual(string, "Demoted")
+        self.assertEqual(colour, "red")
+
+    def test_action_string_is_kicked_and_colour_is_red_when_action_is_6(self):
+        self.event.action = 6
+        string = self.event.getActionString()
+        colour = self.event.getActionColour()
+        self.assertEqual(string, "Kicked")
+        self.assertEqual(colour, "red")
+
+    def test_action_string_is_none_and_colour_is_none_when_action_is_7(self):
+        self.event.action = 7
+        string = self.event.getActionString()
+        colour = self.event.getActionColour()
+        self.assertEqual(string, None)
+        self.assertEqual(colour, None)

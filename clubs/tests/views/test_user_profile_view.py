@@ -7,7 +7,7 @@ class UserProfileViewTestCase(TestCase):
 
     fixtures = [
         "clubs/tests/fixtures/default_user_john.json",
-        "clubs/tests/fixtures/default_user_jane.json"
+        "clubs/tests/fixtures/default_user_jane.json",
     ]
 
     def setUp(self):
