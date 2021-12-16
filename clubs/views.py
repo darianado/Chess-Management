@@ -466,7 +466,7 @@ def set_match_result(request, match_id):
             abs(request, match.tournament, match.match_round)
             # TODO remore the commented line -> now it returns to the tournament page
             #  return redirect('show_club', club_id=match.tournament.club.id)
-            return show_tournament(request,match.tournament.id)
+            return show_tournament(request,match.tournament.id,on_matches=True)
         else:
             return render(request, 'set_match_result.html', {'form': form, "match_id" : match_id, "players": players})
     else:
@@ -506,7 +506,7 @@ def leave_tournament(request, tournament_id ):
     return redirect('show_tournament', tournament.id)
 
 @login_required(redirect_field_name="")
-def show_tournament(request, tournament_id):
+def show_tournament(request, tournament_id, on_matches=False):
     try:
         tournament = Tournament.objects.get(id=tournament_id)
         club = tournament.club
@@ -530,8 +530,10 @@ def show_tournament(request, tournament_id):
             'count_participants': count_participants,
             'is_organiser': is_organiser,
             'is_coorganiser': is_coorganiser,
+            'on_matches': on_matches
         }
     )
+
 
 @login_required(redirect_field_name="")
 def participant_list(request, tournament_id):

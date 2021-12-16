@@ -306,7 +306,7 @@ class Participant(models.Model):
         constraints=[
             models.UniqueConstraint(fields=["tournament", "member"], name="Participant of a tournament only once"),
             # models.UniqueConstraint(fields=["member"], condition=Q(club__id=tournament__club__id), name="Member of the club of the tournament"),
-            models.CheckConstraint(check=Q( tournament__club__id=models.F("member__club__id") ), name='Member of the club of the tournament')
+            models.CheckConstraint(check=Q( member__club__id=models.F("tournament__club__id") ), name='Member of the club of the tournament')
         ]
 
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
