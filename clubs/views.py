@@ -441,7 +441,7 @@ def abs(tournament, match_round):
     if tournament.isRoundFinished(tournament,match_round):
         updateActiveParticipants(tournament, matches, match_round)
         tournament.scheduleMatches(match_round+1)
-    elif not haveDrawn(request,tournament,matches, match_round):
+    elif not haveDrawn(tournament,matches, match_round):
         messages.error(request, "Set drawn matches again")
         #  print("set drawn matches again")
 
