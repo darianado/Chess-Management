@@ -490,7 +490,7 @@ def apply_to_tournament(request, tournament_id ):
             return redirect('show_tournament', tournament.id)
 
     else:
-        # TODO add messages
+        messages.error(request, "Sorry! The capacity for this tournament reached its limit.")
         print("capacity is full")
 
     return redirect('show_tournament', tournament.id)
