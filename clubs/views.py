@@ -410,7 +410,7 @@ def matches(request, tournament_id):
     winner = getWinner(request,tournament,match_round)
     return render(request, "partials/matches.html", {"matches": list(zip(matches, labels)), "can_set_match": can_set_match, "match_round" : match_round, "rounds" : range(1,5), "winner" : winner})
 
-def updateActiveParticipants(request, tournament,matches, match_round):
+def updateActiveParticipants(tournament,matches, match_round):
     for match in matches:
         if match.match_status == 4:
             match.playerA.is_active = False
@@ -420,32 +420,41 @@ def updateActiveParticipants(request, tournament,matches, match_round):
             match.playerB.save()
             
 
-def haveDrawn(request,tournament,matches, match_round):
+def haveDrawn(tournament,matches, match_round):
     drawn_round =  Match.objects.filter(tournament=tournament).filter(match_round=match_round).filter(Q(match_status=2))
     if len(drawn_round) > 0:
         return False
     else:
         return True
 
-def getWinner(request, tournament, match_round):
+def getWinner(tournament, match_round):
     winner = Participant.objects.filter(tournament=tournament, is_active=True)
     if match_round+1 == 5 and len(winner)==1:
         return winner[0]
     return None
      
 
-def abs(request, tournament, match_round):
+def abs(tournament, match_round):
     matches = Match.objects.filter(tournament=tournament).filter(match_round=match_round)
     if tournament.isRoundFinished(tournament,match_round):
-        updateActiveParticipants(request, tournament, matches, match_round)
+        updateActiveParticipants(tournament, matches, match_round)
         tournament.scheduleMatches(match_round+1)
-    elif not haveDrawn(request,tournament,matches, match_round):
+    elif not haveDrawn(tournament,matches, match_round):
         print("set drawn matches again")
 
 
-@login_required(redirect_field_name="")
+@login_required
 def set_match_result(request, match_id):
-    match = Match.objects.get(id=match_id)
+    try:
+        match = Match.objects.get(id=match_id)
+        tournament = match.tournament
+        coorganisers = [coorganiser.user for coorganiser in tournament.coorganisers.all()]
+        organisers = [tournament.organiser.user]
+        organisers.extend(coorganisers)
+        if request.user not in organisers:
+            return redirect("show_tournament", tournament.id)
+    except ObjectDoesNotExist:
+        return redirect("dashboard")
 
     players = [
         match.getPlayerA().member.user.get_full_name(),
@@ -455,19 +464,14 @@ def set_match_result(request, match_id):
     if request.method == 'GET':
         form = SetMatchResultForm(initial={"match_status": match.match_status})
         return render(request, 'set_match_result.html', {'form': form, "match_id" : match_id, "players": players})
-    elif request.method == 'POST':
+    else:
         form = SetMatchResultForm(request.POST, instance=match)
         if form.is_valid():
             form.save()
-            abs(request, match.tournament, match.match_round)
-            # TODO remore the commented line -> now it returns to the tournament page
-            #  return redirect('show_club', club_id=match.tournament.club.id)
-            return show_tournament(request,match.tournament.id)
+            abs(match.tournament, match.match_round)
+            return redirect('show_tournament', tournament.id)
         else:
             return render(request, 'set_match_result.html', {'form': form, "match_id" : match_id, "players": players})
-    else:
-        return HttpResponseForbidden()
-
 
 @login_required(redirect_field_name="")
 def apply_to_tournament(request, tournament_id ):

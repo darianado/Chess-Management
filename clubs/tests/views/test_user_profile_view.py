@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
-from clubs.models import User
+from clubs.models import Club, Membership, User
 from clubs.tests.helper import reverse_with_next
 
 class UserProfileViewTestCase(TestCase):
@@ -8,6 +8,9 @@ class UserProfileViewTestCase(TestCase):
     fixtures = [
         "clubs/tests/fixtures/default_user_john.json",
         "clubs/tests/fixtures/default_user_jane.json",
+        "clubs/tests/fixtures/default_club_hame.json",
+        "clubs/tests/fixtures/default_membership_jane_hame.json",
+        "clubs/tests/fixtures/default_membership_john_hame.json",
     ]
 
     def setUp(self):
@@ -27,6 +30,9 @@ class UserProfileViewTestCase(TestCase):
 
     def test_get_show_user_with_valid_id_but_not_own_profile(self):
         self.client.login(email=self.userJane.email, password="Password123")
+        janeMembership = Membership.objects.get(club=Club.objects.get(club_name="Hame Chess Club"), user=self.userJane)
+        janeMembership.role = 3
+        janeMembership.save()
         response = self.client.get(self.urlJohn)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["user_profile"], self.userJohn)
@@ -37,6 +43,16 @@ class UserProfileViewTestCase(TestCase):
 
     def test_get_show_users_own_profile(self):
         self.client.login(email=self.userJohn.email, password="Password123")
+        response = self.client.get(self.urlJohn)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["user_profile"], self.userJohn)
+        self.assertContains(response, 'nu mi place sa joc sah')
+        self.assertContains(response, 'johndoe@example.org')
+        self.assertContains(response, 'Chess experience level')
+        self.assertTemplateUsed(response, "show_user.html")
+
+    def test_get_show_user_with_valid_id_but_not_own_profile_and_viewer_is_officer_or_owner_of_a_common_club(self):
+        self.client.login(email=self.userJane.email, password="Password123")
         response = self.client.get(self.urlJohn)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["user_profile"], self.userJohn)

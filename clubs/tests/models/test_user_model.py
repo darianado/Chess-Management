@@ -143,6 +143,24 @@ class UserModelTest(TestCase):
         self.userJohn.personal_statement = 'x' * 521
         self._assert_user_is_invalid()
 
+
+# Create super user tests
+
+    def test_create_super_user_but_is_staff_is_false(self):
+        with self.assertRaises(ValueError):
+            User.objects.create_superuser(email="valid@example.org", password="Password123", is_staff=False)
+
+    def test_create_super_user_but_is_superuser_is_false(self):
+        with self.assertRaises(ValueError):
+            User.objects.create_superuser(email="valid@example.org", password="Password123", is_superuser=False)
+
+    def test_create_super_user_with_no_email(self):
+        with self.assertRaises(ValueError):
+            User.objects.create_superuser(password="Password123")
+
+    def test_create_super_user(self):
+        user = User.objects.create_superuser(email="valid@example.org", password="Password123")
+
     def _assert_user_is_valid(self):
         try:
             self.userJohn.full_clean()
