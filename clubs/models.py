@@ -151,6 +151,7 @@ class Membership(models.Model):
 
     def promote(self):
         self.role=self.role-1
+
         self.save()
     def demote(self):
         self.role=self.role+1
@@ -177,7 +178,7 @@ class Membership(models.Model):
         elif role == 4:
             return ('Applicant')
         elif role == None:
-            return ('User')    
+            return ('User')
         return ('')
 
     def __str__(self):
@@ -298,7 +299,7 @@ class Tournament(models.Model):
         result_match_round = [match.match_round for match in matches]
         #check if it is 0 when you call it
         return max(result_match_round, default = 0)
-        
+
 
 class Participant(models.Model):
     class Meta:
@@ -306,7 +307,7 @@ class Participant(models.Model):
         constraints=[
             models.UniqueConstraint(fields=["tournament", "member"], name="Participant of a tournament only once"),
             # models.UniqueConstraint(fields=["member"], condition=Q(club__id=tournament__club__id), name="Member of the club of the tournament"),
-            models.CheckConstraint(check=Q( tournament__club__id=models.F("member__club__id") ), name='Member of the club of the tournament')
+            # models.CheckConstraint(check=Q( tournament__club__id=models.F("member__club__id") ), name='Member of the club of the tournament')
         ]
 
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
