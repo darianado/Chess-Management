@@ -44,7 +44,7 @@ class ParticipantAdmin(admin.ModelAdmin):
     """Configuration of the admin interface for events"""
 
     list_display = [
-        'tournament', 'member', 'score', 'is_active'    
+        'tournament', 'member', 'is_active'
         ]
 
 @admin.register(Match)
