@@ -25,13 +25,15 @@ class CreateTournamentFormTestCase(TestCase):
         self.userMiki = User.objects.get(email='mikidoe@example.org') #coorganiser 
         self.memberMiki = Membership.objects.get(user=self.userMiki, club=self.clubHame)
         self.url = reverse('tournament', kwargs={'club_id': self.clubHame.id})
+
         self.possible_coorganisers = Membership.objects.filter(Q(club=self.clubHame) & (Q(role=2) | Q(role=1) )).exclude(user=self.userJohn)
 
         self.form_input = {
             'name': 'Yetti',
             'description': 'The first ever tournament for club hame',
             'deadline': '2022-12-10T21:44:21.082Z',
-            'coorganisers': ['<Membership: Miki Doe Hame Chess Club>'],
+            #  'coorganisers': ['<Membership: Miki Doe Hame Chess Club>'],
+            'coorganisers': [5],
             "capacity": 16, 
         }
 
@@ -49,7 +51,7 @@ class CreateTournamentFormTestCase(TestCase):
 
 
     #  def test_valid_create_tournament_form(self):
-         #  form = CreateTournamentForm(data=self.form_input)
+        #  form = CreateTournamentForm(data=self.form_input)
         #  form = CreateTournamentForm(initial={"coorganisers":self.possible_coorganisers}, data=self.form_input)
         #  self.assertTrue(form.is_valid())
 #
@@ -69,7 +71,7 @@ class CreateTournamentFormTestCase(TestCase):
         #  self.form_input["capacity"] = "2"
         #  form = CreateTournamentForm(data=self.form_input)
         #  self.assertTrue(form.is_valid())
-#
+
     #  def test_form_has_correct_max_capacity(self):
         #  self.form_input["capacity"] = "16"
         #  form = CreateTournamentForm(data=self.form_input)

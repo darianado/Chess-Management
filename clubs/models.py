@@ -365,3 +365,9 @@ class Match(models.Model):
                 MaxValueValidator(4)
             ]
         )
+
+    def getPlayerA(self):
+        return self.playerA
+
+    def getPlayerB(self):
+        return self.playerB
