@@ -256,7 +256,7 @@ class Tournament(models.Model):
 
     organiser = models.ForeignKey(Membership, on_delete=models.CASCADE, related_name="organiser")
 
-    coorganisers = models.ManyToManyField(Membership)
+    coorganisers = models.ManyToManyField(Membership, blank=True)
 
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
 
@@ -312,7 +312,6 @@ class Tournament(models.Model):
 
 class Participant(models.Model):
     class Meta:
-        ordering=["-score"]
         constraints=[
             models.UniqueConstraint(fields=["tournament", "member"], name="Participant of a tournament only once"),
         ]
@@ -320,15 +319,6 @@ class Participant(models.Model):
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
 
     member = models.ForeignKey(Membership, on_delete=models.CASCADE)
-
-    score = models.FloatField(
-        unique=False,
-        blank=False,
-        default=0,
-        validators=[
-            MinValueValidator(0)
-        ]
-    )
 
     is_active = models.BooleanField(
         unique=False,
