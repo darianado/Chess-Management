@@ -61,9 +61,9 @@ class TournamentModelTest(TestCase):
         self.tournamentYetti.capacity = None
         self._assert_tournament_is_invalid()
 
-    def test_description_can_be_empty(self):
+    def test_description_can_not_be_empty(self):
         self.tournamentYetti.description = None
-        self._assert_tournament_is_valid()
+        self._assert_tournament_is_invalid()
 
     def test_description_may_contain_260_characters(self):
         self.tournamentYetti.description = "a" * 260

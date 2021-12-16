@@ -35,13 +35,13 @@ class CreateInitialMatchesViewTestCase(TestCase):
     def test_create_with_invalid_tournament_id(self):
         self.client.login(email=self.organiser.user.email, password="Password123")
         url = reverse("initial_matches", kwargs={"tournament_id": 999999})
+        self.tournament.deadline = "2021-12-09T21:44:21.082Z"
+        self.tournament.save()
         response = self.client.get(url, follow=True)
         redirect_url = reverse("dashboard")
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
     def test_create_when_deadline_has_not_passed_yet(self):
-        self.tournament.deadline = "2021-12-09T21:44:21.082Z"
-        self.tournament.save()
         self.client.login(email=self.organiser.user.email, password="Password123")
         response = self.client.get(self.url, follow=True)
         redirect_url = reverse("show_tournament", kwargs={"tournament_id": self.tournament.id})
@@ -49,6 +49,8 @@ class CreateInitialMatchesViewTestCase(TestCase):
 
     def test_create_with_tournament_which_already_has_initial_matches(self):
         self.client.login(email=self.organiser.user.email, password="Password123")
+        self.tournament.deadline = "2021-12-09T21:44:21.082Z"
+        self.tournament.save()
         playerA = Participant.objects.get(member=Membership.objects.get(user=1))
         playerB = Participant.objects.get(member=Membership.objects.get(user=2))
         Match.objects.create(
@@ -62,19 +64,27 @@ class CreateInitialMatchesViewTestCase(TestCase):
 
     def test_create_when_not_an_organiser_or_coorganiser(self):
         self.client.login(email=self.participant.member.user.email, password="Password123")
+        self.tournament.deadline = "2021-12-09T21:44:21.082Z"
+        self.tournament.save()
         response = self.client.get(self.url, follow=True)
         redirect_url = reverse("show_tournament", kwargs={"tournament_id": self.tournament.id})
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
     def test_create_when_number_of_participants_is_less_than_2(self):
         self.client.login(email=self.organiser.user.email, password="Password123")
+        self.tournament.deadline = "2021-12-09T21:44:21.082Z"
+        self.tournament.save()
         Participant.objects.filter(tournament=self.tournament)[0].delete()
         response = self.client.get(self.url, follow=True)
+        messages = response.context["messages"]
+        self.assertTrue(len(messages), 1)
         redirect_url = reverse("show_club", kwargs={"club_id": self.tournament.club.id})
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
     def test_successful_create_initial_matches(self):
         self.client.login(email=self.organiser.user.email, password="Password123")
+        self.tournament.deadline = "2021-12-09T21:44:21.082Z"
+        self.tournament.save()
         response = self.client.get(self.url, follow=True)
         redirect_url = reverse("show_tournament", kwargs={"tournament_id": self.tournament.id})
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
