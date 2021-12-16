@@ -6,7 +6,6 @@ from django.contrib import messages
 from django.db.models import Q
 from django.contrib.auth.hashers import check_password
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponseForbidden, request
 from django.contrib.auth.decorators import login_required
 from clubs.helpers import Role, Status
 from clubs.decorators import login_prohibited, minimum_role_required
@@ -248,7 +247,7 @@ def officer_promote(request,member_id):
     current_member.demote()
     member.promote()
 
-    action = Events.objects.create(club=member.club, user=member.user, action = 4)
+    Events.objects.create(club=member.club, user=member.user, action = 4)
     messages.success(request, "Officer has been promoted successfully")
     return redirect('show_club', club_id = c_id)
 
@@ -260,7 +259,7 @@ def officer_demote(request,member_id):
 
     member.demote()
 
-    action = Events.objects.create(club=member.club, user=member.user, action = 5)
+    Events.objects.create(club=member.club, user=member.user, action = 5)
     messages.success(request, "Officer has been demoted successfully")
     return redirect('show_club', club_id=c_id)
 
@@ -273,7 +272,7 @@ def member_promote(request,member_id):
 
     member.promote()
 
-    action = Events.objects.create(club=member.club, user=member.user, action = 4)
+    Events.objects.create(club=member.club, user=member.user, action = 4)
     messages.success(request, "Member has been promoted successfully")
     return redirect('show_club', club_id = c_id)
 
@@ -288,7 +287,7 @@ def member_kick(request,member_id):
 
     member.member_kick()
 
-    action = Events.objects.create(club=club, user=user, action = 6)
+    Events.objects.create(club=club, user=user, action = 6)
     messages.success(request, "Member has been kicked successfully")
     return redirect('show_club', club_id = c_id)
 
@@ -303,7 +302,7 @@ def deny_applicant(request, member_id):
 
     member.denyApplicant()
 
-    action = Events.objects.create(club=club, user=user, action = 3)
+    Events.objects.create(club=club, user=user, action = 3)
     messages.success(request, "Applicant has been denied")
     return redirect('show_club', club_id = c_id)
 
@@ -316,7 +315,7 @@ def accept_applicant(request,member_id):
 
     member.acceptApplicant()
 
-    action = Events.objects.create(club=member.club, user=member.user, action = 1)
+    Events.objects.create(club=member.club, user=member.user, action = 1)
     messages.success(request, "Applicant has been accepted")
     return redirect('show_club', club_id= c_id)
 
@@ -329,7 +328,6 @@ def events_list(request):
 def apply_to_club(request, club_id ):
     club = Club.objects.get(id=club_id)
     user = request.user
-    member_in_club = Membership.get_member_role(user,club)
     Events.objects.create(club=club, user=request.user, action = 2)
     if request.method == 'GET':
         Membership.objects.create(
@@ -345,7 +343,6 @@ def apply_to_club(request, club_id ):
 def leave_a_club(request, club_id ):
     club = Club.objects.get(id=club_id)
     user = request.user
-    member_in_club = Membership.get_member_role(user,club)
     if request.method == 'GET':
         Membership.objects.filter(club_id=club_id).get(user_id=user.id).delete()
         messages.success(request, 'You have left the club.')
@@ -354,24 +351,14 @@ def leave_a_club(request, club_id ):
 @login_required(redirect_field_name="")
 def table(request):
     user = request.user
-    user_id = user.id
-    #  myFilter = OrderFilter()
     filtered_clubs = []
     filtered_clubs = [member.club for member in Membership.objects.filter(Q(user=user) )]
     list_data = []
     for club in filtered_clubs:
-
         data_row = (club.club_name, Membership.objects.filter(club=club).exclude(role=4).count(), Membership.get_member_role_name(Membership.get_member_role(user, club)), club.id)
         list_data.append(data_row)
 
-    return render(
-            request,
-            "table.html",
-            {
-                "list_data": list_data,
-                #  "myFilter" : myFilter,
-            }
-        )
+    return render(request, "table.html", {"list_data": list_data})
 
 @login_required(redirect_field_name="")
 def tournament_list(request,club_id):
@@ -399,9 +386,16 @@ def matches(request, tournament_id):
 
     match_round = tournament.getRoundTournament()
     winner = getWinner(tournament,match_round)
-    return render(request, "partials/matches.html", {"matches": list(zip(matches, labels)), "can_set_match": can_set_match, "match_round" : match_round, "rounds" : range(1,5), "winner" : winner})
+    return render(request, "partials/matches.html", {
+        "matches": list(zip(matches, labels)),
+        "can_set_match": can_set_match,
+        "match_round": match_round,
+        "rounds" : range(1,5),
+        "winner" : winner
+        }
+    )
 
-def updateActiveParticipants(tournament,matches, match_round):
+def updateActiveParticipants(matches):
     for match in matches:
         if match.match_status == 4:
             match.playerA.is_active = False
@@ -410,9 +404,7 @@ def updateActiveParticipants(tournament,matches, match_round):
             match.playerB.is_active = False
             match.playerB.save()
 
-
-
-def haveDrawn(tournament,matches, match_round):
+def haveDrawn(tournament, match_round):
     drawn_round =  Match.objects.filter(tournament=tournament).filter(match_round=match_round).filter(Q(match_status=2))
     return len(drawn_round) > 0
 
@@ -427,11 +419,10 @@ def getWinner(tournament, match_round):
 def abs(request, tournament, match_round):
     matches = Match.objects.filter(tournament=tournament).filter(match_round=match_round)
     if tournament.isRoundFinished(tournament,match_round):
-        updateActiveParticipants(tournament, matches, match_round)
+        updateActiveParticipants(matches)
         tournament.scheduleMatches(match_round+1)
-    elif haveDrawn(tournament,matches, match_round):
+    elif haveDrawn(tournament, match_round):
         messages.error(request, "Set drawn matches again")
-
 
 @login_required
 def set_match_result(request, match_id):
@@ -470,7 +461,6 @@ def apply_to_tournament(request, tournament_id ):
     club = tournament.club
     user = request.user
     member = Membership.objects.get(user=user,club=club)
-    member_in_club = Membership.get_member_role(user,club)
     if tournament.participants.count() < tournament.capacity:
         if request.method == 'GET':
             Participant.objects.create(
@@ -538,6 +528,8 @@ def participant_list(request, tournament_id):
     if member.role == 2 or member.role == 1:
         is_officer = True
     return render(request,"partials/participant_list_table.html",
-    {'is_officer': is_officer,
-    'participants': participants,
-    })
+        {
+            'is_officer': is_officer,
+            'participants': participants,
+        }
+    )

@@ -40,12 +40,6 @@ class ParticipantModelTest(TestCase):
 
 
 
-    def test_organiser_cannot_be_a_participant(self):
-        self.participantJohn = Tournament.objects.get(id=1).organiser
-        self._assert_participant_is_invalid()
-
-
-
     def test_score_need_not_be_unique(self):
         self.participantJohn.score = self.participantJane.score
         self._assert_participant_is_valid()

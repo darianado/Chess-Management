@@ -36,9 +36,9 @@ class HaveDrawnTest(TestCase):
 
 
     def test_haveDrawn(self):
-        haveDrawn = views.haveDrawn(tournament = self.tournament, matches = None, match_round = self.match_John_Charlie.match_round)
+        haveDrawn = views.haveDrawn(tournament = self.tournament, match_round = self.match_John_Charlie.match_round)
         self.assertEqual(haveDrawn, True)
 
     def test_not_haveDrawn(self):
-        haveDrawn = views.haveDrawn(tournament = self.tournament, matches = None, match_round = self.match_John_Jane.match_round)
+        haveDrawn = views.haveDrawn(tournament = self.tournament, match_round = self.match_John_Jane.match_round)
         self.assertEqual(haveDrawn, False)

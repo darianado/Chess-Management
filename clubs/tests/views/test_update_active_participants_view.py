@@ -36,16 +36,16 @@ class updateActiveParticipantsTest(TestCase):
 
 
     def test_update_active_participants_when_status_is_4(self):
-        update = views.updateActiveParticipants(tournament = self.tournament, matches = [self.match_John_Charlie], match_round = self.match_John_Charlie.match_round)
+        update = views.updateActiveParticipants(matches = [self.match_John_Charlie])
         self.assertEqual(self.match_John_Charlie.playerA.is_active, False)
 
     def test_update_active_participants_when_status_is_3(self):
-        update = views.updateActiveParticipants(tournament = self.tournament, matches = [self.match_John_Jane], match_round = self.match_John_Charlie.match_round)
+        update = views.updateActiveParticipants(matches = [self.match_John_Jane])
         self.assertEqual(self.match_John_Jane.playerB.is_active, False)
 
     def test_update_active_participants_when_status_is_2(self):
         self.match_John_Jane.match_status=2
         self.match_John_Jane.match_round=2
         self.match_John_Jane.save()
-        update = views.updateActiveParticipants(tournament = self.tournament, matches = [self.match_John_Jane], match_round = self.match_John_Charlie.match_round)
+        update = views.updateActiveParticipants(matches = [self.match_John_Jane])
         self.assertEqual(self.match_John_Jane.playerB.is_active, True)

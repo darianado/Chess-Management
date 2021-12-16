@@ -274,7 +274,6 @@ class Tournament(models.Model):
 
     def scheduleMatches(self, match_round):
         all_active_participants = list(Participant.objects.filter(tournament=self, is_active=True))
-        print(len(all_active_participants))
         all_active_participants.reverse()
 
         for x in range(0, len(all_active_participants) - 1, 2):
