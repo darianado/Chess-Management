@@ -98,6 +98,10 @@ class MembershipModelTest(TestCase):
         role_user_victor = Membership.get_member_role_name(Membership.get_member_role(self.userVictor, self.clubHame))
         self.assertEqual(role_user_victor, "User")
 
+    def test_get_correct_full_name_user_and_club_name(self):
+        #  self.memberJohn = Membership.objects.get(club=self.clubHame, user=self.userJohn)
+        self.assertEqual(self.memberJohn.__str__(), "John Doe Hame Chess Club")
+
     def test_user_is_only_a_member_of_a_club_exactly_once(self):
         with self.assertRaises(IntegrityError):
             Membership.objects.create(

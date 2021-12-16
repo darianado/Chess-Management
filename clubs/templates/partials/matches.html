@@ -21,7 +21,7 @@
                                       <tr>
                                         <td>{{match.playerA.member.user.get_full_name}}</td>
                                         <td>{{match.playerB.member.user.get_full_name}}</td>
-                                        <td>{{match.match_status}}</td>
+                                        <td>{{match_status_label}}</td>
                                         <td>
                                         {% if can_set_match and match.match_round == match_round and winner == None%}
                                           <form action="{% url 'set_match_result' match.id %}">
@@ -40,14 +40,17 @@
               </table>
       {% endfor %}
       {% if match_round|add:"1" == 5 and winner != None %}
-        <div class ="row">
-          <div class ="col" align-left>
+      <div class="d-flex justify-content-center mt-5 mb-4">
+      <!-- <div class ="row"> -->
+          <div>
               <img src="{% static '/images/winner.svg' %}" alt="" id ="winner-logo">
+           </div> 
+          <div>
+              <h3 class=" p-4">Winner is {{winner.member.user.get_full_name}}</h3>
           </div>
-          <div class ="col align-left">
-              <h3>Winner is {{winner.member.user.get_full_name}}</h3>
-          </div>
+        <!-- </div> -->
         </div>
+
       {% endif %}
   {% else %}
       <h5 align-items-center>There are no current matches</h5>
