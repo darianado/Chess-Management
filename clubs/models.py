@@ -350,20 +350,3 @@ class Match(models.Model):
                 MaxValueValidator(4)
             ]
         )
-
-
-    def getMatchStatusString(self):
-        if self.match_status == 1:
-            return "Not Played"
-        elif self.match_status == 2:
-            return "Drawn"
-        elif self.match_status == 3:
-            return "Won by Player A"
-        else:
-            return "Won by Player B"
-
-    def getPlayerA(self):
-        return self.playerA
-
-    def getPlayerB(self):
-        return self.playerB
