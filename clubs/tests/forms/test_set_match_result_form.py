@@ -1,3 +1,4 @@
+"""Unit tests of the set match result form."""
 from django import forms
 from django.test import TestCase
 from clubs.models import User
@@ -5,6 +6,8 @@ from clubs.helpers import Status
 from clubs.forms import SetMatchResultForm
 
 class SetMatchResultFormTestCase(TestCase):
+    """Unit tests of the set match result form."""
+
     def setUp(self):
         self.form_input = {
             'match_status': Status.WON_A.value

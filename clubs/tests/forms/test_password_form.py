@@ -1,9 +1,12 @@
+"""Unit tests of the edit password form."""
 from django import forms
 from django.test import TestCase
 from clubs.models import User
 from clubs.forms import changePasswordForm
 
 class PasswordFormTestCase(TestCase):
+    """Unit tests of the edit password form."""
+
     def setUp(self):
         self.form_input = {
             'old_password': 'Password123',

@@ -1,4 +1,4 @@
-"""Tests of the sign up view."""
+"""Tests of the sign up form."""
 from django.contrib.auth.hashers import check_password
 from django.test import TestCase
 from clubs.forms import SignUpForm
@@ -9,7 +9,7 @@ from django import forms
 
 
 class SignUpViewTestCase(TestCase, LogInTester):
-    """"Tests of the sign up view."""
+    """"Tests of the sign up form"""
     def setUp(self):
         self.form_input = {
             'first_name':'Xiangyi',
