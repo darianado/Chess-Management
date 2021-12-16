@@ -394,7 +394,7 @@ def tournament_list(request,club_id):
     tournaments = Tournament.objects.all().filter(club=club)
     return render(request, "partials/tournaments_list_table.html", {"tournaments": tournaments, "is_officer": is_officer, "club": club})
 
-# TODO check if the matches contain the officer -> they do 
+# TODO check if the matches contain the officer -> they do
 def matches(request, tournament_id):
     tournament = Tournament.objects.get(id=tournament_id)
     matches = Match.objects.filter(tournament=tournament)
@@ -406,7 +406,7 @@ def matches(request, tournament_id):
     if request.user in [x.user for x in tournament.coorganisers.all()]:
         is_coorganiser = True
     can_set_match = is_organiser or is_coorganiser
-    
+
     match_round = tournament.getRoundTournament()
     winner = getWinner(tournament,match_round)
     return render(request, "partials/matches.html", {"matches": list(zip(matches, labels)), "can_set_match": can_set_match, "match_round" : match_round, "rounds" : range(1,5), "winner" : winner})
@@ -419,7 +419,7 @@ def updateActiveParticipants(tournament,matches, match_round):
         elif match.match_status == 3:
             match.playerB.is_active = False
             match.playerB.save()
-            
+
 
 def haveDrawn(tournament,matches, match_round):
     drawn_round =  Match.objects.filter(tournament=tournament).filter(match_round=match_round).filter(Q(match_status=2))
@@ -434,9 +434,9 @@ def getWinner(tournament, match_round):
     if match_round+1 == 5 and len(winner)==1:
         return winner[0]
     return None
-     
 
-def abs(request, tournament, match_round):
+
+def abs(tournament, match_round):
     matches = Match.objects.filter(tournament=tournament).filter(match_round=match_round)
     if tournament.isRoundFinished(tournament,match_round):
         updateActiveParticipants(tournament, matches, match_round)
