@@ -58,7 +58,7 @@ class ShowClubTest(TestCase):
         self.client.login(email=self.userMiki.email, password="Password123")
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Mark')
+        self.assertContains(response, 'Greta')
 
     def test_incorrect_owner_information_shown(self):
         self.client.login(email=self.userCharlie.email, password="Password123")
