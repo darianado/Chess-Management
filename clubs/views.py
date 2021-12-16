@@ -523,6 +523,7 @@ def show_tournament(request, tournament_id):
         is_coorganiser = user in [coorganiser.user for coorganiser in coorganisers]
         is_participant = user in [participant.user for participant in participants]
         on_matches = request.session.get("on_matches")
+        request.session["on_matches"] = False
     except ObjectDoesNotExist:
             return redirect('club_list')
     return render(request,'show_tournament.html',
