@@ -245,7 +245,7 @@ class Tournament(models.Model):
     description = models.CharField(
             unique=False,
             max_length=260,
-            blank=True
+            blank=False
     )
 
     deadline = models.DateTimeField(

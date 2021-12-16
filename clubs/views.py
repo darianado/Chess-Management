@@ -473,9 +473,16 @@ def create_initial_matches(request, tournament_id):
 
     if tournament.participants.count() < 2:
         messages.error(request, "Tournament didn't reach at least 2 participants before the deadline so it is now deleted")
+        club = tournament.club
         tournament.delete()
+        return redirect("show_club", club.id)
+
+    if Match.objects.filter(tournament=tournament).exists():
+        return redirect("show_tournament", tournament.id)
 
     tournament.scheduleMatches(1)
+    request.session["on_matches"] = True
+    return redirect('show_tournament', tournament.id)
 
 @login_required(redirect_field_name="")
 def apply_to_tournament(request, tournament_id ):
