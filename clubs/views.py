@@ -223,23 +223,19 @@ def create_tournament(request, club_id):
 @login_required(redirect_field_name="")
 def create_club(request):
     if request.method == 'POST':
-        if request.user.is_authenticated:
-            current_user=request.user
-            form = CreateClubForm(request.POST)
-            if form.is_valid():
-                club_name = form.cleaned_data.get('club_name')
-                location = form.cleaned_data.get('location')
-                description = form.cleaned_data.get('description')
-                club = Club.objects.create(club_name=club_name, location=location, description=description)
-                member = Membership.objects.create(club=club, user=current_user, role=1)
-                messages.success(request, "Club created successfully!")
-                return redirect('club_list')
-            else:
-                messages.error(request, "The credentials provided were invalid!")
-                return render(request, 'create_club.html', {'form': form})
+        current_user=request.user
+        form = CreateClubForm(request.POST)
+        if form.is_valid():
+            club_name = form.cleaned_data.get('club_name')
+            location = form.cleaned_data.get('location')
+            description = form.cleaned_data.get('description')
+            club = Club.objects.create(club_name=club_name, location=location, description=description)
+            member = Membership.objects.create(club=club, user=current_user, role=1)
+            messages.success(request, "Club created successfully!")
+            return redirect('club_list')
         else:
-            messages.error(request, "You should log in first")
-            return redirect('log_in')
+            messages.error(request, "The credentials provided were invalid!")
+            return render(request, 'create_club.html', {'form': form})
     else:
         form = CreateClubForm()
         return render(request, 'create_club.html', {'form': form})

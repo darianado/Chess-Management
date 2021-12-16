@@ -19,14 +19,6 @@ class CreateClubTest(TestCase):
     def test_create_club_url(self):
         self.assertEqual(self.url,'/create_club/')
 
-    """def test_get_create_club_is_forbidden(self):
-        self.client.login(email=self.user.email, password="Password123")
-        user_count_before = Club.objects.count()
-        response = self.client.get(self.url, follow=True)
-        user_count_after = Club.objects.count()
-        self.assertEqual(user_count_after, user_count_before)
-        self.assertEqual(response.status_code, 403)"""
-
     def test_create_club_redirects_when_not_logged_in(self):
         user_count_before = Club.objects.count()
         redirect_url = reverse('log_in')
@@ -37,7 +29,7 @@ class CreateClubTest(TestCase):
         user_count_after = Club.objects.count()
         self.assertEqual(user_count_after, user_count_before)
         messages_list = list(response.context["messages"])
-        self.assertEqual(len(messages_list), 1)
+        self.assertEqual(len(messages_list), 0)
 
     def test_successful_create_club(self):
         self.client.login(email=self.user.email, password="Password123")
