@@ -1,3 +1,4 @@
+"""Unit tests for the Membership model."""
 from django.test import TestCase
 from clubs.models import Club, Membership, User
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
@@ -7,6 +8,7 @@ from django.db import transaction
 from clubs.helpers import Role
 
 class MembershipModelTest(TestCase):
+    """Unit tests for the Membership model."""
 
     fixtures = [
         "clubs/tests/fixtures/default_user_john.json",
@@ -48,6 +50,8 @@ class MembershipModelTest(TestCase):
     def test_user_cannot_be_empty(self):
         self.memberJane.user = None
         self._assert_member_is_invalid()
+
+# role tests
 
     def test_role_cannot_be_empty(self):
         self.memberJane.role = None
@@ -138,6 +142,8 @@ class MembershipModelTest(TestCase):
     def _assert_member_is_invalid(self):
         with self.assertRaises(ValidationError):
             self.memberJane.full_clean()
+
+# Accept and deny, promote and demote tests
 
     def test_acceptApplicant_successful(self):
         role = self.memberMark.role

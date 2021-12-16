@@ -1,9 +1,11 @@
+"""Unit tests for the Tournament model."""
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 
 from clubs.models import Tournament, Participant,Match
 
 class TournamentModelTest(TestCase):
+    """Unit tests for the Tournament model."""
 
     fixtures = [
         "clubs/tests/fixtures/default_user_jane.json",
@@ -29,6 +31,8 @@ class TournamentModelTest(TestCase):
         self.tournamentYetti = Tournament.objects.get(name="Yetti")
         self.tournamentAlaska = Tournament.objects.get(name="Alaska")
 
+# name tests
+
     def test_name_cannot_be_empty(self):
         self.tournamentYetti.name = None
         self._assert_tournament_is_invalid()
@@ -41,9 +45,13 @@ class TournamentModelTest(TestCase):
         self.tournamentYetti.name = "a" * 51
         self._assert_tournament_is_invalid()
 
+# deadline tests
+
     def test_deadline_cannot_be_empty(self):
         self.tournamentYetti.deadline = None
         self._assert_tournament_is_invalid()
+
+# co(organiser tests
 
     def test_organiser_cannot_be_empty(self):
         self.tournamentYetti.organiser = None
@@ -56,6 +64,8 @@ class TournamentModelTest(TestCase):
     def test_club_cannot_be_empty(self):
         self.tournamentYetti.club = None
         self._assert_tournament_is_invalid()
+
+# description and capacity tests
 
     def test_capacity_cannot_be_empty(self):
         self.tournamentYetti.capacity = None
@@ -99,11 +109,11 @@ class TournamentModelTest(TestCase):
         self.tournamentYetti.club = self.tournamentAlaska.club
         self._assert_tournament_is_valid()
 
+# capacity tests
+
     def test_capacity_need_not_be_unique(self):
         self.tournamentYetti.capacity = self.tournamentAlaska.capacity
         self._assert_tournament_is_valid()
-
-
 
     def test_capacity_can_be_2(self):
         self.tournamentYetti.capacity = 2
@@ -121,7 +131,7 @@ class TournamentModelTest(TestCase):
         self.tournamentYetti.capacity = 17
         self._assert_tournament_is_invalid()
 
-
+# round tests
 
     def test_get_round_number_returns_correctly(self):
         number_rounds = self.tournamentYetti.getNumberOfRounds()
