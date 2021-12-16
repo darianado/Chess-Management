@@ -296,7 +296,9 @@ class Tournament(models.Model):
 
     def getNumberOfRounds(self):
         number_participants = Participant.objects.filter(tournament=self).count()
-        return ceil(log(number_participants,2))
+        if number_participants > 0:
+            return ceil(log(number_participants,2))
+        return 0
 
     def getRoundTournament(self):
         """Get the current maximum round in the particular tournament """

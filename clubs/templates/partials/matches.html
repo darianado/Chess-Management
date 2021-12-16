@@ -1,6 +1,6 @@
 {%load static%}
 <div>
-  {% if matches|length > 0 and match_round > 0 %}
+  {% if matches|length > 0 and match_round > 0 and max_rounds > 0 %}
       {% for round in rounds %}
               <table class="table table-hover">
                       <thead>
