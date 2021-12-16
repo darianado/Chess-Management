@@ -35,7 +35,6 @@ class GetWinnerTestCase(TestCase):
         self.looserJane = Participant.objects.get(id=2)
         self.looserJane.is_active=False
         self.looserJane.save()
-        
 
         self.userMiki = User.objects.get(email="mikidoe@example.org")
 
