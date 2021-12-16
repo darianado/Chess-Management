@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 from clubs.tests.helper import reverse_with_next
 from clubs.helpers import  Role
-from clubs.models import Club, User
+from clubs.models import Club, User, Membership
 
 class ShowClubTest(TestCase):
 
@@ -21,7 +21,6 @@ class ShowClubTest(TestCase):
         self.userVictor = User.objects.get(email='victordoe@example.org') #owner
         self.userMiki = User.objects.get(email='mikidoe@example.org') #member
         self.clubHame = Club.objects.get(club_name="Hame Chess Club")
-        self.clubHamersmith = Club.objects.get(club_name="Hamersmith Chess Club")
 
         self.urlHame = reverse('show_club', kwargs={'club_id': self.clubHame.id})
 
@@ -66,6 +65,9 @@ class ShowClubTest(TestCase):
         response = self.client.get(self.urlHame)
 
     def test_get_show_club_with_valid_id_when_user_is_member(self):
+        membershipMiki = Membership.objects.get(user=self.userMiki, club=self.clubHame)
+        membershipMiki.role=3
+        membershipMiki.save()
         self.client.login(email=self.userMiki.email, password='Password123')
         response = self.client.get(self.urlHame)
         self.assertEqual(response.status_code, 200)
