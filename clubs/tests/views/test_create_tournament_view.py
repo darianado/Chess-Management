@@ -24,7 +24,7 @@ class CreateTournamentViewTestTestCase(TestCase):
         self.club = Club.objects.get(club_name="Hame Chess Club")
         self.url = reverse('tournament', kwargs={'club_id': self.club.id})
         self.data = { 'name': 'Yetti', 'description':"The first ever tournament for club hame",
-        'deadline':'2021-12-09T21:44:21.082Z', 'coorganisers': ['5'], 'capacity': 16}
+        'deadline':'2022-12-09T21:44:21.082Z', 'coorganisers': ['5'], 'capacity': 16}
 
 
     def test_create_tournament_url(self):

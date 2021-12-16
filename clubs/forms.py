@@ -3,7 +3,8 @@ from clubs.models import Match, User, Club, Membership, Tournament
 from clubs.models import Membership
 from clubs.models import Club
 from django.core.validators import RegexValidator
-
+from datetime import datetime 
+from django.utils import timezone
 class EditProfileForm(forms.ModelForm):
     class Meta:
         model = User
@@ -118,6 +119,17 @@ class CreateTournamentForm(forms.ModelForm):
         model = Tournament
         fields = ['name', 'description', 'deadline', 'coorganisers', 'capacity']
         widgets = {"description": forms.Textarea()}
+
+    def clean(self):
+        """Clean the data and generate messages for any errors."""
+        super().clean()
+        deadline = self.cleaned_data.get("deadline")
+
+        if deadline is None:
+            self.add_error("deadline", "Deadline should not be blank!")
+            return
+        if deadline < datetime.now(tz=timezone.utc):
+            self.add_error("deadline", "Deadline should not have passed!")
 
 class SetMatchResultForm(forms.ModelForm):
     class Meta:

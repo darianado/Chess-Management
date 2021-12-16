@@ -434,7 +434,6 @@ def abs(request, tournament, match_round):
         tournament.scheduleMatches(match_round+1)
     elif haveDrawn(tournament,matches, match_round):
         messages.error(request, "Set drawn matches again")
-        #  print("set drawn matches again")
 
 
 @login_required
@@ -486,7 +485,6 @@ def apply_to_tournament(request, tournament_id ):
 
     else:
         messages.error(request, "Sorry! The capacity for this tournament reached its limit.")
-        print("capacity is full")
 
     return redirect('show_tournament', tournament.id)
 
