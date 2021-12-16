@@ -436,7 +436,7 @@ def getWinner(tournament, match_round):
     return None
      
 
-def abs(tournament, match_round):
+def abs(request, tournament, match_round):
     matches = Match.objects.filter(tournament=tournament).filter(match_round=match_round)
     if tournament.isRoundFinished(tournament,match_round):
         updateActiveParticipants(tournament, matches, match_round)
@@ -471,7 +471,7 @@ def set_match_result(request, match_id):
         form = SetMatchResultForm(request.POST, instance=match)
         if form.is_valid():
             form.save()
-            abs(match.tournament, match.match_round)
+            abs(request, match.tournament, match.match_round)
             request.session["on_matches"] = True
             return redirect('show_tournament', tournament.id)
         else:
