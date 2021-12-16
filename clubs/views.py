@@ -10,6 +10,7 @@ from django.http import HttpResponseForbidden, request
 from django.contrib.auth.decorators import login_required
 from clubs.helpers import Role, Status
 from clubs.decorators import login_prohibited, minimum_role_required
+from datetime import datetime, time, timedelta
 
 @login_prohibited(redirect_location="dashboard")
 def welcome(request):
@@ -483,18 +484,20 @@ def apply_to_tournament(request, tournament_id ):
     user = request.user
     member = Membership.objects.get(user=user,club=club)
     member_in_club = Membership.get_member_role(user,club)
-    if tournament.participants.count() < tournament.capacity:
-        if request.method == 'GET':
-            Participant.objects.create(
-                    tournament = tournament,
-                    member = member,
-            )
-        else:
-            return redirect('show_tournament', tournament.id)
+    if datetime.now(tz=timezone.utc) < tournament.deadline:
+        if tournament.participants.count() < tournament.capacity:
+            if request.method == 'GET':
+                Participant.objects.create(
+                        tournament = tournament,
+                        member = member,
+                )
+            else:
+                return redirect('show_tournament', tournament.id)
 
+        else:
+            messages.error(request, "Sorry! The capacity for this tournament reached its limit.")
     else:
-        messages.error(request, "Sorry! The capacity for this tournament reached its limit.")
-        print("capacity is full")
+        messages.error(request, "Sorry! The deadline has passed")
 
     return redirect('show_tournament', tournament.id)
 
