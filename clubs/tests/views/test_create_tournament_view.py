@@ -24,7 +24,7 @@ class CreateTournamentViewTestTestCase(TestCase):
         self.club = Club.objects.get(club_name="Hame Chess Club")
         self.url = reverse('tournament', kwargs={'club_id': self.club.id})
         self.data = { 'name': 'Yetti', 'description':"The first ever tournament for club hame",
-        'deadline':'2021-12-09T21:44:21.082Z'}
+        'deadline':'2021-12-09T21:44:21.082Z', 'coorganisers': ['5'], 'capacity': 16}
 
 
     def test_create_tournament_url(self):
@@ -39,8 +39,8 @@ class CreateTournamentViewTestTestCase(TestCase):
         )
         user_count_after = Tournament.objects.count()
         self.assertEqual(user_count_after, user_count_before)
-        # messages_list = list(response.context["messages"])
-        # self.assertEqual(len(messages_list), 1)
+        messages_list = list(response.context["messages"])
+        self.assertEqual(len(messages_list), 0)
 
     def test_successful_create_tounament(self):
         self.client.login(email=self.user.email, password="Password123")
@@ -55,8 +55,8 @@ class CreateTournamentViewTestTestCase(TestCase):
             fetch_redirect_response=True
         )
         self.assertTemplateUsed(response, 'home.html')
-        # messages_list = list(response.context["messages"])
-        # self.assertEqual(len(messages_list), 1)
+        messages_list = list(response.context["messages"])
+        self.assertEqual(len(messages_list), 1)
 
     def test_unsuccessful_create_tounament_with_blank_tounament_name(self):
         self.client.login(email=self.user.email, password='Password123')
@@ -66,8 +66,8 @@ class CreateTournamentViewTestTestCase(TestCase):
         Tournament_count_after = Tournament.objects.count()
         self.assertEqual(Tournament_count_after, Tournament_count_before)
         self.assertTemplateUsed(response, 'create_tournament.html')
-        # messages_list = list(response.context["messages"])
-        # self.assertEqual(len(messages_list), 1)
+        messages_list = list(response.context["messages"])
+        self.assertEqual(len(messages_list), 1)
 
     def test_unsuccessful_create_tounament_with_blank_deadline(self):
         self.client.login(email=self.user.email, password='Password123')
@@ -78,15 +78,7 @@ class CreateTournamentViewTestTestCase(TestCase):
         self.assertEqual(Tournament_count_after, Tournament_count_before)
         self.assertTemplateUsed(response, 'create_tournament.html')
 
-    # def test_successful_create_club_owner_for_club(self):
-    #     self.client.login(email=self.user.email, password="Password123")
-    #     member_count_before = Membership.objects.count()
-    #     response = self.client.post(self.url, self.data, follow=True)
-    #     member_count_after = Membership.objects.count()
-    #     self.assertEqual(member_count_after, member_count_before+1)
-    #     new_club = Club.objects.get(club_name=self.data.get("club_name"))
-    #     new_member = Membership.objects.get(club=new_club)
-    #     self.assertEqual(self.user, new_member.user)
-    #     self.assertEqual(new_member.role, 1)
-    #     messages_list = list(response.context["messages"])
-    #     self.assertEqual(len(messages_list), 1)
+    def test_successful_get_to_create_tounament_page(self):
+        self.client.login(email=self.user.email, password="Password123")
+        response = self.client.get(self.url, self.data, follow=True)
+        self.assertTemplateUsed(response, 'create_tournament.html')

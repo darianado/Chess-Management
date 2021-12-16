@@ -187,8 +187,8 @@ def password(request):
         form = changePasswordForm()
     return render(request, 'password.html', {'form': form})
 
-@login_required(redirect_field_name="log_in")
-@minimum_role_required(role_required=Role.OFFICER or Role.OWNER, redirect_location="dashboard")
+@login_required(redirect_field_name="")
+@minimum_role_required(role_required=Role.OFFICER, redirect_location="dashboard")
 def create_tournament(request, club_id):
     current_user = request.user
     club = Club.objects.get(id=club_id)
@@ -198,28 +198,25 @@ def create_tournament(request, club_id):
         form = CreateTournamentForm(initial={"coorganisers": possible_coorganisers})
         return render(request, 'create_tournament.html', {'form': form, "club_id": club.id})
 
-    elif request.method == 'POST':
-        if request.user.is_authenticated:
-            form = CreateTournamentForm(request.POST,enumerate(possible_coorganisers))
-            if form.is_valid():
-                name = form.cleaned_data.get('name')
-                description = form.cleaned_data.get('description')
-                deadline = form.cleaned_data.get('deadline')
-                coorganisers = form.cleaned_data.get('coorganisers')
-
-                logged_in_users_membership = Membership.objects.get(club=club, user=current_user)
-                coorganisers = form.cleaned_data.get('coorganisers')
-                tournament = Tournament.objects.create(name=name, description=description, deadline=deadline, organiser=logged_in_users_membership, club=club)
-                tournament.coorganisers.set(coorganisers)
-                return redirect('dashboard')
-            else:
-                #added this line because it breaks coorganisers and shows every possible one if there is  a mistake in the form
-                form = CreateTournamentForm(initial={"coorganisers": possible_coorganisers})
-                return render(request, 'create_tournament.html', {'form': form, "club_id": club.id })
-        else:
-            return redirect('log_in')
     else:
-        return HttpResponseForbidden()
+        form = CreateTournamentForm(request.POST,enumerate(possible_coorganisers))
+        if form.is_valid():
+            name = form.cleaned_data.get('name')
+            description = form.cleaned_data.get('description')
+            deadline = form.cleaned_data.get('deadline')
+            coorganisers = form.cleaned_data.get('coorganisers')
+
+            logged_in_users_membership = Membership.objects.get(club=club, user=current_user)
+            coorganisers = form.cleaned_data.get('coorganisers')
+            tournament = Tournament.objects.create(name=name, description=description, deadline=deadline, organiser=logged_in_users_membership, club=club)
+            tournament.coorganisers.set(coorganisers)
+            messages.success(request, "Tournament created successfully!")
+            return redirect('dashboard')
+        else:
+            #added this line because it breaks coorganisers and shows every possible one if there is  a mistake in the form
+            messages.error(request, "The credentials provided were invalid!")
+            form = CreateTournamentForm(initial={"coorganisers": possible_coorganisers})
+            return render(request, 'create_tournament.html', {'form': form, "club_id": club.id })
 
 
 
@@ -419,10 +416,7 @@ def updateActiveParticipants(tournament,matches, match_round):
         elif match.match_status == 3:
             match.playerB.is_active = False
             match.playerB.save()
-<<<<<<< HEAD
 
-=======
->>>>>>> b2d6679fbc23f572cffdbe8f35231356d2793b80
 
 
 def haveDrawn(tournament,matches, match_round):
