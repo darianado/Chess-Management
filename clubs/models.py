@@ -234,6 +234,18 @@ class Events(models.Model):
             return "red"
 
 class Tournament(models.Model):
+    #  class Meta:
+        #  constraints = [
+            #  models.CheckConstraint(
+                #  check=Q(participants.count().__gte=2),
+                #  name="check_capacity_participants_min"
+            #  ),
+            #  models.CheckConstraint(
+                #  check=Q(participants__lte=16),
+                #  name="check_capacity_participants_max"
+            #  )
+#
+        #  ]
 
     name = models.CharField(
             max_length = 50,

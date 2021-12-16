@@ -223,6 +223,7 @@ def create_tournament(request, club_id):
 
 
 
+@login_required(redirect_field_name="")
 def create_club(request):
     if request.method == 'POST':
         if request.user.is_authenticated:
@@ -407,7 +408,7 @@ def matches(request, tournament_id):
     can_set_match = is_organiser or is_coorganiser
     
     match_round = tournament.getRoundTournament()
-    winner = getWinner(request,tournament,match_round)
+    winner = getWinner(tournament,match_round)
     return render(request, "partials/matches.html", {"matches": list(zip(matches, labels)), "can_set_match": can_set_match, "match_round" : match_round, "rounds" : range(1,5), "winner" : winner})
 
 def updateActiveParticipants(tournament,matches, match_round):
