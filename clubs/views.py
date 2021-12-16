@@ -199,7 +199,7 @@ def create_tournament(request, club_id):
         return render(request, 'create_tournament.html', {'form': form, "club_id": club.id})
 
     else:
-        form = CreateTournamentForm(request.POST,enumerate(possible_coorganisers))
+        form = CreateTournamentForm(request.POST)
         if form.is_valid():
             name = form.cleaned_data.get('name')
             description = form.cleaned_data.get('description')
@@ -213,9 +213,7 @@ def create_tournament(request, club_id):
             messages.success(request, "Tournament created successfully!")
             return redirect('dashboard')
         else:
-            #added this line because it breaks coorganisers and shows every possible one if there is  a mistake in the form
-            messages.error(request, "The credentials provided were invalid!")
-            form = CreateTournamentForm(initial={"coorganisers": possible_coorganisers})
+            form = CreateTournamentForm(request.POST, initial={"coorganisers": possible_coorganisers})
             return render(request, 'create_tournament.html', {'form': form, "club_id": club.id })
 
 
