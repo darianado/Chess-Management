@@ -1,10 +1,11 @@
+"""Tests of the matches view."""
 from django.test import TestCase
 from django.urls import reverse
 from clubs.tests.helper import reverse_with_next
 from clubs.models import Club, User, Membership, Tournament, Participant, Match
 
 class MachesTest(TestCase):
-
+    """Tests of the matches view."""
     fixtures = [
         "clubs/tests/fixtures/default_user_jane.json",
         "clubs/tests/fixtures/default_participant_jane.json",

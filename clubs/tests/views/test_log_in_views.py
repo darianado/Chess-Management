@@ -7,12 +7,12 @@ from clubs.tests.helper import LogInTester, reverse_with_next
 from django.contrib import messages
 
 class LogInViewTestCase(TestCase, LogInTester):
-
+    """Tests of the log in view."""
     fixtures = [
         "clubs/tests/fixtures/default_user_john.json"
     ]
 
-    """"Tests of the log in view."""
+
     def setUp(self):
         self.url = reverse('log_in')
         self.user = User.objects.get(email="johndoe@example.org")

@@ -1,3 +1,4 @@
+"""Tests of the table view."""
 from django.test import TestCase
 from django.urls import reverse
 from clubs.models import User, Membership, Club
@@ -5,6 +6,7 @@ from django.db.models import Q
 
 
 class TableTest(TestCase):
+    """Tests of the table view."""
     fixtures = ['clubs/tests/fixtures/default_user_john.json',
                 'clubs/tests/fixtures/default_club_hame.json',
                 'clubs/tests/fixtures/default_club_hamersmith.json',
@@ -31,19 +33,18 @@ class TableTest(TestCase):
     def test_view_correct_my_clubs_table(self):
         self.client.login(email=self.userJohn.email, password="Password123")
         self.assertTrue(self.client.login(email=self.userJohn.email, password="Password123"))
-        john_clubs = [member.club for member in Membership.objects.filter(Q(user=self.userJohn) )] 
-        self.assertEqual(len(john_clubs), 2) 
+        john_clubs = [member.club for member in Membership.objects.filter(Q(user=self.userJohn) )]
+        self.assertEqual(len(john_clubs), 2)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'table.html')
 
-        
+
     def test_incorrect_my_clubs_table(self):
         self.client.login(email=self.userJohn.email, password="Password123")
         self.assertTrue(self.client.login(email=self.userJohn.email, password="Password123"))
-        john_clubs = [member.club for member in Membership.objects.filter(Q(user=self.userJohn) )] 
-        self.assertNotEqual(len(john_clubs), 3) 
+        john_clubs = [member.club for member in Membership.objects.filter(Q(user=self.userJohn) )]
+        self.assertNotEqual(len(john_clubs), 3)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'table.html')
-

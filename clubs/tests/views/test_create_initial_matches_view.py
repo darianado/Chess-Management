@@ -1,10 +1,11 @@
+"""Tests for the create initial matches view."""
 from django.test import TestCase
 from clubs.models import Match, Membership, Participant, Tournament
 from clubs.tests.helper import reverse
 from clubs.views import show_tournament
 
 class CreateInitialMatchesViewTestCase(TestCase):
-
+    """Tests for the create initial matches view."""
     fixtures = [
         "clubs/tests/fixtures/default_user_jane.json",
         "clubs/tests/fixtures/default_user_john.json",

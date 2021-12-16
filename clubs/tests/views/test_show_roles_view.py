@@ -1,3 +1,4 @@
+"""Tests of the show roles view."""
 from django.test import TestCase
 from django.urls import reverse
 from clubs.tests.helper import reverse_with_next
@@ -5,7 +6,7 @@ from clubs.helpers import  Role
 from clubs.models import Club, User, Membership
 
 class ShowrolesTest(TestCase):
-
+    """Tests of the show roles view."""
     fixtures = [
         "clubs/tests/fixtures/default_user_john.json",
         "clubs/tests/fixtures/default_user_jane.json",
@@ -23,7 +24,7 @@ class ShowrolesTest(TestCase):
         self.userJohn = User.objects.get(email="johndoe@example.org") #member
         self.userMiki = User.objects.get(email='mikidoe@example.org') #officer
         self.clubHame = Club.objects.get(club_name="Hame Chess Club")
-        
+
 
         self.urlHameApplic = reverse('show_roles', kwargs={'club_id': self.clubHame.id})
 

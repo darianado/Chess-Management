@@ -1,3 +1,4 @@
+"""Tests for the leave tournament view."""
 from django.test import TestCase
 from django.urls import reverse
 from clubs.tests.helper import reverse_with_next
@@ -5,7 +6,7 @@ from clubs.helpers import  Role
 from clubs.models import Club, User, Membership, Tournament, Participant
 
 class LeaveTournamentTest(TestCase):
-
+    """Tests for the leave tournament view."""
     fixtures = [
         "clubs/tests/fixtures/other_users.json",
         "clubs/tests/fixtures/other_participants.json",

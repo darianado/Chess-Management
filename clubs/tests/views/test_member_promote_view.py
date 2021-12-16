@@ -1,3 +1,4 @@
+"""Tests of the member promote view."""
 from django.test import TestCase
 from django.urls import reverse
 from clubs.tests.helper import reverse_with_next
@@ -5,7 +6,7 @@ from clubs.helpers import  Role
 from clubs.models import Club, User, Membership
 
 class MemberPromoteTest(TestCase):
-
+    """Tests of the member promote view."""
     fixtures = [
         "clubs/tests/fixtures/default_user_jane.json",
         "clubs/tests/fixtures/default_membership_jane_hame.json",
@@ -46,4 +47,3 @@ class MemberPromoteTest(TestCase):
         redirect_url = reverse("show_club", kwargs={'club_id': self.club.id})
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
         self.assertEqual(Membership.get_member_role(self.userMiki, self.club), Role.OFFICER)
-

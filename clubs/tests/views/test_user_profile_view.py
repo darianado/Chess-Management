@@ -1,10 +1,11 @@
+"""Tests of the user profile view."""
 from django.test import TestCase
 from django.urls import reverse
 from clubs.models import Club, Membership, User
 from clubs.tests.helper import reverse_with_next
 
 class UserProfileViewTestCase(TestCase):
-
+    """Tests of the user profile view."""
     fixtures = [
         "clubs/tests/fixtures/default_user_john.json",
         "clubs/tests/fixtures/default_user_jane.json",

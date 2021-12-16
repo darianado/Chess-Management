@@ -1,3 +1,4 @@
+"""Tests for the apply tournament view."""
 from django.test import TestCase
 from django.urls import reverse
 from clubs.models import User, Membership, Club, Tournament, Participant
@@ -6,6 +7,7 @@ from datetime import datetime, time, timedelta
 
 
 class TournamentApplyTest(TestCase):
+    """Tests for the apply tournament view."""
     fixtures = ['clubs/tests/fixtures/default_user_jane.json',
                 'clubs/tests/fixtures/default_user_john.json',
                 'clubs/tests/fixtures/default_membership_jane_hame.json',
@@ -84,7 +86,7 @@ class TournamentApplyTest(TestCase):
             fetch_redirect_response=True
         )
         self.assertTemplateUsed(response, 'show_tournament.html')
-        
+
     def test_unsuccessful_apply_to_tournament_by_deadline(self):
         self.tournament.deadline=datetime.isoformat(datetime.now(tz=timezone.utc) - timedelta(days=1))
         self.tournament.save()

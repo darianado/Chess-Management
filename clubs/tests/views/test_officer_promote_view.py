@@ -1,3 +1,4 @@
+"""Tests of the officer promote view."""
 from django.test import TestCase
 from django.urls import reverse
 from clubs.tests.helper import reverse_with_next
@@ -5,7 +6,7 @@ from clubs.helpers import  Role
 from clubs.models import Club, User, Membership
 
 class OfficerPromoteTest(TestCase):
-
+    """Tests of the officer promote view."""
     fixtures = [
         "clubs/tests/fixtures/default_user_jane.json",
         "clubs/tests/fixtures/default_membership_jane_hame.json",
