@@ -127,14 +127,14 @@ class TournamentModelTest(TestCase):
         number_rounds = self.tournamentYetti.getNumberOfRounds()
         self.assertEqual(number_rounds, 1)
 
-    def test_get_round_number_returns_ncorrectly(self):
+    def test_get_round_number_returns_incorrectly(self):
         number_rounds = self.tournamentYetti.getNumberOfRounds()
         self.assertNotEqual(number_rounds, 9000000)
 
+    def test_get_round_number_returns_0(self):
+        number_rounds = self.tournamentAlaska.getNumberOfRounds()
+        self.assertEqual(number_rounds,0)
     
-
-
-
 
     def test_schedule_matches(self):
         Tournament.scheduleMatches(self.tournamentYetti,1)
