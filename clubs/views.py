@@ -392,7 +392,8 @@ def matches(request, tournament_id):
         "matches": list(zip(matches, labels)),
         "can_set_match": can_set_match,
         "match_round": match_round,
-        "rounds" : range(1,5),
+        "max_rounds" : tournament.getNumberOfRounds(),
+        "rounds" : range(1,tournament.getNumberOfRounds()+1),
         "winner" : winner
         }
     )

@@ -39,7 +39,7 @@
                       </tbody>
               </table>
       {% endfor %}
-      {% if match_round|add:"1" == 5 and winner != None %}
+      {% if match_round == max_rounds and winner != None %}
       <div class="d-flex justify-content-center mt-5 mb-4">
           <div>
               <img src="{% static '/images/winner.svg' %}" alt="" id ="winner-logo">
@@ -55,6 +55,7 @@
       <h5 align-items-center>There are no current matches</h5>
   {% else %}
       <h5 align-items-center>Add button here</h5>
+         
       {% comment %} <form onsubmit="return confirm('You are about to schedule the matches !');;" {% endcomment %}
           {% comment %} action="{% url 'apply_to_tournament' tournament.id %}"> {% endcomment %}
           {% comment %} <input type="submit" class="btn btn-secondary" value="Attend"> </input> {% endcomment %}
