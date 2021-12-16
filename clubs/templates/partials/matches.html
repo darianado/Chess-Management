@@ -21,7 +21,7 @@
                                       <tr>
                                         <td>{{match.playerA.member.user.get_full_name}}</td>
                                         <td>{{match.playerB.member.user.get_full_name}}</td>
-                                        <td>{{match.match_status}}</td>
+                                        <td>{{match_status_label}}</td>
                                         <td>
                                         {% if can_set_match and match.match_round == match_round and winner == None%}
                                           <form action="{% url 'set_match_result' match.id %}">
