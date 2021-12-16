@@ -6,7 +6,6 @@ from django.contrib import messages
 from django.db.models import Q
 from django.contrib.auth.hashers import check_password
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponseForbidden, request
 from django.contrib.auth.decorators import login_required
 from clubs.helpers import Role, Status
 from clubs.decorators import login_prohibited, minimum_role_required
@@ -189,8 +188,8 @@ def password(request):
         form = changePasswordForm()
     return render(request, 'password.html', {'form': form})
 
-
-@login_required(redirect_field_name="log_in")
+@login_required(redirect_field_name="")
+@minimum_role_required(role_required=Role.OFFICER, redirect_location="dashboard")
 def create_tournament(request, club_id):
     current_user = request.user
     club = Club.objects.get(id=club_id)
@@ -200,51 +199,41 @@ def create_tournament(request, club_id):
         form = CreateTournamentForm(initial={"coorganisers": possible_coorganisers})
         return render(request, 'create_tournament.html', {'form': form, "club_id": club.id})
 
-    elif request.method == 'POST':
-        if request.user.is_authenticated:
-            form = CreateTournamentForm(request.POST,enumerate(possible_coorganisers))
-            if form.is_valid():
-                name = form.cleaned_data.get('name')
-                description = form.cleaned_data.get('description')
-                deadline = form.cleaned_data.get('deadline')
-                coorganisers = form.cleaned_data.get('coorganisers')
-
-                logged_in_users_membership = Membership.objects.get(club=club, user=current_user)
-                coorganisers = form.cleaned_data.get('coorganisers')
-                tournament = Tournament.objects.create(name=name, description=description, deadline=deadline, organiser=logged_in_users_membership, club=club)
-                tournament.coorganisers.set(coorganisers)
-                return redirect('dashboard')
-            else:
-                #added this line because it breaks coorganisers and shows every possible one if there is  a mistake in the form
-                form = CreateTournamentForm(initial={"coorganisers": possible_coorganisers})
-                return render(request, 'create_tournament.html', {'form': form, "club_id": club.id })
-        else:
-            return redirect('log_in')
     else:
-        return HttpResponseForbidden()
+        form = CreateTournamentForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data.get('name')
+            description = form.cleaned_data.get('description')
+            deadline = form.cleaned_data.get('deadline')
+            coorganisers = form.cleaned_data.get('coorganisers')
+
+            logged_in_users_membership = Membership.objects.get(club=club, user=current_user)
+            coorganisers = form.cleaned_data.get('coorganisers')
+            tournament = Tournament.objects.create(name=name, description=description, deadline=deadline, organiser=logged_in_users_membership, club=club)
+            tournament.coorganisers.set(coorganisers)
+            messages.success(request, "Tournament created successfully!")
+            return redirect('dashboard')
+        else:
+            form = CreateTournamentForm(request.POST, initial={"coorganisers": possible_coorganisers})
+            return render(request, 'create_tournament.html', {'form': form, "club_id": club.id })
 
 
 
 @login_required(redirect_field_name="")
 def create_club(request):
     if request.method == 'POST':
-        if request.user.is_authenticated:
-            current_user=request.user
-            form = CreateClubForm(request.POST)
-            if form.is_valid():
-                club_name = form.cleaned_data.get('club_name')
-                location = form.cleaned_data.get('location')
-                description = form.cleaned_data.get('description')
-                club = Club.objects.create(club_name=club_name, location=location, description=description)
-                member = Membership.objects.create(club=club, user=current_user, role=1)
-                messages.success(request, "Club created successfully!")
-                return redirect('club_list')
-            else:
-                messages.error(request, "The credentials provided were invalid!")
-                return render(request, 'create_club.html', {'form': form})
+        current_user=request.user
+        form = CreateClubForm(request.POST)
+        if form.is_valid():
+            club_name = form.cleaned_data.get('club_name')
+            location = form.cleaned_data.get('location')
+            description = form.cleaned_data.get('description')
+            club = Club.objects.create(club_name=club_name, location=location, description=description)
+            member = Membership.objects.create(club=club, user=current_user, role=1)
+            messages.success(request, "Club created successfully!")
+            return redirect('club_list')
         else:
-            messages.error(request, "You should log in first")
-            return redirect('log_in')
+            return render(request, 'create_club.html', {'form': form})
     else:
         form = CreateClubForm()
         return render(request, 'create_club.html', {'form': form})
@@ -260,7 +249,7 @@ def officer_promote(request,member_id):
     current_member.demote()
     member.promote()
 
-    action = Events.objects.create(club=member.club, user=member.user, action = 4)
+    Events.objects.create(club=member.club, user=member.user, action = 4)
     messages.success(request, "Officer has been promoted successfully")
     return redirect('show_club', club_id = c_id)
 
@@ -272,7 +261,7 @@ def officer_demote(request,member_id):
 
     member.demote()
 
-    action = Events.objects.create(club=member.club, user=member.user, action = 5)
+    Events.objects.create(club=member.club, user=member.user, action = 5)
     messages.success(request, "Officer has been demoted successfully")
     return redirect('show_club', club_id=c_id)
 
@@ -285,7 +274,7 @@ def member_promote(request,member_id):
 
     member.promote()
 
-    action = Events.objects.create(club=member.club, user=member.user, action = 4)
+    Events.objects.create(club=member.club, user=member.user, action = 4)
     messages.success(request, "Member has been promoted successfully")
     return redirect('show_club', club_id = c_id)
 
@@ -300,7 +289,7 @@ def member_kick(request,member_id):
 
     member.member_kick()
 
-    action = Events.objects.create(club=club, user=user, action = 6)
+    Events.objects.create(club=club, user=user, action = 6)
     messages.success(request, "Member has been kicked successfully")
     return redirect('show_club', club_id = c_id)
 
@@ -315,7 +304,7 @@ def deny_applicant(request, member_id):
 
     member.denyApplicant()
 
-    action = Events.objects.create(club=club, user=user, action = 3)
+    Events.objects.create(club=club, user=user, action = 3)
     messages.success(request, "Applicant has been denied")
     return redirect('show_club', club_id = c_id)
 
@@ -328,7 +317,7 @@ def accept_applicant(request,member_id):
 
     member.acceptApplicant()
 
-    action = Events.objects.create(club=member.club, user=member.user, action = 1)
+    Events.objects.create(club=member.club, user=member.user, action = 1)
     messages.success(request, "Applicant has been accepted")
     return redirect('show_club', club_id= c_id)
 
@@ -341,7 +330,6 @@ def events_list(request):
 def apply_to_club(request, club_id ):
     club = Club.objects.get(id=club_id)
     user = request.user
-    member_in_club = Membership.get_member_role(user,club)
     Events.objects.create(club=club, user=request.user, action = 2)
     if request.method == 'GET':
         Membership.objects.create(
@@ -357,7 +345,6 @@ def apply_to_club(request, club_id ):
 def leave_a_club(request, club_id ):
     club = Club.objects.get(id=club_id)
     user = request.user
-    member_in_club = Membership.get_member_role(user,club)
     if request.method == 'GET':
         Membership.objects.filter(club_id=club_id).get(user_id=user.id).delete()
         messages.success(request, 'You have left the club.')
@@ -366,22 +353,14 @@ def leave_a_club(request, club_id ):
 @login_required(redirect_field_name="")
 def table(request):
     user = request.user
-    user_id = user.id
     filtered_clubs = []
     filtered_clubs = [member.club for member in Membership.objects.filter(Q(user=user) )]
     list_data = []
     for club in filtered_clubs:
-
         data_row = (club.club_name, Membership.objects.filter(club=club).exclude(role=4).count(), Membership.get_member_role_name(Membership.get_member_role(user, club)), club.id)
         list_data.append(data_row)
 
-    return render(
-            request,
-            "table.html",
-            {
-                "list_data": list_data,
-            }
-        )
+    return render(request, "table.html", {"list_data": list_data})
 
 @login_required(redirect_field_name="")
 def tournament_list(request,club_id):
@@ -394,7 +373,7 @@ def tournament_list(request,club_id):
     tournaments = Tournament.objects.all().filter(club=club)
     return render(request, "partials/tournaments_list_table.html", {"tournaments": tournaments, "is_officer": is_officer, "club": club})
 
-# TODO check if the matches contain the officer -> they do 
+# TODO check if the matches contain the officer -> they do
 def matches(request, tournament_id):
     tournament = Tournament.objects.get(id=tournament_id)
     matches = Match.objects.filter(tournament=tournament)
@@ -406,12 +385,19 @@ def matches(request, tournament_id):
     if request.user in [x.user for x in tournament.coorganisers.all()]:
         is_coorganiser = True
     can_set_match = is_organiser or is_coorganiser
-    
+
     match_round = tournament.getRoundTournament()
     winner = getWinner(tournament,match_round)
-    return render(request, "partials/matches.html", {"matches": list(zip(matches, labels)), "can_set_match": can_set_match, "match_round" : match_round, "rounds" : range(1,5), "winner" : winner})
+    return render(request, "partials/matches.html", {
+        "matches": list(zip(matches, labels)),
+        "can_set_match": can_set_match,
+        "match_round": match_round,
+        "rounds" : range(1,5),
+        "winner" : winner
+        }
+    )
 
-def updateActiveParticipants(tournament,matches, match_round):
+def updateActiveParticipants(matches):
     for match in matches:
         if match.match_status == 4:
             match.playerA.is_active = False
@@ -419,14 +405,10 @@ def updateActiveParticipants(tournament,matches, match_round):
         elif match.match_status == 3:
             match.playerB.is_active = False
             match.playerB.save()
-            
 
-def haveDrawn(tournament,matches, match_round):
+def haveDrawn(tournament, match_round):
     drawn_round =  Match.objects.filter(tournament=tournament).filter(match_round=match_round).filter(Q(match_status=2))
-    if len(drawn_round) > 0:
-        return False
-    else:
-        return True
+    return len(drawn_round) > 0
 
 def getWinner(tournament, match_round):
     winner = Participant.objects.filter(tournament=tournament, is_active=True)
@@ -434,17 +416,15 @@ def getWinner(tournament, match_round):
     if match_round == tournament.getNumberOfRounds() and len(winner)==1:
         return winner[0]
     return None
-     
+
 
 def abs(request, tournament, match_round):
     matches = Match.objects.filter(tournament=tournament).filter(match_round=match_round)
     if tournament.isRoundFinished(tournament,match_round):
-        updateActiveParticipants(tournament, matches, match_round)
+        updateActiveParticipants(matches)
         tournament.scheduleMatches(match_round+1)
-    elif not haveDrawn(tournament,matches, match_round):
+    elif haveDrawn(tournament, match_round):
         messages.error(request, "Set drawn matches again")
-
-    
 
 @login_required
 def set_match_result(request, match_id):
@@ -559,6 +539,8 @@ def participant_list(request, tournament_id):
     if member.role == 2 or member.role == 1:
         is_officer = True
     return render(request,"partials/participant_list_table.html",
-    {'is_officer': is_officer,
-    'participants': participants,
-    })
+        {
+            'is_officer': is_officer,
+            'participants': participants,
+        }
+    )

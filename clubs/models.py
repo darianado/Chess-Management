@@ -152,6 +152,7 @@ class Membership(models.Model):
 
     def promote(self):
         self.role=self.role-1
+
         self.save()
     def demote(self):
         self.role=self.role+1
@@ -178,7 +179,7 @@ class Membership(models.Model):
         elif role == 4:
             return ('Applicant')
         elif role == None:
-            return ('User')    
+            return ('User')
         return ('')
 
     def __str__(self):
@@ -307,7 +308,7 @@ class Tournament(models.Model):
         result_match_round = [match.match_round for match in matches]
         #check if it is 0 when you call it
         return max(result_match_round, default = 0)
-        
+
 
 class Participant(models.Model):
     class Meta:
