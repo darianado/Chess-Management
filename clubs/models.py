@@ -298,8 +298,8 @@ class Tournament(models.Model):
         number_participants = Participant.objects.filter(tournament=self).count()
         return ceil(log(number_participants,2))
 
-    """Get the current maximum round in the particular tournament """
     def getRoundTournament(self):
+        """Get the current maximum round in the particular tournament """
         matches = Match.objects.filter(tournament=self)
         result_match_round = [match.match_round for match in matches]
         #check if it is 0 when you call it
