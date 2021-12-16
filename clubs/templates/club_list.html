@@ -9,23 +9,40 @@
 
 <div class="card-body">
   <div>
-      <h1>Clubs</h1>
-      <table class="table">
-        {% for club in clubs %}
-          <tr>
-            <td><a href="{% url 'show_club' club.id %}">{{ club.club_name }}</a></td>
-            <td>{{ club.location }}</td>
-          </tr>
-        {% endfor %}
-      </table>
-      
-        <div>
-          <form action="{% url 'create_club' %}">
-              <button  > 
-                  Create Club
+      <h1 style="color:#2B2E4D;">Existing Clubs </h1>
+      <div class="d-flex align-items-center">
+              <h3 style="color:#D7A786;">Choose your closest location:</h3>
+              <table class="table">
+                {% for club in clubs %}
+                  <tr>
+
+                    <td>{{ club.club_name }}</td>
+                    <td>{{ club.location }}</td>
+                    <td>
+                      <form action="{% url 'show_club' club.id %}">
+                        <button> 
+                          
+                          Find out more
+                          <i class="bi bi-caret-right"></i>
+                        </button>
+                      </form>    
+                    </td>
+
+                  </tr>
+                {% endfor %}
+              </table>
+      </div>
+      <div class="d-flex align-items-center">
+          <h5>
+            Not interested in any of our current clubs? <br>No worries, set up your own club in your city and build up a community!       
+          </h5>
+          <form action="{% url 'create_club' %}" class="m-5">
+              <button style="background-color: #2B2E4D;" class="text-white"> 
+                <i class="bi bi-patch-plus"></i>
+                  Create A New Club
               </button>
           </form>    
-        </div>
+      </div>
     </div>
 
 

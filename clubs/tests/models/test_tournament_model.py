@@ -1,24 +1,35 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 
-from clubs.models import Tournament
+from clubs.models import Tournament, Participant,Match
 
 class TournamentModelTest(TestCase):
 
     fixtures = [
         "clubs/tests/fixtures/default_user_jane.json",
+        "clubs/tests/fixtures/default_user_john.json",
+        "clubs/tests/fixtures/other_users.json",
+
         "clubs/tests/fixtures/default_club_hame.json",
         "clubs/tests/fixtures/default_club_hamersmith.json",
-        "clubs/tests/fixtures/other_users.json",
+
         "clubs/tests/fixtures/default_membership_jane_hame.json",
+        "clubs/tests/fixtures/default_membership_john_hame.json",
         "clubs/tests/fixtures/default_membership_jane_hamersmith.json",
         "clubs/tests/fixtures/other_memberships.json",
+
         "clubs/tests/fixtures/default_tournament_hame.json",
-        "clubs/tests/fixtures/default_tournament_hamersmith.json"
+        "clubs/tests/fixtures/default_tournament_hamersmith.json",
+
+        "clubs/tests/fixtures/default_participant_jane.json",
+        "clubs/tests/fixtures/default_participant_john.json"
     ]
 
     def setUp(self):
         self.tournamentYetti = Tournament.objects.get(name="Yetti")
+        # self.partiJane = Participant.objects.get(id=2)
+        # self.partiJohn = Participant.objects.get(id=1)
+        # self.part
         self.tournamentAlaska = Tournament.objects.get(name="Alaska")
 
     def test_name_cannot_be_empty(self):
@@ -101,19 +112,35 @@ class TournamentModelTest(TestCase):
         self.tournamentYetti.capacity = 2
         self._assert_tournament_is_valid()
 
-    def test_capacity_can_be_96(self):
-        self.tournamentYetti.capacity = 96
+    def test_capacity_can_be_16(self):
+        self.tournamentYetti.capacity = 16
         self._assert_tournament_is_valid()
 
     def test_capacity_cannot_be_1(self):
         self.tournamentYetti.capacity = 1
         self._assert_tournament_is_invalid()
 
-    def test_capacity_cannot_be_97(self):
-        self.tournamentYetti.capacity = 97
+    def test_capacity_cannot_be_17(self):
+        self.tournamentYetti.capacity = 17
         self._assert_tournament_is_invalid()
 
+    
 
+    def test_schedule_matches(self):
+        Tournament.scheduleMatches(self.tournamentYetti,1)
+        self.assertEqual(Match.objects.count(),1)
+
+    def test_round_not_finish(self):
+        Tournament.scheduleMatches(self.tournamentYetti,1)
+        # Match.objects.get(id=1).match_status=2
+        self.assertEqual(Tournament.isRoundFinished(self.tournamentYetti,self.tournamentYetti,1), False)
+
+    def test_round_finish(self):
+        Tournament.scheduleMatches(self.tournamentYetti,1)
+        match= Match.objects.get(id=1)
+        match.match_status=3
+        match.save()
+        self.assertEqual(Tournament.isRoundFinished(self.tournamentYetti,self.tournamentYetti,1), True)
 
     def _assert_tournament_is_valid(self):
         try:

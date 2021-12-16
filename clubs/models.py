@@ -266,7 +266,7 @@ class Tournament(models.Model):
             default=16,
             validators=[
                 MinValueValidator(2),
-                MaxValueValidator(96)
+                MaxValueValidator(16)
             ]
         )
 
@@ -326,7 +326,10 @@ class Participant(models.Model):
 class Match(models.Model):
     class Meta:
         constraints = [
-            models.CheckConstraint(check=~Q(playerA=models.F("playerB")), name='players_diff')
+            models.CheckConstraint(
+                check=~Q(playerA=models.F("playerB")),
+                name='players_diff'
+            )
         ]
 
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
