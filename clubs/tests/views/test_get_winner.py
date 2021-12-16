@@ -30,12 +30,11 @@ class GetWinnerTestCase(TestCase):
         self.tournament = Tournament.objects.get(name= "Yetti")
         self.match = Match.objects.get(id=1)
         self.match.match_status=3
-        self.match.match_round=4
+        self.match.match_round=1
         self.match.save()
         self.looserJane = Participant.objects.get(id=2)
         self.looserJane.is_active=False
         self.looserJane.save()
-        
 
         self.userMiki = User.objects.get(email="mikidoe@example.org")
 

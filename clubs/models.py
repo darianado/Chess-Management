@@ -6,6 +6,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models.fields.json import JSONField
+from math import ceil, log 
 
 from libgravatar import Gravatar
 from clubs.helpers import Role, Status
@@ -293,7 +294,14 @@ class Tournament(models.Model):
                 return False
         return True
 
+    def getNumberOfRounds(self):
+        number_participants = Participant.objects.filter(tournament=self).count()
+        if number_participants > 0:
+            return ceil(log(number_participants,2))
+        return 0
+
     def getRoundTournament(self):
+        """Get the current maximum round in the particular tournament """
         matches = Match.objects.filter(tournament=self)
         result_match_round = [match.match_round for match in matches]
         #check if it is 0 when you call it
