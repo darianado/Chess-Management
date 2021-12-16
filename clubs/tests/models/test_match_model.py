@@ -29,6 +29,14 @@ class MatchModelTest(TestCase):
         self.matchOne.tournament = None
         self._assert_match_is_invalid()
 
+    def test_get_playerA_return_correct(self):
+        playerA = self.matchOne.getPlayerA()
+        self.assertEqual(playerA,self.matchOne.playerA )
+        
+    def test_get_playerB_return_correct(self):
+        playerB = self.matchOne.getPlayerB()
+        self.assertEqual(playerB,self.matchOne.playerB)
+
     def test_playerA_cannot_be_empty(self):
         self.matchOne.playerA = None
         self._assert_match_is_invalid()

@@ -189,22 +189,18 @@ def password(request):
     return render(request, 'password.html', {'form': form})
 
 
+@login_required(redirect_field_name="log_in")
 def create_tournament(request, club_id):
     current_user = request.user
     club = Club.objects.get(id=club_id)
     possible_coorganisers = Membership.objects.filter(Q(club=club) & (Q(role=2) | Q(role=1) )).exclude(user=current_user)
-    coo = []
-    for i in possible_coorganisers:
-        coo.append(i.user.first_name)
-    print(coo)
-
 
     if request.method == 'GET':
         form = CreateTournamentForm(initial={"coorganisers": possible_coorganisers})
         return render(request, 'create_tournament.html', {'form': form, "club_id": club.id})
+
     elif request.method == 'POST':
         if request.user.is_authenticated:
-            #  form = CreateTournamentForm(request.POST,coo)
             form = CreateTournamentForm(request.POST,enumerate(possible_coorganisers))
             if form.is_valid():
                 name = form.cleaned_data.get('name')
@@ -212,13 +208,14 @@ def create_tournament(request, club_id):
                 deadline = form.cleaned_data.get('deadline')
                 coorganisers = form.cleaned_data.get('coorganisers')
 
-                #TODO take the checkbox-ed coorganisers and clean them
                 logged_in_users_membership = Membership.objects.get(club=club, user=current_user)
                 coorganisers = form.cleaned_data.get('coorganisers')
                 tournament = Tournament.objects.create(name=name, description=description, deadline=deadline, organiser=logged_in_users_membership, club=club)
                 tournament.coorganisers.set(coorganisers)
                 return redirect('dashboard')
             else:
+                #added this line because it breaks coorganisers and shows every possible one if there is  a mistake in the form
+                form = CreateTournamentForm(initial={"coorganisers": possible_coorganisers})
                 return render(request, 'create_tournament.html', {'form': form, "club_id": club.id })
         else:
             return redirect('log_in')
@@ -227,11 +224,9 @@ def create_tournament(request, club_id):
 
 
 
+@login_required(redirect_field_name="")
 def create_club(request):
-    if request.method =='GET':
-        form = CreateClubForm()
-        return render(request, 'create_club.html', {'form': form})
-    elif request.method == 'POST':
+    if request.method == 'POST':
         if request.user.is_authenticated:
             current_user=request.user
             form = CreateClubForm(request.POST)
@@ -249,6 +244,9 @@ def create_club(request):
         else:
             messages.error(request, "You should log in first")
             return redirect('log_in')
+    else:
+        form = CreateClubForm()
+        return render(request, 'create_club.html', {'form': form})
 
 @login_required(redirect_field_name="")
 @minimum_role_required(role_required=Role.OWNER, redirect_location="club_list")
@@ -350,7 +348,7 @@ def apply_to_club(request, club_id ):
                 club = club,
                 role = 4,
         )
-    messages.success(request, 'You have applied to the club.')
+        messages.success(request, 'You have applied the club.')
     return redirect('show_club', club.id)
 
 
@@ -360,8 +358,8 @@ def leave_a_club(request, club_id ):
     user = request.user
     member_in_club = Membership.get_member_role(user,club)
     if request.method == 'GET':
-        messages.success(request,"You have left the club")
         Membership.objects.filter(club_id=club_id).get(user_id=user.id).delete()
+        messages.success(request, 'You have left the club.')
     return redirect('show_club', club.id)
 
 @login_required(redirect_field_name="")
@@ -411,10 +409,10 @@ def matches(request, tournament_id):
     can_set_match = is_organiser or is_coorganiser
     
     match_round = tournament.getRoundTournament()
-    winner = getWinner(request,tournament,match_round)
+    winner = getWinner(tournament,match_round)
     return render(request, "partials/matches.html", {"matches": list(zip(matches, labels)), "can_set_match": can_set_match, "match_round" : match_round, "rounds" : range(1,5), "winner" : winner})
 
-def updateActiveParticipants(request, tournament,matches, match_round):
+def updateActiveParticipants(tournament,matches, match_round):
     for match in matches:
         if match.match_status == 4:
             match.playerA.is_active = False
@@ -424,32 +422,43 @@ def updateActiveParticipants(request, tournament,matches, match_round):
             match.playerB.save()
             
 
-def haveDrawn(request,tournament,matches, match_round):
+def haveDrawn(tournament,matches, match_round):
     drawn_round =  Match.objects.filter(tournament=tournament).filter(match_round=match_round).filter(Q(match_status=2))
     if len(drawn_round) > 0:
         return False
     else:
         return True
 
-def getWinner(request, tournament, match_round):
+def getWinner(tournament, match_round):
     winner = Participant.objects.filter(tournament=tournament, is_active=True)
+    # TODO check the maximum matches possible
     if match_round+1 == 5 and len(winner)==1:
         return winner[0]
     return None
      
 
-def abs(request, tournament, match_round):
+def abs(tournament, match_round):
     matches = Match.objects.filter(tournament=tournament).filter(match_round=match_round)
     if tournament.isRoundFinished(tournament,match_round):
-        updateActiveParticipants(request, tournament, matches, match_round)
+        updateActiveParticipants(tournament, matches, match_round)
         tournament.scheduleMatches(match_round+1)
-    elif not haveDrawn(request,tournament,matches, match_round):
-        print("set drawn matches again")
+    elif not haveDrawn(tournament,matches, match_round):
+        messages.error(request, "Set drawn matches again")
+        #  print("set drawn matches again")
 
 
-@login_required(redirect_field_name="")
+@login_required
 def set_match_result(request, match_id):
-    match = Match.objects.get(id=match_id)
+    try:
+        match = Match.objects.get(id=match_id)
+        tournament = match.tournament
+        coorganisers = [coorganiser.user for coorganiser in tournament.coorganisers.all()]
+        organisers = [tournament.organiser.user]
+        organisers.extend(coorganisers)
+        if request.user not in organisers:
+            return redirect("show_tournament", tournament.id)
+    except ObjectDoesNotExist:
+        return redirect("dashboard")
 
     players = [
         match.getPlayerA().member.user.get_full_name(),
@@ -459,19 +468,15 @@ def set_match_result(request, match_id):
     if request.method == 'GET':
         form = SetMatchResultForm(initial={"match_status": match.match_status})
         return render(request, 'set_match_result.html', {'form': form, "match_id" : match_id, "players": players})
-    elif request.method == 'POST':
+    else:
         form = SetMatchResultForm(request.POST, instance=match)
         if form.is_valid():
             form.save()
-            abs(request, match.tournament, match.match_round)
-            # TODO remore the commented line -> now it returns to the tournament page
-            #  return redirect('show_club', club_id=match.tournament.club.id)
-            return show_tournament(request,match.tournament.id)
+            abs(match.tournament, match.match_round)
+            request.session["on_matches"] = True
+            return redirect('show_tournament', tournament.id)
         else:
             return render(request, 'set_match_result.html', {'form': form, "match_id" : match_id, "players": players})
-    else:
-        return HttpResponseForbidden()
-
 
 @login_required(redirect_field_name="")
 # TODO test for minimum role member
@@ -493,7 +498,7 @@ def apply_to_tournament(request, tournament_id ):
                 return redirect('show_tournament', tournament.id)
 
     else:
-        # TODO add messages
+        messages.error(request, "Sorry! The capacity for this tournament reached its limit.")
         print("capacity is full")
 
     return redirect('show_tournament', tournament.id)
@@ -535,6 +540,7 @@ def show_tournament(request, tournament_id):
             'is_coorganiser': is_coorganiser,
         }
     )
+
 
 @login_required(redirect_field_name="")
 def participant_list(request, tournament_id):

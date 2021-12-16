@@ -12,8 +12,10 @@
 
       <div id="membersListDiv" class="col p-0">
         <div id="membersList">
-          {% include 'tournament_detail.html' with is_participant=is_participant tournament=tournament organiser=organiser is_organiser=is_organiser count_participants=count_participants %}
-        </div>
+          {% if not on_matches %}
+            {% include 'tournament_detail.html' with is_participant=is_participant tournament=tournament organiser=organiser is_organiser=is_organiser count_participants=count_participants %}
+          {% endif %}
+          </div>
       </div>
     </div>
   </div>

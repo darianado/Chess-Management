@@ -15,10 +15,10 @@ class OfficerPromoteTest(TestCase):
     ]
 
     def setUp(self):
-        self.userMiki = User.objects.get(email='mikidoe@example.org') #officer
+        self.userGreta = User.objects.get(email='greatdoe@example.org') #officer
         self.user = User.objects.get(email='janedoe@example.org') #Owner
         self.club = Club.objects.get(club_name="Hame Chess Club")
-        self.member = Membership.objects.get(user=self.userMiki, club=self.club)
+        self.member = Membership.objects.get(user=self.userGreta, club=self.club)
 
         self.url = reverse('officer_promote', kwargs={'member_id': self.member.id})
 
@@ -41,9 +41,9 @@ class OfficerPromoteTest(TestCase):
 
     def test_officer_promote_when_logged_in_with_valid_member_id(self):
         self.client.login(email=self.user.email, password='Password123')
-        self.assertEqual(Membership.get_member_role(self.userMiki, self.club), Role.OFFICER)
+        self.assertEqual(Membership.get_member_role(self.userGreta, self.club), Role.OFFICER)
         response = self.client.get(self.url)
         redirect_url = reverse("show_club", kwargs={'club_id': self.club.id})
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
-        self.assertEqual(Membership.get_member_role(self.userMiki, self.club), Role.OWNER)
+        self.assertEqual(Membership.get_member_role(self.userGreta, self.club), Role.OWNER)
         self.assertEqual(Membership.get_member_role(self.user, self.club), Role.OFFICER)

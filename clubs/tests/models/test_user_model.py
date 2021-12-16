@@ -1,5 +1,5 @@
 from django.test import TestCase, override_settings
-from clubs.models import User
+from clubs.models import User, CustomUserManager
 from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import SimpleUploadedFile
 
@@ -13,7 +13,7 @@ class UserModelTest(TestCase):
     def setUp(self):
         self.userJohn = User.objects.get(email="johndoe@example.org")
         self.userJane = User.objects.get(email="janedoe@example.org")
-    
+
     def test_valid_user(self):
         self._assert_user_is_valid()
 
@@ -126,7 +126,7 @@ class UserModelTest(TestCase):
 
 
 # personal statement tests
-    
+
     def test_ps_may_be_blank(self):
         self.userJohn.personal_statement = ''
         self._assert_user_is_valid()
@@ -142,6 +142,24 @@ class UserModelTest(TestCase):
     def test_ps_must_not_contain_more_than_520_characters(self):
         self.userJohn.personal_statement = 'x' * 521
         self._assert_user_is_invalid()
+
+
+# Create super user tests
+
+    def test_create_super_user_but_is_staff_is_false(self):
+        with self.assertRaises(ValueError):
+            User.objects.create_superuser(email="valid@example.org", password="Password123", is_staff=False)
+
+    def test_create_super_user_but_is_superuser_is_false(self):
+        with self.assertRaises(ValueError):
+            User.objects.create_superuser(email="valid@example.org", password="Password123", is_superuser=False)
+
+    def test_create_super_user_with_no_email(self):
+        with self.assertRaises(ValueError):
+            User.objects.create_superuser(password="Password123")
+
+    def test_create_super_user(self):
+        user = User.objects.create_superuser(email="valid@example.org", password="Password123")
 
     def _assert_user_is_valid(self):
         try:
