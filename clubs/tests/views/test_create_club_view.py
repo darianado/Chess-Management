@@ -75,6 +75,11 @@ class CreateClubTest(TestCase):
         self.assertEqual(club_count_after, club_count_before)
         self.assertTemplateUsed(response, 'create_club.html')
 
+    def test_successful_get_to_create_club_page(self):
+        self.client.login(email=self.user.email, password="Password123")
+        response = self.client.get(self.url, self.data, follow=True)
+        self.assertTemplateUsed(response, 'create_club.html')
+
     def test_successful_create_club_owner_for_club(self):
         self.client.login(email=self.user.email, password="Password123")
         member_count_before = Membership.objects.count()

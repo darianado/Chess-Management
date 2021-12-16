@@ -234,6 +234,18 @@ class Events(models.Model):
             return "red"
 
 class Tournament(models.Model):
+    #  class Meta:
+        #  constraints = [
+            #  models.CheckConstraint(
+                #  check=Q(participants.count().__gte=2),
+                #  name="check_capacity_participants_min"
+            #  ),
+            #  models.CheckConstraint(
+                #  check=Q(participants__lte=16),
+                #  name="check_capacity_participants_max"
+            #  )
+#
+        #  ]
 
     name = models.CharField(
             max_length = 50,
@@ -358,17 +370,6 @@ class Match(models.Model):
                 MaxValueValidator(4)
             ]
         )
-
-
-    def getMatchStatusString(self):
-        if self.match_status == 1:
-            return "Not Played"
-        elif self.match_status == 2:
-            return "Drawn"
-        elif self.match_status == 3:
-            return "Won by Player A"
-        else:
-            return "Won by Player B"
 
     def getPlayerA(self):
         return self.playerA

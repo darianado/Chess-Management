@@ -32,3 +32,20 @@ class ClubApplyTest(TestCase):
         self.assertTemplateUsed(response, 'club_list.html')
         messages_list = list(response.context["messages"])
         self.assertEqual(len(messages_list), 1)
+
+    def test_unsuccessful_apply_to_club(self):
+        self.client.login(email=self.userMark.email, password="Password123")
+        self.assertTrue(self.client.login(email=self.userMark.email, password="Password123"))
+        member_count_before = Membership.objects.count()
+        response = self.client.post(self.url, follow=True)
+        member_count_after = Membership.objects.count()
+        self.assertEqual(member_count_after, member_count_before)
+        response_url = reverse('club_list')
+        self.assertRedirects(
+            response, response_url,
+            status_code=302, target_status_code=200,
+            fetch_redirect_response=True
+        )
+        self.assertTemplateUsed(response, 'club_list.html')
+        messages_list = list(response.context["messages"])
+        self.assertEqual(len(messages_list), 0)
