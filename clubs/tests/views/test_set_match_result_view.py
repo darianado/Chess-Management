@@ -21,11 +21,14 @@ class SetMatchResultViewTestCase(TestCase):
         "clubs/tests/fixtures/default_tournament_hame.json",
         "clubs/tests/fixtures/default_participant_john.json",
         "clubs/tests/fixtures/default_participant_jane.json",
+        "clubs/tests/fixtures/other_participants.json",
         "clubs/tests/fixtures/default_match_john_jane.json",
+        "clubs/tests/fixtures/default_match_john_charlie.json",
     ]
 
     def setUp(self):
         self.matchOne = Match.objects.get(id=1)
+        self.matchTwo = Match.objects.get(id=2)
         self.url = reverse("set_match_result", kwargs={"match_id": self.matchOne.id})
         self.organiser = self.matchOne.tournament.organiser
         self.form_input = {
@@ -85,3 +88,28 @@ class SetMatchResultViewTestCase(TestCase):
         self.assertTemplateUsed(response, 'show_tournament.html')
         self.matchOne.refresh_from_db()
         self.assertEqual(self.matchOne.match_status, Status.WON_A.value)
+
+    def test_error_message_when_some_match_is_drawn(self):
+        self.client.login(email=self.organiser.user.email, password="Password123")
+        self.form_input["match_status"] = 2
+        response = self.client.post(self.url, self.form_input, follow=True)
+        messages = response.context["messages"]
+        self.assertEqual(len(messages), 1)
+
+    def test_when_no_match_is_drawn_and_round_incomplete(self):
+        self.client.login(email=self.organiser.user.email, password="Password123")
+        self.form_input["match_status"] = 3
+        response = self.client.post(self.url, self.form_input, follow=True)
+        messages = response.context["messages"]
+        self.assertEqual(len(messages), 0)
+
+    def test_when_round_is_complete(self):
+        self.client.login(email=self.organiser.user.email, password="Password123")
+        self.form_input["match_status"] = 3
+        response = self.client.post(self.url, self.form_input, follow=True)
+        messages = response.context["messages"]
+        self.assertEqual(len(messages), 0)
+        url = reverse("set_match_result", kwargs={"match_id": self.matchTwo.id})
+        response = self.client.post(url, self.form_input, follow=True)
+        messages = response.context["messages"]
+        self.assertEqual(len(messages), 0)
