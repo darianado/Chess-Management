@@ -234,18 +234,6 @@ class Events(models.Model):
             return "red"
 
 class Tournament(models.Model):
-    #  class Meta:
-        #  constraints = [
-            #  models.CheckConstraint(
-                #  check=Q(participants.count().__gte=2),
-                #  name="check_capacity_participants_min"
-            #  ),
-            #  models.CheckConstraint(
-                #  check=Q(participants__lte=16),
-                #  name="check_capacity_participants_max"
-            #  )
-#
-        #  ]
 
     name = models.CharField(
             max_length = 50,
@@ -317,8 +305,6 @@ class Participant(models.Model):
         ordering=["-score"]
         constraints=[
             models.UniqueConstraint(fields=["tournament", "member"], name="Participant of a tournament only once"),
-            # models.UniqueConstraint(fields=["member"], condition=Q(club__id=tournament__club__id), name="Member of the club of the tournament"),
-            models.CheckConstraint(check=Q( member__club__id=models.F("tournament__club__id") ), name='Member of the club of the tournament')
         ]
 
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)

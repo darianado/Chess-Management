@@ -472,7 +472,8 @@ def set_match_result(request, match_id):
         if form.is_valid():
             form.save()
             abs(match.tournament, match.match_round)
-            return redirect('show_tournament', tournament.id, on_matches=True)
+            request.session["on_matches"] = True
+            return redirect('show_tournament', tournament.id)
         else:
             return render(request, 'set_match_result.html', {'form': form, "match_id" : match_id, "players": players})
 
@@ -509,7 +510,7 @@ def leave_tournament(request, tournament_id ):
     return redirect('show_tournament', tournament.id)
 
 @login_required(redirect_field_name="")
-def show_tournament(request, tournament_id, on_matches=False):
+def show_tournament(request, tournament_id):
     try:
         tournament = Tournament.objects.get(id=tournament_id)
         club = tournament.club
@@ -533,7 +534,6 @@ def show_tournament(request, tournament_id, on_matches=False):
             'count_participants': count_participants,
             'is_organiser': is_organiser,
             'is_coorganiser': is_coorganiser,
-            'on_matches': on_matches
         }
     )
 
