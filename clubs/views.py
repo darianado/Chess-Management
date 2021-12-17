@@ -351,7 +351,7 @@ def apply_to_club(request, club_id ):
 def leave_a_club(request, club_id ):
     club = Club.objects.get(id=club_id)
     user = request.user
-    if Membership.objects.get(club=club, user=user).get_member_role() == 1:
+    if Membership.get_member_role(user, club) == 1:
         messages.error(request, "Owners cannot leave their clubs")
         return redirect("show_club", club.id)
 
