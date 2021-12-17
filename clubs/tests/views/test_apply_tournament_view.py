@@ -37,6 +37,43 @@ class TournamentApplyTest(TestCase):
 
     def test_apply_to_club_url(self):
         self.assertEqual(self.url,f'/apply_to_tournament/{self.tournament.id}')
+        
+    def test_apply_tournament_when_not_logged_in(self):
+        response = self.client.get(self.url)
+        redirect_url = reverse("log_in")
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
+
+    def test_apply_tournament_with_invalid_id(self):
+        self.participant.delete()
+        self.client.login(email=self.userMary.email, password="Password123")
+        self.assertTrue(self.client.login(email=self.userMary.email, password="Password123"))
+        participant_count_before = Participant.objects.count()
+        url = reverse("apply_to_tournament", kwargs={"tournament_id": 999999})
+        response = self.client.get(url, follow=True)
+        participant_count_after = Participant.objects.count()
+        self.assertEqual(participant_count_after, participant_count_before)
+        response_url = reverse('dashboard')
+        self.assertRedirects(
+            response, response_url,
+            status_code=302, target_status_code=200,
+        )
+
+    def test_apply_tournament_but_are_an_applicant(self):
+        self.participant.delete()
+        self.client.login(email=self.userMary.email, password="Password123")
+        self.assertTrue(self.client.login(email=self.userMary.email, password="Password123"))
+        participant_count_before = Participant.objects.count()
+        membership = Membership.objects.get(user=self.userMary, club=self.club)
+        membership.role = 4
+        membership.save()
+        response = self.client.get(self.url, follow=True)
+        participant_count_after = Participant.objects.count()
+        self.assertEqual(participant_count_after, participant_count_before)
+        response_url = reverse('dashboard')
+        self.assertRedirects(
+            response, response_url,
+            status_code=302, target_status_code=200,
+        )
 
     def test_unsuccessful_apply_to_tournament(self):
         self.client.login(email=self.userMary.email, password="Password123")
