@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'widget_tweaks',
     'clubs',
-    #  'django_filters',
 ]
 
 MIDDLEWARE = [

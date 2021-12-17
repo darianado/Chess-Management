@@ -32,7 +32,7 @@ class EventAdmin(admin.ModelAdmin):
     ]
 
 @admin.register(Tournament)
-class EventAdmin(admin.ModelAdmin):
+class TournamentAdmin(admin.ModelAdmin):
     """Configuration of the admin interface for events"""
 
     list_display = [
