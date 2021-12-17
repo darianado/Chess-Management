@@ -1,4 +1,5 @@
 from django import forms
+from django.forms.widgets import TextInput
 from clubs.models import Match, User, Club, Tournament
 from clubs.models import Club
 from django.core.validators import RegexValidator
@@ -117,7 +118,13 @@ class CreateTournamentForm(forms.ModelForm):
     class Meta:
         model = Tournament
         fields = ['name', 'description', 'deadline', 'coorganisers', 'capacity']
-        widgets = {"description": forms.Textarea()}
+        widgets = {
+            "description": forms.Textarea(),
+            "deadline": forms.TextInput(attrs={
+                "placeholder": "YYYY-MM-DD (supports ISO format)"
+            }
+        )
+    }
 
     def clean(self):
         """Clean the data and generate messages for any errors."""
