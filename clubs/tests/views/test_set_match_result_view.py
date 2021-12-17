@@ -80,6 +80,20 @@ class SetMatchResultViewTestCase(TestCase):
         self.assertTrue(form.is_bound)
         self.assertEqual(self.matchOne.match_status, Status.NOT_PLAYED.value)
 
+    def test_post_set_match_result_when_winner_already_declared(self):
+        self.client.login(email=self.organiser.user.email, password="Password123")
+        self.matchOne.match_status = 4
+        self.matchOne.save()
+        self.assertEqual(self.matchOne.match_status, Status.WON_B.value)
+        response = self.client.post(self.url, self.form_input, follow=True)
+        redirect_url = reverse("show_tournament", kwargs={"tournament_id": self.matchOne.tournament.id})
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
+        self.assertTemplateUsed(response, 'show_tournament.html')
+        self.matchOne.refresh_from_db()
+        self.assertEqual(self.matchOne.match_status, Status.WON_B.value)
+        messages = response.context["messages"]
+        self.assertEqual(len(messages), 1)
+
     def test_post_set_match_result(self):
         self.client.login(email=self.organiser.user.email, password="Password123")
         self.assertEqual(self.matchOne.match_status, Status.NOT_PLAYED.value)

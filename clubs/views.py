@@ -487,6 +487,11 @@ def set_match_result(request, match_id):
         match.getPlayerB().member.user.get_full_name()
     ]
 
+    if match.match_status in [3, 4]:
+        messages.error(request, "You cannot change the match status once someone has already won")
+        request.session["on_matches"] = True
+        return redirect('show_tournament', tournament.id)
+
     if request.method == 'GET':
         form = SetMatchResultForm(initial={"match_status": match.match_status})
         return render(request, 'set_match_result.html', {'form': form, "match_id" : match_id, "players": players})
