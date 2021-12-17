@@ -52,11 +52,13 @@
   {% else %}
     {% if is_before_deadline %}
       <h5>Matches cannot be scheduled until after the deadline has passed to apply to the tournament</h5>
-    {% else %}
+    {% elif can_set_match  %}
       <h5>There are no matches scheduled yet, you can do so by pressing this button</h5>
       <form onsubmit="return confirm('You are about to schedule the matches !');;" action="{% url 'initial_matches' tournament.id %}">
         <input type="submit" class="btn btn-secondary" value="Schedule Initial Matches">
       </form>
+    {% else%}
+      <h5>There are no matches scheduled yet.</h5>
     {% endif %}
   {% endif %}
 </div>
