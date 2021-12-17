@@ -37,6 +37,18 @@ class MachesTest(TestCase):
     def test_tournament_list_url(self):
         self.assertEqual(self.url,f'/matches/{self.tournament.id}')
 
+    def test_get_tournament_list_when_not_logged_in(self):
+        response = self.client.get(self.url)
+        redirect_url = reverse('log_in')
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
+
+    def test_get_tournament_list_with_invalid_id(self):
+        self.client.login(email=self.userGreta.email, password="Password123")
+        url = reverse("matches", kwargs={"tournament_id": 99999})
+        response = self.client.get(url, follow=True)
+        redirect_url = reverse("dashboard")
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
+
     def test_matches_organiser(self):
         self.client.login(email=self.userGreta.email, password="Password123")
         response = self.client.get(self.url)
