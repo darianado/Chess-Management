@@ -41,6 +41,15 @@ class TournamentListTest(TestCase):
         self.assertTemplateUsed(response, 'partials/tournaments_list_table.html')
         self.assertContains(response, self.tournament.name)
 
+    def test_get_tournament_list_member(self):
+        self.client.login(email=self.user.email, password="Password123")
+        self.member.role = 3
+        self.member.save()
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'partials/tournaments_list_table.html')
+        self.assertContains(response, self.tournament.name)
+
     def test_get_tournament_list_clubowner(self):
         self.client.login(email=self.user.email, password="Password123")
         response_url = reverse('tournament_list', kwargs={'club_id':self.clubHamersmith.id})
