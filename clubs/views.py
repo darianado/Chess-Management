@@ -388,13 +388,17 @@ def matches(request, tournament_id):
 
     match_round = tournament.getRoundTournament()
     winner = getWinner(tournament,match_round)
+    is_before_deadline = datetime.now(tz=timezone.utc) < tournament.deadline
+
     return render(request, "partials/matches.html", {
         "matches": list(zip(matches, labels)),
         "can_set_match": can_set_match,
         "match_round": match_round,
         "max_rounds" : tournament.getNumberOfRounds(),
         "rounds" : range(1,tournament.getNumberOfRounds()+1),
-        "winner" : winner
+        "winner" : winner,
+        "tournament": tournament,
+        "is_before_deadline": is_before_deadline
         }
     )
 
