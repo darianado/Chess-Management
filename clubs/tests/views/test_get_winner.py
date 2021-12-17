@@ -1,8 +1,7 @@
 
 from django.test import TestCase
 from django.urls import reverse
-from clubs.models import Membership, Participant, Match, User, Tournament, Club
-from clubs import views
+from clubs.models import Participant, Match, User, Tournament
 
 class GetWinnerTestCase(TestCase):
      

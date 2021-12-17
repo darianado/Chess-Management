@@ -1,4 +1,3 @@
-from django.contrib.auth import login
 from django.test import TestCase
 from django.urls import reverse
 from clubs.forms import SetMatchResultForm
@@ -6,7 +5,6 @@ from clubs.helpers import Status
 
 from clubs.models import Match, Membership
 from clubs.tests.helper import reverse_with_next
-from clubs.views import password
 
 class SetMatchResultViewTestCase(TestCase):
 

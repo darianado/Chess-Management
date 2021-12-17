@@ -368,7 +368,7 @@ def leave_a_club(request, club_id ):
 def table(request):
     user = request.user
     filtered_clubs = []
-    filtered_clubs = [member.club for member in Membership.objects.filter(Q(user=user) )]
+    filtered_clubs = [member.club for member in Membership.objects.filter(user=user)]
     list_data = []
     for club in filtered_clubs:
         data_row = (club.club_name, Membership.objects.filter(club=club).exclude(role=4).count(), Membership.get_member_role_name(Membership.get_member_role(user, club)), club.id)

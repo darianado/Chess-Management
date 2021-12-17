@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from clubs.models import Club, Membership, User, Tournament, Participant
+from clubs.models import Club, Membership, User, Tournament
 
 class ParticipantListTest(TestCase):
 

@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 from clubs.models import User, Membership, Club, Tournament, Participant
 from django.utils import timezone
-from datetime import datetime, time, timedelta
+from datetime import datetime, timedelta
 
 
 class TournamentApplyTest(TestCase):

@@ -1,7 +1,5 @@
 from django.test import TestCase
-from django.urls import reverse
-from clubs.tests.helper import reverse_with_next
-from clubs.models import Club, User, Membership, Tournament, Participant, Match
+from clubs.models import User, Tournament, Match
 from clubs import views
 
 class updateActiveParticipantsTest(TestCase):

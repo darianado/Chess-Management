@@ -1,8 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
-from clubs.tests.helper import reverse_with_next
-from clubs.helpers import  Role
-from clubs.models import Club, User, Membership
+from clubs.models import Club, User
 
 class ShowrolesTest(TestCase):
 

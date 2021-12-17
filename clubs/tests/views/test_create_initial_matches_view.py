@@ -1,7 +1,6 @@
 from django.test import TestCase
 from clubs.models import Match, Membership, Participant, Tournament
 from clubs.tests.helper import reverse
-from clubs.views import show_tournament
 
 class CreateInitialMatchesViewTestCase(TestCase):
 
