@@ -107,7 +107,7 @@ def show_applicants(request, club_id):
 @minimum_role_required(role_required=Role.OWNER, redirect_location='club_list')
 def show_roles(request,club_id):
     club = Club.objects.get(id=club_id)
-    users = Membership.objects.all().filter(club=club)
+    users = Membership.objects.filter(club=club)
     members = users.filter(role = 3)
     officers = users.filter(role = 2)
     return render(request, "partials/roles_list_table.html", {"members": members,"officers": officers})
@@ -347,15 +347,16 @@ def apply_to_club(request, club_id ):
 
 
 @login_required(redirect_field_name="")
+@minimum_role_required(role_required=Role.MEMBER, redirect_location="dashboard")
 def leave_a_club(request, club_id ):
-    try:
-        club = Club.objects.get(id=club_id)
-    except Club.DoesNotExist:
-        return redirect('dashboard')
-
+    club = Club.objects.get(id=club_id)
     user = request.user
+    if Membership.objects.get(club=club, user=user).get_member_role() == 1:
+        messages.error(request, "Owners cannot leave their clubs")
+        return redirect("show_club", club.id)
+
     if request.method == 'GET':
-        Membership.objects.filter(club_id=club_id).get(user_id=user.id).delete()
+        Membership.objects.get(club=club, user=user).delete()
         messages.success(request, 'You have left the club.')
     return redirect('show_club', club.id)
 
@@ -380,7 +381,7 @@ def tournament_list(request,club_id):
     is_officer = False
     if member.role==2 or member.role==1:
         is_officer = True
-    tournaments = Tournament.objects.all().filter(club=club)
+    tournaments = Tournament.objects.filter(club=club)
     return render(request, "partials/tournaments_list_table.html", {"tournaments": tournaments, "is_officer": is_officer, "club": club})
 
 @login_required(redirect_field_name="")
@@ -426,7 +427,7 @@ def updateActiveParticipants(matches):
             match.playerB.save()
 
 def haveDrawn(tournament, match_round):
-    drawn_round =  Match.objects.filter(tournament=tournament).filter(match_round=match_round).filter(Q(match_status=2))
+    drawn_round =  Match.objects.filter(tournament=tournament, match_round=match_round, match_status=2)
     return len(drawn_round) > 0
 
 def getWinner(tournament, match_round):
@@ -437,7 +438,7 @@ def getWinner(tournament, match_round):
 
 
 def abs(request, tournament, match_round):
-    matches = Match.objects.filter(tournament=tournament).filter(match_round=match_round)
+    matches = Match.objects.filter(tournament=tournament, match_round=match_round)
     if tournament.isRoundFinished(tournament,match_round):
         updateActiveParticipants(matches)
         tournament.scheduleMatches(match_round+1)
