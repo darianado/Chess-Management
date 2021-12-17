@@ -2,7 +2,7 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 
-from clubs.models import Tournament, Participant,Match
+from clubs.models import Tournament, Match
 
 class TournamentModelTest(TestCase):
     """Unit tests for the Tournament model."""

@@ -1,5 +1,4 @@
 """Unit tests of the create club form."""
-from django import forms
 from django.test import TestCase
 from clubs.forms import CreateClubForm
 from clubs.models import User, Club

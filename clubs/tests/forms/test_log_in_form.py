@@ -2,8 +2,6 @@
 from django import forms
 from django.test import TestCase
 from clubs.forms import LogInForm
-from clubs.models import User
-from django.urls import reverse
 from clubs.tests.helper import LogInTester
 
 class LogInFormTestCase(TestCase, LogInTester):

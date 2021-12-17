@@ -1,9 +1,7 @@
 """Unit tests for the Events model."""
 from django.test import TestCase
-from clubs.models import Club, Membership, User, Events
+from clubs.models import Club, User, Events
 from django.core.exceptions import ValidationError
-from django.db.utils import IntegrityError
-from django.db import transaction
 
 class EventsModelTest(TestCase):
     """Unit tests for the Events model."""

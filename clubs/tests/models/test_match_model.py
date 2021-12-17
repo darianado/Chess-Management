@@ -2,7 +2,7 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 from django.db.utils import IntegrityError
-from clubs.models import Match, Tournament
+from clubs.models import Match
 
 class MatchModelTest(TestCase):
     """Unit tests for the Matches model."""

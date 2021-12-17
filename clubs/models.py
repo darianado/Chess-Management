@@ -4,8 +4,6 @@ from django.contrib.auth.hashers import make_password
 from django.apps import apps
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db.models import Q
-from django.core.exceptions import ObjectDoesNotExist
-from django.db.models.fields.json import JSONField
 from math import ceil, log 
 
 from libgravatar import Gravatar

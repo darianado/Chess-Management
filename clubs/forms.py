@@ -1,5 +1,4 @@
 from django import forms
-from django.forms.widgets import TextInput
 from clubs.models import Match, User, Club, Tournament
 from clubs.models import Club
 from django.core.validators import RegexValidator

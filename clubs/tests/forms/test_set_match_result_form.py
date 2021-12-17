@@ -1,7 +1,6 @@
 """Unit tests of the set match result form."""
 from django import forms
 from django.test import TestCase
-from clubs.models import User
 from clubs.helpers import Status
 from clubs.forms import SetMatchResultForm
 

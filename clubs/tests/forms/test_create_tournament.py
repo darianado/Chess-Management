@@ -1,9 +1,8 @@
 """Unit tests of the create tournament form."""
-from django import forms
 from django.urls import reverse
 from django.test import TestCase
 from clubs.forms import CreateTournamentForm
-from clubs.models import User, Club, Membership, Tournament
+from clubs.models import User, Club, Membership
 from django.db.models import Q
 
 class CreateTournamentFormTestCase(TestCase):

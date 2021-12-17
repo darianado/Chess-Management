@@ -2,7 +2,6 @@
 from django.contrib.auth.hashers import check_password
 from django.test import TestCase
 from clubs.forms import SignUpForm
-from django.urls import reverse
 from clubs.models import User
 from clubs.tests.helper import LogInTester
 from django import forms

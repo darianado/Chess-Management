@@ -1,8 +1,7 @@
 """Unit tests for the Unit model."""
-from django.test import TestCase, override_settings
-from clubs.models import User, CustomUserManager
+from django.test import TestCase
+from clubs.models import User
 from django.core.exceptions import ValidationError
-from django.core.files.uploadedfile import SimpleUploadedFile
 
 class UserModelTest(TestCase):
     """Unit tests for the Unit model."""
