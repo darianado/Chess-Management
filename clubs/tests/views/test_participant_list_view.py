@@ -36,6 +36,28 @@ class ParticipantListTest(TestCase):
         redirect_url = reverse("log_in")
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
+    def test_get_participant_list_with_invalid_id(self):
+        self.client.login(email=self.userJohn.email, password="Password123")
+        url = reverse("participant_list", kwargs={"tournament_id": 999999})
+        response = self.client.get(url, follow=True)
+        redirect_url = reverse("dashboard")
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
+
+    def test_get_participant_list_when_not_a_member(self):
+        self.client.login(email=self.userJohn.email, password="Password123")
+        Membership.objects.get(user=self.userJohn, club=self.clubHame).delete()
+        response = self.client.get(self.url, follow=True)
+        redirect_url = reverse("dashboard")
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
+
+    def test_get_participant_list_when_an_applicant(self):
+        self.client.login(email=self.userJohn.email, password="Password123")
+        membership = Membership.objects.get(user=self.userJohn, club=self.clubHame)
+        membership.role = 4
+        membership.save()
+        response = self.client.get(self.url, follow=True)
+        redirect_url = reverse("dashboard")
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
     def test_get_tournament_participant_officer(self):
         self.client.login(email=self.userJohn.email, password="Password123")

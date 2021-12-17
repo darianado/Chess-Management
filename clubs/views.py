@@ -604,7 +604,7 @@ def participant_list(request, tournament_id):
         user = request.user
         member = Membership.objects.get(user=user,club=club)
         is_officer = False
-        if member.get_member_role == 4:
+        if member.role == 4:
             return redirect('dashboard')
 
     except ObjectDoesNotExist:
