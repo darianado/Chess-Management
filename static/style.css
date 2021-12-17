@@ -7,6 +7,7 @@ html,body {
   height:100%;
   padding-bottom: 40px;
   background: #2B2E4D;
+  width: 100%;
 }
 button, input[type="submit"]{
   background: #D7A786;
@@ -188,8 +189,10 @@ p.cover-text {
   top: 250px;
 }
 
+@media only screen and (min-width: 600px){
 #sidebar button:hover {
   left: -180px;
+}
 }
 
 .material-icons,
@@ -197,7 +200,6 @@ p.cover-text {
   vertical-align: middle;
   cursor: pointer;
 }
-
 .material-icons {
   margin-right: 40px
 }

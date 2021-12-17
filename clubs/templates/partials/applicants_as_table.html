@@ -1,8 +1,9 @@
 
 {% extends 'base.html' %}
 {% block body %}
-<div>
-    <table class="table table-striped">
+
+<div class="table-responsive" style="zoom:70%">
+    <table class="table table-striped " >
   {% if applicants|length > 0 %}
         <thead>
             <tr>
@@ -24,4 +25,5 @@
       <h5>There are no applicants in the club</h5>
     {% endif %}
 </div>
+
 {% endblock %}

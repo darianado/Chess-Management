@@ -1,9 +1,8 @@
 {% extends 'home.html' %}
 {% block card_content %}
 
-<div class="card-body">
-  <div class="container p-0">
-    <div class="row m-0">
+<div class="card-body" >
+    <div class="row m-3">
 
       {% if show_member %}
           {% include 'partials/side-bar.html' with club=club show_role=show_role show_member=show_member show_applicants=show_applicants %}
@@ -16,7 +15,8 @@
       </div>
 
     </div>
-  </div>
 </div>
+
+
 
 {% endblock %}
