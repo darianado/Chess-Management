@@ -19,7 +19,7 @@
         <td> <p>{{ participant.user.bio }}</p> </td>
         {% if is_officer %}
         <td>
-          <a href="{% url 'show_user' user.id %}">More detail</a>
+          <a href="{% url 'show_user' participant.user.id %}">More detail</a>
         </td>
         {% endif %}
         </tr>
