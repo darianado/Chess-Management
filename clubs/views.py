@@ -263,7 +263,8 @@ def officer_promote(request,member_id):
     current_member.demote()
     member.promote()
 
-    Events.objects.create(club=member.club, user=member.user, action = 4)
+    Events.objects.create(club=member.club, user=request.user, action = 5) # demote owner
+    Events.objects.create(club=member.club, user=member.user, action = 4) # promote officer
     messages.success(request, "Officer has been promoted successfully")
     return redirect('show_club', club_id = c_id)
 
