@@ -1,9 +1,11 @@
+"""Unit tests for the Matches model."""
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 from django.db.utils import IntegrityError
 from clubs.models import Match, Tournament
 
 class MatchModelTest(TestCase):
+    """Unit tests for the Matches model."""
 
     fixtures = [
         "clubs/tests/fixtures/default_user_john.json",
@@ -29,6 +31,8 @@ class MatchModelTest(TestCase):
         self.matchOne.tournament = None
         self._assert_match_is_invalid()
 
+# player A  and B tests
+
     def test_get_playerA_return_correct(self):
         playerA = self.matchOne.getPlayerA()
         self.assertEqual(playerA,self.matchOne.playerA )
@@ -43,10 +47,6 @@ class MatchModelTest(TestCase):
 
     def test_playerB_cannot_be_empty(self):
         self.matchOne.playerB = None
-        self._assert_match_is_invalid()
-
-    def test_match_status_cannot_be_empty(self):
-        self.matchOne.match_status = None
         self._assert_match_is_invalid()
 
     def test_match_round_cannot_be_empty(self):
@@ -66,22 +66,20 @@ class MatchModelTest(TestCase):
         self.matchOne.playerB = self.matchTwo.playerB
         self._assert_match_is_valid()
 
-    def test_match_status_need_not_be_unique(self):
-        self.matchOne.match_status = self.matchTwo.match_status
-        self._assert_match_is_valid()
-
-    def test_match_round_need_not_be_unique(self):
-        self.matchOne.match_round = self.matchTwo.match_round
-        self._assert_match_is_valid()
-
-
-
     def test_playerA_and_playerB_cannot_be_the_same(self):
         with self.assertRaises(IntegrityError):
             self.matchOne.playerA = self.matchOne.playerB
             self.matchOne.save()
 
+# Match status tests
 
+    def test_match_status_cannot_be_empty(self):
+        self.matchOne.match_status = None
+        self._assert_match_is_invalid()
+
+    def test_match_status_need_not_be_unique(self):
+        self.matchOne.match_status = self.matchTwo.match_status
+        self._assert_match_is_valid()
 
     def test_match_status_can_be_1_2_3_4(self):
         self.matchOne.match_status = 1
@@ -93,19 +91,19 @@ class MatchModelTest(TestCase):
         self.matchOne.match_status = 4
         self._assert_match_is_valid()
 
-    def test_match_round_can_be_1_2_3_4(self):
-        self.matchOne.match_round = 1
-        self._assert_match_is_valid()
-        self.matchOne.match_round = 2
-        self._assert_match_is_valid()
-        self.matchOne.match_round  = 3
-        self._assert_match_is_valid()
-        self.matchOne.match_round = 0
-        self._assert_match_is_valid()
+    def test_match_status_cannot_be_5(self):
+        self.matchOne.match_status = 5
+        self._assert_match_is_invalid()
 
     def test_match_status_cannot_be_0(self):
         self.matchOne.match_status = 0
         self._assert_match_is_invalid()
+
+# Match round tests
+
+    def test_match_round_need_not_be_unique(self):
+        self.matchOne.match_round = self.matchTwo.match_round
+        self._assert_match_is_valid()
 
     def test_match_round_can_be_0(self):
         self.matchOne.match_round = 0
@@ -115,10 +113,15 @@ class MatchModelTest(TestCase):
         self.matchOne.match_round = 5
         self._assert_match_is_invalid()
 
-    def test_match_status_cannot_be_5(self):
-        self.matchOne.match_status = 5
-        self._assert_match_is_invalid()
-
+    def test_match_round_can_be_1_2_3_4(self):
+        self.matchOne.match_round = 1
+        self._assert_match_is_valid()
+        self.matchOne.match_round = 2
+        self._assert_match_is_valid()
+        self.matchOne.match_round  = 3
+        self._assert_match_is_valid()
+        self.matchOne.match_round = 0
+        self._assert_match_is_valid()
 
     def _assert_match_is_valid(self):
         try:

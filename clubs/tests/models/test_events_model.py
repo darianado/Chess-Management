@@ -1,3 +1,4 @@
+"""Unit tests for the Events model."""
 from django.test import TestCase
 from clubs.models import Club, Membership, User, Events
 from django.core.exceptions import ValidationError
@@ -5,6 +6,7 @@ from django.db.utils import IntegrityError
 from django.db import transaction
 
 class EventsModelTest(TestCase):
+    """Unit tests for the Events model."""
 
     fixtures = [
         "clubs/tests/fixtures/default_user_john.json",
@@ -31,6 +33,8 @@ class EventsModelTest(TestCase):
     def test_user_cannot_be_empty(self):
         self.event.user = None
         self._assert_event_is_invalid()
+
+# tests for action  
 
     def test_action_cannot_be_empty(self):
         self.event.action = None

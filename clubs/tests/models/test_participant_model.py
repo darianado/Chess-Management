@@ -1,9 +1,11 @@
+"""Unit tests for the Participant model."""
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 
 from clubs.models import Participant, Tournament
 
 class ParticipantModelTest(TestCase):
+    """Unit tests for the Participant model."""
 
     fixtures = [
         "clubs/tests/fixtures/default_user_jane.json",

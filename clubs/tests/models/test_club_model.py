@@ -1,8 +1,10 @@
+"""Unit tests for the Club model."""
 from django.test import TestCase
 from clubs.models import Club
 from django.core.exceptions import ValidationError
 
 class ClubModelTest(TestCase):
+    """Unit tests for the Club model."""
 
     fixtures = [
         "clubs/tests/fixtures/default_club_hamersmith.json",

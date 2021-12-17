@@ -5,7 +5,7 @@ from clubs.forms import EditProfileForm
 from clubs.models import User
 
 class EditProfileFormTestCase(TestCase):
-    """Unit tests of the user form."""
+    """Unit tests of the edit profile form."""
 
     fixtures = [
         'clubs/tests/fixtures/default_user_jane.json'
