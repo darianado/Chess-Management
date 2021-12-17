@@ -377,6 +377,7 @@ def leave_a_club(request, club_id ):
 
     if request.method == 'GET':
         Membership.objects.get(club=club, user=user).delete()
+        Events.objects.create(club=club, user=request.user, action = 7)
         messages.success(request, 'You have left the club.')
     return redirect('show_club', club.id)
 

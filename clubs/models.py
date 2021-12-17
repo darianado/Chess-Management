@@ -200,6 +200,7 @@ class Events(models.Model):
         Promoted = 4
         Demoted = 5
         Kicked = 6
+        Left = 7
     action = models.IntegerField(choices=Action.choices,
                                 validators=[
                                     MinValueValidator(1),
@@ -218,6 +219,8 @@ class Events(models.Model):
             return "Demoted"
         elif self.action == 6:
             return "Kicked"
+        elif self.action == 7:
+            return "Left"
 
     def getActionColour(self):
         if self.action == 1:
@@ -232,6 +235,8 @@ class Events(models.Model):
             return "red"
         elif self.action == 6:
             return "red"
+        elif self.action == 7:
+            return "yellow"
 
 class Tournament(models.Model):
 
