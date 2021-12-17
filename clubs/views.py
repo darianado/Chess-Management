@@ -574,7 +574,7 @@ def show_tournament(request, tournament_id):
 
         is_before_deadline = datetime.now(tz=timezone.utc) < tournament.deadline
 
-        if Membership.objects.get(club=club, user=user).get_member_role == 4:
+        if Membership.get_member_role(user, club) in [4, None]:
             return redirect('dashboard')
 
     except ObjectDoesNotExist:

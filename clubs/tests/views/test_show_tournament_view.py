@@ -1,10 +1,8 @@
 from django.test import TestCase
 from django.urls import reverse
-from clubs.tests.helper import reverse_with_next
-from clubs.helpers import  Role
 from clubs.models import Club, User, Membership, Tournament, Participant
 
-class ShowClubTest(TestCase):
+class ShowTournamentTest(TestCase):
 
     fixtures = [
         "clubs/tests/fixtures/default_user_jane.json",
@@ -38,14 +36,33 @@ class ShowClubTest(TestCase):
         redirect_url = reverse("log_in")
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
+    def test_show_tournament_when_an_applicant(self):
+        self.client.login(email=self.user.email, password='Password123')
+        membership = Membership.objects.get(user=self.user, club=self.clubHame)
+        membership.role = 4
+        membership.save()
+        response = self.client.get(self.url)
+        redirect_url = reverse("dashboard")
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
+
+    def test_show_tournament_when_not_a_member(self):
+        self.client.login(email=self.user.email, password='Password123')
+        Membership.objects.get(user=self.user, club=self.clubHame).delete()
+        response = self.client.get(self.url)
+        redirect_url = reverse("dashboard")
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
+
     def test_get_show_tournament_with_valid_id(self):
         self.client.login(email=self.user.email, password='Password123')
+        membership = Membership.objects.get(user=self.user, club=self.clubHame)
+        membership.role = 3
+        membership.save()
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'show_tournament.html')
         self.assertContains(response, "Yetti")
 
-    def test_get_show_club_with_invalid_id(self):
+    def test_get_show_tournament_with_invalid_id(self):
         self.client.login(email=self.user.email, password="Password123")
         url = reverse('show_tournament', kwargs={'tournament_id':  self.tournament.id+9999999})
         response = self.client.get(url, follow=True)
