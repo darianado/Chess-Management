@@ -204,7 +204,7 @@ class Events(models.Model):
     action = models.IntegerField(choices=Action.choices,
                                 validators=[
                                     MinValueValidator(1),
-                                    MaxValueValidator(6)
+                                    MaxValueValidator(7)
                                 ])
     def getActionString(self):
         if self.action == 1:

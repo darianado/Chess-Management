@@ -46,8 +46,12 @@ class EventsModelTest(TestCase):
         self.event.action = 0
         self._assert_event_is_invalid()
 
-    def test_action_cannot_be_7(self):
+    def test_action_can_be_7(self):
         self.event.action = 7
+        self._assert_event_is_valid()
+
+    def test_action_cannot_be_8(self):
+        self.event.action = 8
         self._assert_event_is_invalid()
 
     def test_action_cannot_be_blank(self):
@@ -106,8 +110,15 @@ class EventsModelTest(TestCase):
         self.assertEqual(string, "Kicked")
         self.assertEqual(colour, "red")
 
-    def test_action_string_is_none_and_colour_is_none_when_action_is_7(self):
+    def test_action_string_is_left_and_colour_is_yellow_when_action_is_7(self):
         self.event.action = 7
+        string = self.event.getActionString()
+        colour = self.event.getActionColour()
+        self.assertEqual(string, "Left")
+        self.assertEqual(colour, "yellow")
+
+    def test_action_string_is_none_and_colour_is_none_when_action_is_8(self):
+        self.event.action = 8
         string = self.event.getActionString()
         colour = self.event.getActionColour()
         self.assertEqual(string, None)
