@@ -54,18 +54,6 @@ class CreateTournamentFormTestCase(TestCase):
         form = CreateTournamentForm(initial={"coorganisers":self.possible_coorganisers}, data=self.form_input)
         self.assertTrue(form.is_valid())
 
-    def test_get_create_tournament_when_not_logged_in(self):
-        response = self.client.get(self.url, follow=True)
-        redirect_url = reverse("log_in")
-        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
-
-    def test_successful_redirect_after_succesful_create_tournament_form(self):
-        self.client.login(email=self.userMiki.email, password="Password123")
-        response = self.client.post(self.url,self.form_input, follow=True)
-        redirect_url = reverse("dashboard")
-        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response,'home.html')
-
     def test_form_has_correct_minimal_capacity(self):
         self.form_input["capacity"] = 2
         form = CreateTournamentForm(data=self.form_input)

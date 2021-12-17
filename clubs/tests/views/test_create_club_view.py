@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 from clubs.models import Club, User, Membership, Events
+from clubs.tests.helper import reverse_with_next
 
 class CreateClubTest(TestCase):
 
@@ -21,7 +22,7 @@ class CreateClubTest(TestCase):
 
     def test_create_club_redirects_when_not_logged_in(self):
         user_count_before = Club.objects.count()
-        redirect_url = reverse('log_in')
+        redirect_url = reverse_with_next('log_in', self.url)
         response = self.client.post(self.url, self.data, follow=True)
         self.assertRedirects(response, redirect_url,
             status_code=302, target_status_code=200, fetch_redirect_response=True

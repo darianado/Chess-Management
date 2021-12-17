@@ -17,6 +17,7 @@ def welcome(request):
     user = request.user
     return render(request, 'welcome.html',{'user': user})
 
+@login_required(redirect_field_name="")
 def log_out(request):
     logout(request)
     messages.success(request, 'You have logged out.')
@@ -66,7 +67,7 @@ def club_list(request):
     clubs = Club.objects.all()
     return render(request,'club_list.html', {'clubs': clubs})
 
-@login_required(redirect_field_name="")
+@login_required
 def show_club(request, club_id):
     try:
         club = Club.objects.get(id=club_id)
@@ -188,7 +189,7 @@ def password(request):
         form = changePasswordForm()
     return render(request, 'password.html', {'form': form})
 
-@login_required(redirect_field_name="")
+@login_required
 @minimum_role_required(role_required=Role.OFFICER, redirect_location="dashboard")
 def create_tournament(request, club_id):
     current_user = request.user
@@ -219,7 +220,7 @@ def create_tournament(request, club_id):
 
 
 
-@login_required(redirect_field_name="")
+@login_required
 def create_club(request):
     if request.method == 'POST':
         current_user=request.user
@@ -328,7 +329,11 @@ def events_list(request):
 
 @login_required(redirect_field_name="")
 def apply_to_club(request, club_id ):
-    club = Club.objects.get(id=club_id)
+    try:
+        club = Club.objects.get(id=club_id)
+    except Club.DoesNotExist:
+        return redirect('dashboard')
+
     user = request.user
     Events.objects.create(club=club, user=request.user, action = 2)
     if request.method == 'GET':
@@ -343,7 +348,11 @@ def apply_to_club(request, club_id ):
 
 @login_required(redirect_field_name="")
 def leave_a_club(request, club_id ):
-    club = Club.objects.get(id=club_id)
+    try:
+        club = Club.objects.get(id=club_id)
+    except Club.DoesNotExist:
+        return redirect('dashboard')
+
     user = request.user
     if request.method == 'GET':
         Membership.objects.filter(club_id=club_id).get(user_id=user.id).delete()
@@ -363,6 +372,7 @@ def table(request):
     return render(request, "table.html", {"list_data": list_data})
 
 @login_required(redirect_field_name="")
+@minimum_role_required(role_required=Role.MEMBER, redirect_location="dashboard")
 def tournament_list(request,club_id):
     user = request.user
     club = Club.objects.get(id=club_id)
@@ -373,9 +383,13 @@ def tournament_list(request,club_id):
     tournaments = Tournament.objects.all().filter(club=club)
     return render(request, "partials/tournaments_list_table.html", {"tournaments": tournaments, "is_officer": is_officer, "club": club})
 
-# TODO check if the matches contain the officer -> they do
+@login_required(redirect_field_name="")
 def matches(request, tournament_id):
-    tournament = Tournament.objects.get(id=tournament_id)
+    try:
+        tournament = Tournament.objects.get(id=tournament_id)
+    except Tournament.DoesNotExist:
+        return redirect('dashboard')
+
     matches = Match.objects.filter(tournament=tournament)
     labels = [Status(match.match_status).label for match in matches]
 
@@ -417,7 +431,6 @@ def haveDrawn(tournament, match_round):
 
 def getWinner(tournament, match_round):
     winner = Participant.objects.filter(tournament=tournament, is_active=True)
-    # TODO check the maximum matches possible
     if match_round == tournament.getNumberOfRounds() and len(winner)==1:
         return winner[0]
     return None
@@ -491,11 +504,22 @@ def create_initial_matches(request, tournament_id):
 
 @login_required(redirect_field_name="")
 def apply_to_tournament(request, tournament_id ):
-    tournament = Tournament.objects.get(id=tournament_id)
-    club = tournament.club
-    user = request.user
-    member = Membership.objects.get(user=user,club=club)
-    member_in_club = Membership.get_member_role(user,club)
+    try:
+        tournament = Tournament.objects.get(id=tournament_id)
+        club = tournament.club
+        user = request.user
+        member = Membership.objects.get(user=user,club=club)
+        member_in_club = Membership.get_member_role(user,club)
+
+        organisers = [coorganiser.user for coorganiser in tournament.coorganisers.all()]
+        organisers.append(tournament.organiser.user)
+
+        if member_in_club == 4 or user in organisers:
+            return redirect('dashboard')
+
+    except ObjectDoesNotExist:
+        return redirect('dashboard')
+
     if datetime.now(tz=timezone.utc) < tournament.deadline:
         if tournament.participants.count() < tournament.capacity:
             if request.method == 'GET':
@@ -515,10 +539,16 @@ def apply_to_tournament(request, tournament_id ):
 
 @login_required(redirect_field_name="")
 def leave_tournament(request, tournament_id ):
-    tournament = Tournament.objects.get(id=tournament_id)
-    club = tournament.club
-    user = request.user
-    member = Membership.objects.get(user=user,club=club)
+    try:
+        tournament = Tournament.objects.get(id=tournament_id)
+        club = tournament.club
+        user = request.user
+        member = Membership.objects.get(user=user,club=club)
+        if not Participant.objects.filter(tournament=tournament, member=member).exists():
+            return redirect('dashboard')
+    except ObjectDoesNotExist:
+        return redirect('dashboard')
+
     participant = Participant.objects.get(tournament = tournament, member = member)
     participant.delete()
     return redirect('show_tournament', tournament.id)
@@ -540,7 +570,9 @@ def show_tournament(request, tournament_id):
         request.session["on_matches"] = False
 
         is_before_deadline = datetime.now(tz=timezone.utc) < tournament.deadline
-            
+
+        if Membership.objects.get(club=club, user=user).get_member_role == 4:
+            return redirect('dashboard')
 
     except ObjectDoesNotExist:
             return redirect('club_list')
@@ -562,12 +594,18 @@ def show_tournament(request, tournament_id):
 
 @login_required(redirect_field_name="")
 def participant_list(request, tournament_id):
-    tournament = Tournament.objects.get(id=tournament_id)
-    participants = tournament.participants.all()
-    club = tournament.club
-    user = request.user
-    member = Membership.objects.get(user=user,club=club)
-    is_officer = False
+    try:
+        tournament = Tournament.objects.get(id=tournament_id)
+        participants = tournament.participants.all()
+        club = tournament.club
+        user = request.user
+        member = Membership.objects.get(user=user,club=club)
+        is_officer = False
+        if member.get_member_role == 4:
+            return redirect('dashboard')
+
+    except ObjectDoesNotExist:
+        return redirect('dashboard')
     if member.role == 2 or member.role == 1:
         is_officer = True
     return render(request,"partials/participant_list_table.html",

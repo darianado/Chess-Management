@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
+from clubs.tests.helper import reverse_with_next
 from clubs.models import Club, User, Membership, Events, Tournament
 
 class CreateTournamentViewTestTestCase(TestCase):
@@ -32,7 +33,7 @@ class CreateTournamentViewTestTestCase(TestCase):
 
     def test_create_tournament_redirects_when_not_logged_in(self):
         user_count_before = Tournament.objects.count()
-        redirect_url = reverse('log_in')
+        redirect_url = reverse_with_next('log_in', self.url)
         response = self.client.post(self.url, self.data, follow=True)
         self.assertRedirects(response, redirect_url,
             status_code=302, target_status_code=200, fetch_redirect_response=True

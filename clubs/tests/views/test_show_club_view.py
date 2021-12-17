@@ -3,6 +3,7 @@ from django.urls import reverse
 from clubs.tests.helper import reverse_with_next
 from clubs.helpers import  Role
 from clubs.models import Club, User, Membership
+from clubs.tests.helper import reverse_with_next
 
 class ShowClubTest(TestCase):
 
@@ -29,7 +30,7 @@ class ShowClubTest(TestCase):
 
     def test_get_show_club_when_not_logged_in(self):
         response = self.client.get(self.urlHame)
-        redirect_url = reverse("log_in")
+        redirect_url = reverse_with_next('log_in', self.urlHame)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
     def test_get_show_club_with_valid_id(self):

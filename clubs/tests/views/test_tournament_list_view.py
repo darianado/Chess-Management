@@ -31,7 +31,7 @@ class TournamentListTest(TestCase):
 
     def test_get_tournament_list_when_not_logged_in(self):
         response = self.client.get(self.url)
-        redirect_url = reverse("log_in")
+        redirect_url = reverse('log_in')
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
     def test_get_tournament_list_officer(self):
@@ -42,7 +42,7 @@ class TournamentListTest(TestCase):
         self.assertContains(response, self.tournament.name)
 
     def test_get_tournament_list_clubowner(self):
-        self.client.login(email=self.userJohn.email, password="Password123")
+        self.client.login(email=self.user.email, password="Password123")
         response_url = reverse('tournament_list', kwargs={'club_id':self.clubHamersmith.id})
         response = self.client.get(response_url)
         self.assertEqual(response.status_code, 200)
