@@ -549,12 +549,10 @@ def leave_tournament(request, tournament_id ):
         club = tournament.club
         user = request.user
         member = Membership.objects.get(user=user,club=club)
-        if not Participant.objects.filter(tournament=tournament, member=member).exists():
-            return redirect('dashboard')
+        participant = Participant.objects.get(tournament=tournament, member=member)
     except ObjectDoesNotExist:
         return redirect('dashboard')
 
-    participant = Participant.objects.get(tournament = tournament, member = member)
     participant.delete()
     return redirect('show_tournament', tournament.id)
 
