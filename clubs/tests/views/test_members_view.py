@@ -1,10 +1,11 @@
+"""Tests of the show member view."""
 from django.test import TestCase
 from django.urls import reverse
 
 from clubs.models import Club, User
 
 class ShowMemberListTest(TestCase):
-
+    """Tests of the show member view."""
     fixtures = [
         "clubs/tests/fixtures/default_user_john.json",
         "clubs/tests/fixtures/default_user_jane.json",

@@ -12,19 +12,23 @@ from clubs.decorators import login_prohibited, minimum_role_required
 from datetime import datetime
 from django.utils import timezone
 
+
 @login_prohibited(redirect_location="dashboard")
 def welcome(request):
+    '''The welcome page of the chess management system.'''
     user = request.user
     return render(request, 'welcome.html',{'user': user})
 
 @login_required(redirect_field_name="")
 def log_out(request):
+    '''Function for the user to log out.'''
     logout(request)
     messages.success(request, 'You have logged out.')
     return redirect('welcome')
 
 @login_prohibited(redirect_location="dashboard")
 def log_in(request):
+    '''Function for the user to log in.'''
     if request.method == 'POST':
         form = LogInForm(request.POST)
         next = request.POST.get('next') or ''
@@ -44,6 +48,7 @@ def log_in(request):
     form = LogInForm()
     return render(request, 'log_in.html', {'form': form, 'next': next})
 
+
 @login_required
 def dashboard(request):
     user = request.user
@@ -51,6 +56,7 @@ def dashboard(request):
 
 @login_prohibited(redirect_location="dashboard")
 def sign_up(request):
+    '''Function for the user to sign up.'''
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
@@ -69,6 +75,7 @@ def club_list(request):
 
 @login_required
 def show_club(request, club_id):
+    '''Function to show details of the club.'''
     try:
         club = Club.objects.get(id=club_id)
         user = request.user
@@ -97,15 +104,16 @@ def show_club(request, club_id):
 @login_required(redirect_field_name="")
 @minimum_role_required(role_required=Role.OFFICER, redirect_location='club_list')
 def show_applicants(request, club_id):
+    '''Function to show details of applicants.'''
     thisClub = Club.objects.get(id=club_id)
     applicants = Membership.objects.filter(club=thisClub, role=4)
     return render(request,"partials/applicants_as_table.html",
                 {'club': thisClub, 'applicants':applicants})
 
-
 @login_required(redirect_field_name="")
 @minimum_role_required(role_required=Role.OWNER, redirect_location='club_list')
 def show_roles(request,club_id):
+    '''Function to show all officers and members.'''
     club = Club.objects.get(id=club_id)
     users = Membership.objects.filter(club=club)
     members = users.filter(role = 3)
@@ -115,6 +123,7 @@ def show_roles(request,club_id):
 @login_required(redirect_field_name="")
 @minimum_role_required(role_required=Role.MEMBER, redirect_location="dashboard")
 def members(request, club_id):
+    '''Function to show all members.'''
     user = request.user
     club = Club.objects.get(id=club_id)
     is_officer=False
@@ -126,6 +135,7 @@ def members(request, club_id):
 
 @login_required
 def show_user(request, user_id=None):
+    '''Function to show details of users.'''
     if user_id is None:
         user_id = request.user.id
     try:
@@ -160,6 +170,7 @@ def show_user(request, user_id=None):
 
 @login_required
 def profile(request):
+    '''Function to change the profile for the user.'''
     user = request.user
     if request.method == "POST":
         form = EditProfileForm(instance=user, data=request.POST)
@@ -173,6 +184,7 @@ def profile(request):
 
 @login_required
 def password(request):
+    '''Function to change password for the user.'''
     current_user = request.user
     if request.method == 'POST':
         form = changePasswordForm(data=request.POST)
@@ -192,6 +204,7 @@ def password(request):
 @login_required
 @minimum_role_required(role_required=Role.OFFICER, redirect_location="dashboard")
 def create_tournament(request, club_id):
+    '''Function for the officer and owner to create tournaments.'''
     current_user = request.user
     club = Club.objects.get(id=club_id)
     possible_coorganisers = Membership.objects.filter(Q(club=club) & (Q(role=2) | Q(role=1) )).exclude(user=current_user)
@@ -218,10 +231,9 @@ def create_tournament(request, club_id):
             form = CreateTournamentForm(request.POST, initial={"coorganisers": possible_coorganisers})
             return render(request, 'create_tournament.html', {'form': form, "club_id": club.id })
 
-
-
 @login_required
 def create_club(request):
+    '''Function for the user to create clubs.'''
     if request.method == 'POST':
         current_user=request.user
         form = CreateClubForm(request.POST)
@@ -242,6 +254,7 @@ def create_club(request):
 @login_required(redirect_field_name="")
 @minimum_role_required(role_required=Role.OWNER, redirect_location="club_list")
 def officer_promote(request,member_id):
+    '''Function for the owner to promote an officer.'''
     member = Membership.objects.get(id=member_id)
     c_id = member.club.id
     current_user=request.user
@@ -257,6 +270,7 @@ def officer_promote(request,member_id):
 @login_required(redirect_field_name="")
 @minimum_role_required(role_required=Role.OWNER, redirect_location="club_list")
 def officer_demote(request,member_id):
+    '''Function for the owner to demote an officer.'''
     member = Membership.objects.get(id=member_id)
     c_id = member.club.id
 
@@ -266,10 +280,10 @@ def officer_demote(request,member_id):
     messages.success(request, "Officer has been demoted successfully")
     return redirect('show_club', club_id=c_id)
 
-
 @login_required(redirect_field_name="")
 @minimum_role_required(role_required=Role.OWNER, redirect_location="club_list")
 def member_promote(request,member_id):
+    '''Function for the owner to promote a member.'''
     member = Membership.objects.get(id=member_id)
     c_id = member.club.id
 
@@ -279,10 +293,10 @@ def member_promote(request,member_id):
     messages.success(request, "Member has been promoted successfully")
     return redirect('show_club', club_id = c_id)
 
-
 @login_required(redirect_field_name="")
 @minimum_role_required(role_required=Role.OWNER, redirect_location="club_list")
 def member_kick(request,member_id):
+    '''Function for the owner to kick a member.'''
     member = Membership.objects.get(id=member_id)
     c_id = member.club.id
     club = member.club
@@ -294,10 +308,10 @@ def member_kick(request,member_id):
     messages.success(request, "Member has been kicked successfully")
     return redirect('show_club', club_id = c_id)
 
-
 @login_required(redirect_field_name="")
 @minimum_role_required(role_required=Role.OFFICER, redirect_location="club_list")
 def deny_applicant(request, member_id):
+    '''Function for the officer to deny an applicants.'''
     member = Membership.objects.get(id=member_id)
     c_id = member.club.id
     club = member.club
@@ -309,10 +323,10 @@ def deny_applicant(request, member_id):
     messages.success(request, "Applicant has been denied")
     return redirect('show_club', club_id = c_id)
 
-
 @login_required(redirect_field_name="")
 @minimum_role_required(role_required=Role.OFFICER, redirect_location="club_list")
 def accept_applicant(request,member_id):
+    '''Function for the officer to accept an applicants.'''
     member = Membership.objects.get(id=member_id)
     c_id = member.club.id
 
@@ -329,6 +343,7 @@ def events_list(request):
 
 @login_required(redirect_field_name="")
 def apply_to_club(request, club_id ):
+    '''Function for an user to apply the club.'''
     try:
         club = Club.objects.get(id=club_id)
     except Club.DoesNotExist:
@@ -349,10 +364,10 @@ def apply_to_club(request, club_id ):
         messages.success(request, 'You have applied to the club.')
     return redirect('show_club', club.id)
 
-
 @login_required(redirect_field_name="")
 @minimum_role_required(role_required=Role.MEMBER, redirect_location="dashboard")
 def leave_a_club(request, club_id ):
+    '''Function for an user to leave the club.'''
     club = Club.objects.get(id=club_id)
     user = request.user
     if Membership.get_member_role(user, club) == 1:
@@ -390,6 +405,7 @@ def tournament_list(request,club_id):
 
 @login_required(redirect_field_name="")
 def matches(request, tournament_id):
+    '''Function to match two players.'''
     try:
         tournament = Tournament.objects.get(id=tournament_id)
     except Tournament.DoesNotExist:
@@ -422,6 +438,7 @@ def matches(request, tournament_id):
     )
 
 def updateActiveParticipants(matches):
+    '''Function to update active status for playerA and playerB.'''
     for match in matches:
         if match.match_status == 4:
             match.playerA.is_active = False
@@ -431,6 +448,7 @@ def updateActiveParticipants(matches):
             match.playerB.save()
 
 def haveDrawn(tournament, match_round):
+    '''Function to check if players have a draw in a match.'''
     drawn_round =  Match.objects.filter(tournament=tournament, match_round=match_round, match_status=2)
     return len(drawn_round) > 0
 
@@ -440,7 +458,6 @@ def getWinner(tournament, match_round):
         return winner[0]
     return None
 
-
 def abs(request, tournament, match_round):
     matches = Match.objects.filter(tournament=tournament, match_round=match_round)
     if tournament.isRoundFinished(tournament,match_round):
@@ -449,8 +466,10 @@ def abs(request, tournament, match_round):
     elif haveDrawn(tournament, match_round):
         messages.error(request, "Set drawn matches again")
 
+
 @login_required
 def set_match_result(request, match_id):
+    '''Function to see the match result.'''
     try:
         match = Match.objects.get(id=match_id)
         tournament = match.tournament
@@ -509,6 +528,7 @@ def create_initial_matches(request, tournament_id):
 
 @login_required(redirect_field_name="")
 def apply_to_tournament(request, tournament_id ):
+    '''Function for the user to apply the tournament.'''
     try:
         tournament = Tournament.objects.get(id=tournament_id)
         club = tournament.club
@@ -544,6 +564,7 @@ def apply_to_tournament(request, tournament_id ):
 
 @login_required(redirect_field_name="")
 def leave_tournament(request, tournament_id ):
+    '''Function for the user to leave the tournament.'''
     try:
         tournament = Tournament.objects.get(id=tournament_id)
         club = tournament.club
@@ -558,6 +579,7 @@ def leave_tournament(request, tournament_id ):
 
 @login_required(redirect_field_name="")
 def show_tournament(request, tournament_id):
+    '''Function to show details of the tournament.'''
     try:
         tournament = Tournament.objects.get(id=tournament_id)
         club = tournament.club

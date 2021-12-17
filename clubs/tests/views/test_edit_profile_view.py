@@ -1,3 +1,4 @@
+"""Test suite for the profile view."""
 from django.test import TestCase
 from clubs.models import User
 from django.urls import reverse
@@ -102,4 +103,3 @@ class EditUserProfileViewTestCase(TestCase):
         self.assertEqual(self.user.bio, "Hi I'm John2")
         self.assertEqual(self.user.chess_experience_level, 1)
         self.assertEqual(self.user.personal_statement, "nu mi place sa joc sah2")
-

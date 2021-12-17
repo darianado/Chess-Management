@@ -1,10 +1,10 @@
-
+"""Tests for the get winner view."""
 from django.test import TestCase
 from django.urls import reverse
 from clubs.models import Participant, Match, User, Tournament
 
 class GetWinnerTestCase(TestCase):
-     
+    """Tests for the get winner view."""
     fixtures = [
         "clubs/tests/fixtures/default_user_john.json",
         "clubs/tests/fixtures/default_user_jane.json",
@@ -52,4 +52,3 @@ class GetWinnerTestCase(TestCase):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, "Winner is")
-

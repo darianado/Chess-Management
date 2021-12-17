@@ -1,9 +1,11 @@
+"""Tests for the leave club view."""
 from django.test import TestCase
 from django.urls import reverse
 from clubs.models import User, Membership, Club
 
 
 class LeaveClubTest(TestCase):
+    """Tests for the leave club view."""
     fixtures = ['clubs/tests/fixtures/default_user_john.json',
                 'clubs/tests/fixtures/default_club_hame.json',
                 'clubs/tests/fixtures/default_membership_john_hame.json',

@@ -1,3 +1,5 @@
+"""Tests of the set match result view."""
+
 from django.test import TestCase
 from django.urls import reverse
 from clubs.forms import SetMatchResultForm
@@ -7,7 +9,8 @@ from clubs.models import Match, Membership
 from clubs.tests.helper import reverse_with_next
 
 class SetMatchResultViewTestCase(TestCase):
-
+    """Tests of the set match result view."""
+    
     fixtures = [
         "clubs/tests/fixtures/default_user_john.json",
         "clubs/tests/fixtures/default_user_jane.json",

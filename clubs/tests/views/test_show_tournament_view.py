@@ -1,8 +1,10 @@
+"""Tests of the show tournament view."""
 from django.test import TestCase
 from django.urls import reverse
 from clubs.models import Club, User, Membership, Tournament, Participant
 
 class ShowTournamentTest(TestCase):
+    """Tests of the show tournament view."""
 
     fixtures = [
         "clubs/tests/fixtures/default_user_jane.json",

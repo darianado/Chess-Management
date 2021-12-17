@@ -1,9 +1,10 @@
+"""Tests of the update active participants view."""
 from django.test import TestCase
 from clubs.models import User, Tournament, Match
 from clubs import views
 
 class updateActiveParticipantsTest(TestCase):
-
+    """Tests of the update active participants view."""
     fixtures = [
         "clubs/tests/fixtures/default_user_jane.json",
         "clubs/tests/fixtures/default_participant_jane.json",

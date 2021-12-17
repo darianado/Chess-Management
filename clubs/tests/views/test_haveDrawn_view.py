@@ -1,9 +1,10 @@
+"""Tests for the have drawn view."""
 from django.test import TestCase
 from clubs.models import User, Tournament, Match
 from clubs import views
 
 class HaveDrawnTest(TestCase):
-
+    """Tests for the have drawn view."""
     fixtures = [
         "clubs/tests/fixtures/default_user_jane.json",
         "clubs/tests/fixtures/default_participant_jane.json",

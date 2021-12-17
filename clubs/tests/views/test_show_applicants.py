@@ -1,9 +1,10 @@
+"""Tests of the show applicants view."""
 from django.test import TestCase
 from django.urls import reverse
 from clubs.models import Club, User, Membership
 
 class ShowApplicantsTest(TestCase):
-
+    """Tests of the show applicants view."""
     fixtures = [
         "clubs/tests/fixtures/default_user_john.json",
         "clubs/tests/fixtures/default_user_jane.json",
@@ -17,10 +18,10 @@ class ShowApplicantsTest(TestCase):
         self.userJane = User.objects.get(email='janedoe@example.org') #owner
         self.userJohn = User.objects.get(email="johndoe@example.org") #applicant
         self.clubHame = Club.objects.get(club_name="Hame Chess Club")
-        
+
 
         self.urlHameApplic = reverse('show_applicants', kwargs={'club_id': self.clubHame.id})
-       
+
     def make_Jane_member_Hame(self):
         membershipJane = Membership.objects.get(user=self.userJane, club=self.clubHame)
         membershipJane.role=3
@@ -64,5 +65,3 @@ class ShowApplicantsTest(TestCase):
         response_url = reverse('club_list')
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
         self.assertTemplateUsed(response, 'club_list.html')
-
-

@@ -1,10 +1,11 @@
+"""Tests for the accept applicants view."""
 from django.test import TestCase
 from django.urls import reverse
 from clubs.helpers import  Role
 from clubs.models import Club, User, Membership
 
 class AcceptApplicantTest(TestCase):
-
+    """Tests for the accept applicants view."""
     fixtures = [
         "clubs/tests/fixtures/default_user_jane.json",
         "clubs/tests/fixtures/default_membership_jane_hame.json",

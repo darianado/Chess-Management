@@ -1,9 +1,10 @@
+"""Test suite for event list view."""
 from django.test import TestCase
 from clubs.models import Events, User
 from django.urls import reverse
 
 class EventsListViewTestCase(TestCase):
-    """Test suite for the profile view."""
+    """Test suite for the event list view."""
 
     fixtures = [
         'clubs/tests/fixtures/default_user_john.json',
