@@ -8,7 +8,6 @@ The members of the team are:
 - Meilai Ji
 - Xiangyi Liu
 
-*Add any further information about the team here, such as absent team members.*
 
 ## Project structure
 The project is called `system`.  It currently consists of a single app `clubs`.
@@ -47,9 +46,22 @@ Run all tests with:
 $ python3 manage.py test
 ```
 
-*The above instructions should work in your version of the application.  If there are deviations, declare those here in bold.  Otherwise, remove this line.*
 
 ## Sources
 The packages used by this application are specified in `requirements.txt`
 
 *Declare are other sources here.*
+
+## Reused Code
+
+We have reused part of this code, provided by https://bootstrapmade.com/selecao-bootstrap-template/, licensed by   
+ 
+  * Template Name: Selecao - v4.7.0
+  * Template URL: https://bootstrapmade.com/selecao-bootstrap-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+
+The code was reused in clubs/templates/partial/club_profile.html
+and in static/style.css and static/vendor dir.
+
+The lines reused are approximately 500.
