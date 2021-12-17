@@ -335,6 +335,10 @@ def apply_to_club(request, club_id ):
         return redirect('dashboard')
 
     user = request.user
+
+    if Membership.objects.filter(club=club, user=user).exists():
+        return redirect("show_club", club.id)
+
     Events.objects.create(club=club, user=request.user, action = 2)
     if request.method == 'GET':
         Membership.objects.create(
@@ -342,7 +346,7 @@ def apply_to_club(request, club_id ):
                 club = club,
                 role = 4,
         )
-        messages.success(request, 'You have applied the club.')
+        messages.success(request, 'You have applied to the club.')
     return redirect('show_club', club.id)
 
 
